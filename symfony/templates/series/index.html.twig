@@ -22,7 +22,7 @@
                 <td>{{ series.title }}</td>
                 
                 <td><a href="{{ path('app_series_show', {'id': series.id})}}">
-                    <img src="{{ series.displayPoster }}" alt="poster" width="80px">
+                    <img src="{{ series.displayPoster }}" alt="poster" width="100px">
                 </a>
                 </td>
             
@@ -32,6 +32,7 @@
                 <td colspan="11">no records found</td>
             </tr>
         {% endfor %}
+        {{ knp_pagination_render(series)}}
         </tbody>
     </table>
 
