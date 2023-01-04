@@ -1,28 +1,41 @@
-.serie-list {
+.page-title {
+  text-align: center;
+}
+
+.table {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
 }
 
-.serie-list .film-encadre {
+.table .serie-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 80vw;
+}
+
+.table .serie-list .film-encadre {
   display: flex;
   flex-direction: column-reverse;
-  margin: 5px 35px;
+  margin: 5px 30px;
   align-items: center;
 }
 
-.serie-list .film-encadre .film-poster img {
+.table .serie-list .film-encadre .film-poster img {
   width: 14vw;
   height: 34vh;
-  min-width: 100px;
+  min-width: 150px;
+  max-width: 200px;
+  min-height: 250px;
   border-radius: 25px;
 }
 
-.serie-list .film-encadre .film-title {
+.table .serie-list .film-encadre .film-title {
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
-  width: 10vw;
+  width: 13vw;
   text-align: center;
 }
 
@@ -30,10 +43,12 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 .pagination .current {
   text-align: center;
+  font-size: 20px;
 }
 
 .pagination .current::before {
@@ -45,6 +60,9 @@
 }
 
 .pagination span a {
+  text-align: center;
   text-decoration: none;
   font-size: 30px;
+  color: black;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
