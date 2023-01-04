@@ -1,28 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Series index{% endblock %}
+{% block title %}Liste séries{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
+    {% endblock %}
 
 {% block body %}
     <h1>Liste des séries</h1>
 
     <table class="table">
-        <thead>
-            <tr>
-                
-                <th>Title</th>
-                
-            
-                
-            </tr>
-        </thead>
-        <tbody>
+        
+        <tbody class="serie-list">
         {% for series in series %}
-            <tr>
+            <tr class="film-encadre">
      
-                <td>{{ series.title }}</td>
+                <td class="film-title">{{ series.title }}</td>
                 
-                <td><a href="{{ path('app_series_show', {'id': series.id})}}">
-                    <img src="{{ series.displayPoster }}" alt="poster" width="100px">
+                <td class="film-poster"><a href="{{ path('app_series_show', {'id': series.id})}}">
+                    <img src="{{ series.displayPoster }}" alt="poster">
                 </a>
                 </td>
             

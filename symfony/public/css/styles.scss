@@ -1,0 +1,54 @@
+
+
+.serie-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  .film-encadre {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 5px 35px;
+    align-items: center;
+
+    .film-poster img {
+      width: 14vw;
+      height: 34vh;
+      min-width: 100px;
+      border-radius: 25px;
+    }
+
+    .film-title {
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      width: 10vw;
+      text-align: center;
+    }
+  }
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .current {
+        text-align: center;
+
+        &::before {
+            content: "Page ";
+        }
+    }
+
+    .page {
+        display: none;
+    }
+
+    span {
+        a {
+            text-decoration: none;
+            font-size: 30px;
+        }
+    }
+  }
