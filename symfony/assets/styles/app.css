@@ -3,4 +3,32 @@
 @tailwind utilities;
 body {
     background-color: lightgray;
+    min-height: 100vh;
+}
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: xx-large;
+    width: 100vw;
+}
+
+.pagination .page {
+    display: none;
+}
+
+.pagination .current::before {
+    content: "Page ";
+}
+
+.poster {
+    min-width: 350px;
+    max-height: 700px;
+    height: 60vh;
+    width: 20vw;
+}
+
+.titre {
+    font-family: Sofia;
+    width: 20vw;
 }
