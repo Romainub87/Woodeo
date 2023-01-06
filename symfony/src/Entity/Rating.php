@@ -8,7 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Rating
  *
+<<<<<<< symfony/src/Entity/Rating.php
+ * @ORM\Table(name="rating", indexes={@ORM\Index(name="IDX_D8892622A76ED395", columns={"user_id"}), @ORM\Index(name="IDX_D88926225278319C", columns={"series_id"})})
+=======
  * @ORM\Table(name="rating", indexes={@ORM\Index(name="IDX_D88926225278319C", columns={"series_id"}), @ORM\Index(name="IDX_D8892622A76ED395", columns={"user_id"})})
+>>>>>>> symfony/src/Entity/Rating.php
  * @ORM\Entity
  */
 class Rating
@@ -54,9 +58,11 @@ class Rating
     private $series;
 
     /**
-     * @var \User2
+<<<<<<< symfony/src/Entity/Rating.php
+     * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="User2")
+     * @ORM\ManyToOne(targetEntity="User")
+>>>>>>> symfony/src/Entity/Rating.php
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
@@ -116,12 +122,16 @@ class Rating
         return $this;
     }
 
-    public function getUser(): ?User2
+<<<<<<< symfony/src/Entity/Rating.php
+    public function getUser(): ?User
+>>>>>>> symfony/src/Entity/Rating.php
     {
         return $this->user;
     }
 
-    public function setUser(?User2 $user): self
+<<<<<<< symfony/src/Entity/Rating.php
+    public function setUser(?User $user): self
+>>>>>>> symfony/src/Entity/Rating.php
     {
         $this->user = $user;
 

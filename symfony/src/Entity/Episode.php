@@ -72,7 +72,7 @@ class Episode
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="User2", mappedBy="episode")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="episode")
      */
     private $user = array();
 
@@ -162,14 +162,14 @@ class Episode
     }
 
     /**
-     * @return Collection<int, User2>
+     * @return Collection<int, User>
      */
     public function getUser(): Collection
     {
         return $this->user;
     }
 
-    public function addUser(User2 $user): self
+    public function addUser(User $user): self
     {
         if (!$this->user->contains($user)) {
             $this->user->add($user);
@@ -179,7 +179,7 @@ class Episode
         return $this;
     }
 
-    public function removeUser(User2 $user): self
+    public function removeUser(User $user): self
     {
         if ($this->user->removeElement($user)) {
             $user->removeEpisode($this);

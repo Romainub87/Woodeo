@@ -97,7 +97,7 @@ class Series
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="User2", mappedBy="series")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="series")
      */
     private $user = array();
 
@@ -273,14 +273,14 @@ class Series
     }
 
     /**
-     * @return Collection<int, User2>
+     * @return Collection<int, User>
      */
     public function getUser(): Collection
     {
         return $this->user;
     }
 
-    public function addUser(User2 $user): self
+    public function addUser(User $user): self
     {
         if (!$this->user->contains($user)) {
             $this->user->add($user);
@@ -290,7 +290,7 @@ class Series
         return $this;
     }
 
-    public function removeUser(User2 $user): self
+    public function removeUser(User $user): self
     {
         if ($this->user->removeElement($user)) {
             $user->removeSeries($this);

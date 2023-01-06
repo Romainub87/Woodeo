@@ -36,16 +36,6 @@ class ExternalRating
     private $votes;
 
     /**
-     * @var \Series
-     *
-     * @ORM\ManyToOne(targetEntity="Series")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="series_id", referencedColumnName="id")
-     * })
-     */
-    private $series;
-
-    /**
      * @var \ExternalRatingSource
      *
      * @ORM\ManyToOne(targetEntity="ExternalRatingSource")
@@ -54,6 +44,16 @@ class ExternalRating
      * })
      */
     private $source;
+
+    /**
+     * @var \Series
+     *
+     * @ORM\ManyToOne(targetEntity="Series")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="series_id", referencedColumnName="id")
+     * })
+     */
+    private $series;
 
     public function getId(): ?int
     {
@@ -84,18 +84,6 @@ class ExternalRating
         return $this;
     }
 
-    public function getSeries(): ?Series
-    {
-        return $this->series;
-    }
-
-    public function setSeries(?Series $series): self
-    {
-        $this->series = $series;
-
-        return $this;
-    }
-
     public function getSource(): ?ExternalRatingSource
     {
         return $this->source;
@@ -104,6 +92,18 @@ class ExternalRating
     public function setSource(?ExternalRatingSource $source): self
     {
         $this->source = $source;
+
+        return $this;
+    }
+
+    public function getSeries(): ?Series
+    {
+        return $this->series;
+    }
+
+    public function setSeries(?Series $series): self
+    {
+        $this->series = $series;
 
         return $this;
     }
