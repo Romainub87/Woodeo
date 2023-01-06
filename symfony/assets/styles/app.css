@@ -45,19 +45,31 @@ body {
 
 /* Style register */
 #registration_form_name {
-    color: black;
+    color: white;
+    background-color: black;
     display: flex;
-    border-radius: 75px;
+    border-radius: 5px;
+    border: 2px solid blue ;
+    margin: 10px 0px;
+    margin-bottom: 20px;
 }
 
 #registration_form_email {
-    color: black;
+    color: white;
+    background-color: black;
     display: flex;
-    border-radius: 75px;
+    border-radius: 5px;
+    border: 2px solid blue ;
+    margin: 10px 0px;
+    margin-bottom: 20px;
 }
 
 #registration_form_plainPassword {
-    color: black;
+    color: white;
+    background-color: black;
     display: flex;
-    border-radius: 75px;
+    border-radius: 5px;
+    border: 2px solid blue ;
+    margin: 10px 0px;
 }
+

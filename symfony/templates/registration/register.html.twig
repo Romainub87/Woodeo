@@ -11,21 +11,28 @@
    
 
     <div class=" flex flex-col text-black text-3xl m-auto flex flex-co w-auto items-center p-10">
-        <h1 class="text-white">S'inscrire</h1>
+        <h1 class="text-5xl pb-4 text-white">Inscription</h1>
         
             {{ form_start(registrationForm) }}
             <div class="p-6 text-white flex flex-col justify-center items-center">
-                {{ form_row(registrationForm.name) }}
-            {{ form_row(registrationForm.email) }}
-            {{ form_row(registrationForm.plainPassword, {
-                label: 'Password'
-            }) }}
+                {{ form_row(registrationForm.name, {
+                    'label': 'Nom'
+                }) }}
+                {{ form_row(registrationForm.email, {
+                    'label': 'E-mail'
+                }) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Mot de passe'
+                }) }}
+            
            
-        </div>
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</button>
+        
+                <button type="submit" class="mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold items-center pt-3 pb-4 px-4 rounded focus:outline-none focus:shadow-outline">Créer un compte</button>
+            </div>
         {{ form_end(registrationForm) }}
-       
-    
     </div>
+       
+
+    
     
 {% endblock %}
