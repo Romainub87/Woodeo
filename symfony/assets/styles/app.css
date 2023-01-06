@@ -29,8 +29,8 @@ body {
 }
 
 .poster {
-    min-width: 500px;
-    max-height: 650px;
+    min-width: 450px;
+    max-height: 700px;
     height: 50vh;
     width: 20vw;
 }
