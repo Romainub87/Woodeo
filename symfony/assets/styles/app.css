@@ -29,14 +29,14 @@ body {
 }
 
 .poster {
-    min-width: 450px;
+    width: 350px;
     max-height: 700px;
     height: 50vh;
-    width: 20vw;
 }
 
 .titre {
     font-family: Sofia;
+    width: 350px;
 }
 
 .nav-item {
