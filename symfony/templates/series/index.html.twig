@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Series index{% endblock %}
+
+{% block body %}
+    <h1>Liste des séries</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Title</th>
+                
+            
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for series in series %}
+            <tr>
+     
+                <td>{{ series.title }}</td>
+                
+                <td><a href="{{ path('app_series_show', {'id': series.id})}}">
+                    <img src="{{ series.displayPoster }}" alt="poster" width="80px">
+                </a>
+                </td>
+            
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
