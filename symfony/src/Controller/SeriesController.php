@@ -9,19 +9,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+<<<<<<< symfony/src/Controller/SeriesController.php
+=======
+use Knp\Component\Pager\PaginatorInterface;
+>>>>>>> symfony/src/Controller/SeriesController.php
 
 #[Route('/series')]
 class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+<<<<<<< symfony/src/Controller/SeriesController.php
+    public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         $series = $entityManager
             ->getRepository(Series::class)
-            ->findAll();
+            ->findBy(array(), array('title'=> 'ASC'));
+
+        $liste_series = $paginator->paginate(
+            $series,
+            $request->query->getInt('page',1),
+            5
+        );
 
         return $this->render('series/index.html.twig', [
-            'series' => $series,
+            'series' => $liste_series,
+>>>>>>> symfony/src/Controller/SeriesController.php
         ]);
     }
 
@@ -42,8 +54,6 @@ class SeriesController extends AbstractController
         return $this->renderForm('series/new.html.twig', [
             'series' => $series,
             'form' => $form,
-        ]);
-    }
 
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
     public function show(Series $series): Response
@@ -53,6 +63,7 @@ class SeriesController extends AbstractController
         ]);
     }
 
+<<<<<<< symfony/src/Controller/SeriesController.php
     #[Route('/{id}/edit', name: 'app_series_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
@@ -81,4 +92,6 @@ class SeriesController extends AbstractController
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
+    
+>>>>>>> symfony/src/Controller/SeriesController.php
 }

@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <th>Poster</th>
-                <td>{{ series.poster }}</td>
+                <td><img src="{{ series.displayPoster }}" alt="poster" width="80px"></td>
             </tr>
             <tr>
                 <th>Director</th>
@@ -52,7 +52,6 @@
 
     <a href="{{ path('app_series_index') }}">back to list</a>
 
-    <a href="{{ path('app_series_edit', {'id': series.id}) }}">edit</a>
+ 
 
-    {{ include('series/_delete_form.html.twig') }}
 {% endblock %}

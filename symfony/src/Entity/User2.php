@@ -2,26 +2,18 @@
 
 namespace App\Entity;
 
-<<<<<<< symfony/src/Entity/User.php
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
->>>>>>> symfony/src/Entity/User.php
 
 /**
- * User
+ * User2
  *
-<<<<<<< symfony/src/Entity/User.php
- * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_8D93D649E7927C74", columns={"email"})}, indexes={@ORM\Index(name="IDX_8D93D649F92F3E70", columns={"country_id"})})
+ * @ORM\Table(name="user2", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_8D93D649E7927C74", columns={"email"})}, indexes={@ORM\Index(name="IDX_8D93D649F92F3E70", columns={"country_id"})})
  * @ORM\Entity
  */
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
->>>>>>> symfony/src/Entity/User.php
+class User2
 {
     /**
      * @var int
@@ -35,7 +27,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string
      *
-<<<<<<< symfony/src/Entity/User.php
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
      */
     private $name;
@@ -48,23 +39,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     /**
-     * @var array
-     *
-     * @ORM\Column(name="roles", type="json", nullable=false)
-     */
-    private $roles;
->>>>>>> symfony/src/Entity/User.php
-
-    /**
      * @var string
      *
-<<<<<<< symfony/src/Entity/User.php
      * @ORM\Column(name="password", type="string", length=128, nullable=false)
      */
     private $password;
 
     /**
-<<<<<<< symfony/src/Entity/User.php
      * @var \DateTime|null
      *
      * @ORM\Column(name="register_date", type="datetime", nullable=true)
@@ -134,20 +115,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->episode = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="country_id", type="integer", nullable=false)
-     */
-    private $countryId;
->>>>>>> symfony/src/Entity/User.php
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-<<<<<<< symfony/src/Entity/User.php
     public function getName(): ?string
     {
         return $this->name;
@@ -160,8 +132,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-=======
->>>>>>> symfony/src/Entity/User.php
     public function getEmail(): ?string
     {
         return $this->email;
@@ -173,21 +143,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
-    public function getRoles(): array
+
+    public function getPassword(): ?string
     {
-        return $this->roles;
+        return $this->password;
     }
 
-    public function setRoles(array $roles): self
+    public function setPassword(string $password): self
     {
-        $this->roles = $roles;
->>>>>>> symfony/src/Entity/User.php
+        $this->password = $password;
 
         return $this;
     }
 
-<<<<<<< symfony/src/Entity/User.php
     public function getRegisterDate(): ?\DateTimeInterface
     {
         return $this->registerDate;
@@ -232,21 +200,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCountry(?Country $country): self
     {
         $this->country = $country;
-=======
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
->>>>>>> symfony/src/Entity/User.php
 
         return $this;
     }
 
-<<<<<<< symfony/src/Entity/User.php
     /**
      * @return Collection<int, Series>
      */
@@ -268,7 +225,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->series->removeElement($series);
 
-<<<<<<< symfony/src/Entity/User.php
+        return $this;
+    }
+
     /**
      * @return Collection<int, Episode>
      */
@@ -289,36 +248,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeEpisode(Episode $episode): self
     {
         $this->episode->removeElement($episode);
-=======
-    public function getCountryId(): ?int
-    {
-        return $this->countryId;
-    }
-
-    public function setCountryId(int $countryId): self
-    {
-        $this->countryId = $countryId;
->>>>>>> symfony/src/Entity/User.php
 
         return $this;
     }
-
-<<<<<<< symfony/src/Entity/User.php
-    public function getUserIdentifier(): string 
-    { 
-        return $this->getEmail(); 
-    }
-
-    public function getRoles(): array 
-    { 
-        return ['ROLE_USER']; 
-    }
-
-    public function eraseCredentials() 
-    {
-
-    }
-=======
->>>>>>> symfony/src/Entity/User.php
 
 }

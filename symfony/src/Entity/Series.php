@@ -172,6 +172,12 @@ class Series
         return $this->poster;
     }
 
+    public function displayPoster() {
+        $this->poster = "data:image/mng;base64,".base64_encode(stream_get_contents($this->getPoster()));
+
+        return $this->poster;
+    }
+
     public function setPoster($poster): self
     {
         $this->poster = $poster;
