@@ -29,10 +29,10 @@ body {
 }
 
 .poster {
-    min-width: 350px;
-    max-height: 700px;
+    min-width: 500px;
+    max-height: 650px;
     height: 50vh;
-    width: 12vw;
+    width: 20vw;
 }
 
 .titre {
