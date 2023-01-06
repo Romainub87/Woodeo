@@ -11,18 +11,18 @@
 
     </head>
     <body>
-        <ul class="flex items-center justify-between bg-black pt-5 pb-5 mb-5 rounded-b-2xl border-b-4 border-cyan-900 border-b">
-            <img class="px-4 h-14 hidden sm:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/>
-            <img class="px-4 h-14 sm:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
-            <ul class="flex text-xl">
-            <li class="nav-item pl-4 -mb-px mr-1">
-              <a class="inline-block py-2 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+        <ul class=" flex items-center justify-between bg-black pt-5 pb-5 mb-5 rounded-b-2xl border-b-4 border-cyan-900 border-b">
+            <img class="px-4 h-48 md:h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/>
+            <img class="px-4 h-48 md:h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
+            <ul class="flex text-5xl xl:text-2xl md:text-3xl ">
+            <li class="nav-item -mb-px px-5 mr-1">
+              <a class="inline-block py-4  text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
             </li>
-            <li class="hidden nav-item pl-4 mr-1">
-              <a class="inline-block py-2  text-blue-500 hover:text-blue-800 font-semibold" href="#">Mes Séries</a>
+            <li class="hidden nav-item px-5 mr-1">
+              <a class="inline-block py-4  text-blue-500 hover:text-blue-800 font-semibold" href="#">Mes Séries</a>
             </li>
-            <li class="nav-item pl-4 pr-4 mr-1">
-              <a class="inline-block py-2 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">Se connecter</a>
+            <li class="nav-item px-5 mr-1">
+              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">Se connecter</a>
             </li>
           </ul>
         </ul>

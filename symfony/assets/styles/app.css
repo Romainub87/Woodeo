@@ -42,3 +42,22 @@ body {
 .nav-item {
     font-family: Bahnschrift;
 }
+
+/* Style register */
+#registration_form_name {
+    color: black;
+    display: flex;
+    border-radius: 75px;
+}
+
+#registration_form_email {
+    color: black;
+    display: flex;
+    border-radius: 75px;
+}
+
+#registration_form_plainPassword {
+    color: black;
+    display: flex;
+    border-radius: 75px;
+}
