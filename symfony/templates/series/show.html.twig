@@ -10,28 +10,31 @@
 {% block body %}
 
     <div class="container flex flex-col text-white">
+        <div>
+            <h1 class="text-5xl font-semibold font-mono">{{ series.title }}</h1>
+        </div>
         <div class="flex">
             <div>
-                <div><img src="{{ series.displayPoster }}" alt="poster" width="80px"></div>
+                <div><img src="{{ series.displayPoster }}" alt="poster" width="450px"></div>
             </div>
             <div>
-                <div>
-                    <h1 class="text-4xl font-semibold font-mono">{{ series.title }}</h1>
-                </div>
+            <div class="genre">
+                {% for genre in series.getGenre %}
+                <h1>{{ genre.getName }}</h1>
+                {% endfor%}
+            </div>
+        </div>
+            <div>
                 <tr>
-                    <td>{{ series.yearStart }}</td>
+                    <h1 class="text-3xl">Année de sortie : {{ series.yearStart }}</h1>
                 </tr>
             </div>
         </div>
+        
         </div>
             <div>
-                <p class="">{{ series.plot }}</p>
+                <p class="text-white text-20">{{ series.plot }}</p>
             </div>
-        
-            <tr>
-                <th>YoutubeTrailer</th>
-                
-            </tr>
             <tr>
                 <th>Awards</th>
                 <td>{{ series.awards }}</td>

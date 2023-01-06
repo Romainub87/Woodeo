@@ -16,13 +16,13 @@
             <img class="px-4 h-14 sm:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
             <ul class="flex text-xl">
             <li class="nav-item pl-4 -mb-px mr-1">
-              <a class="inline-block py-2 text-blue-500 hover:text-blue-800 font-semibold" href="#">Accueil</a>
+              <a class="inline-block py-2 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
             </li>
             <li class="hidden nav-item pl-4 mr-1">
               <a class="inline-block py-2  text-blue-500 hover:text-blue-800 font-semibold" href="#">Mes Séries</a>
             </li>
             <li class="nav-item pl-4 pr-4 mr-1">
-              <a class="inline-block py-2 text-blue-500 hover:text-blue-800 font-semibold" href="#">Se connecter</a>
+              <a class="inline-block py-2 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">Se connecter</a>
             </li>
           </ul>
         </ul>

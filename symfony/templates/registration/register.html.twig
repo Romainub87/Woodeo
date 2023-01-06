@@ -2,10 +2,17 @@
 
 {% block title %}Register{% endblock %}
 
-{% block body %}
-    <h1>Register</h1>
+{% block stylesheets %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
+{{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-    {{ form_start(registrationForm) }}
+{% block body %}
+   
+
+    <div class="text-white text-3xl flex flex-col border-white border-8 w-auto items-center p-10">
+        <h1 class="text-white">S'inscrire</h1>
+        {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
@@ -13,7 +20,8 @@
         {{ form_row(registrationForm.name) }}
         {{ form_row(registrationForm.agreeTerms) }}
 
-
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</button>
     {{ form_end(registrationForm) }}
+    </div>
+
 {% endblock %}
