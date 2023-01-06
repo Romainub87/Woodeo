@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    background-color: black;
+    min-height: 100vh;
+    width: 100vw;
+}
+.pagination {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: xx-large;
+    width: 100vw;
+}
+
+.pagination .page {
+    display: none;
+}
+
+.pagination .current::before {
+    content: "Page ";
+}
+
+.poster {
+    min-width: 500px;
+    max-height: 650px;
+    height: 50vh;
+    width: 20vw;
+}
+
+.titre {
+    font-family: Sofia;
+}
+
+.nav-item {
+    font-family: Bahnschrift;
+}
