@@ -11,6 +11,21 @@
 
     </head>
     <body>
+        <ul class="flex items-center justify-between bg-black pt-5 pb-5 mb-5 rounded-b-2xl border-b-4 border-cyan-900 border-b">
+            <img class="px-4 h-14 md:visible " src="{{ asset('img/logo_pc.png') }}" alt="logo"/>
+            <img class="px-4 h-14 md:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
+            <ul class="flex text-xl">
+            <li class="nav-item pl-4 -mb-px mr-1">
+              <a class="inline-block py-2 text-blue-500 hover:text-blue-800 font-semibold" href="#">Accueil</a>
+            </li>
+            <li class="nav-item pl-4 mr-1">
+              <a class="inline-block py-2  text-blue-500 hover:text-blue-800 font-semibold" href="#">Mes Séries</a>
+            </li>
+            <li class="nav-item pl-4 pr-4 mr-1">
+              <a class="inline-block py-2 text-blue-500 hover:text-blue-800 font-semibold" href="#">Se connecter</a>
+            </li>
+          </ul>
+        </ul>
         {% block body %}{% endblock %}
     </body>
 </html>

@@ -2,53 +2,48 @@
 
 {% block title %}Series{% endblock %}
 
-{% block body %}
-    <h1 class="">Series</h1>
+{% block stylesheets %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
+{{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ series.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ series.title }}</td>
-            </tr>
-            <tr>
-                <th>Plot</th>
-                <td>{{ series.plot }}</td>
-            </tr>
-            <tr>
-                <th>Imdb</th>
-                <td>{{ series.imdb }}</td>
-            </tr>
-            <tr>
-                <th>Poster</th>
-                <td><img src="{{ series.displayPoster }}" alt="poster" width="80px"></td>
-            </tr>
-            <tr>
-                <th>Director</th>
-                <td>{{ series.director }}</td>
-            </tr>
+{% block body %}
+
+    <div class="container flex flex-col text-white">
+        <div class="flex">
+            <div>
+                <div><img src="{{ series.displayPoster }}" alt="poster" width="80px"></div>
+            </div>
+            <div>
+                <div>
+                    <h1 class="text-4xl font-semibold font-mono">{{ series.title }}</h1>
+                </div>
+                <tr>
+                    <th>YearStart</th>
+                    <td>{{ series.yearStart }}</td>
+                </tr>
+                <tr>
+                    <th>YearEnd</th>
+                    <td>{{ series.yearEnd }}</td>
+                </tr>
+            </div>
+        </div>
+        </div>
+            <div>
+                <p class="">{{ series.plot }}</p>
+            </div>
+        
             <tr>
                 <th>YoutubeTrailer</th>
-                <td>{{ series.youtubeTrailer }}</td>
+                
             </tr>
             <tr>
                 <th>Awards</th>
                 <td>{{ series.awards }}</td>
             </tr>
-            <tr>
-                <th>YearStart</th>
-                <td>{{ series.yearStart }}</td>
-            </tr>
-            <tr>
-                <th>YearEnd</th>
-                <td>{{ series.yearEnd }}</td>
-            </tr>
-        </tbody>
-    </table>
+            
+        </div>
+    </div>
 
     <a href="{{ path('app_series_index') }}">back to list</a>
 

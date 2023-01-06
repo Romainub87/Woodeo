@@ -1,11 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 body {
-    background-color: lightgray;
+    background-color: black;
     min-height: 100vh;
+    width: 100vw;
 }
 .pagination {
+    color: white;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -24,11 +31,14 @@ body {
 .poster {
     min-width: 350px;
     max-height: 700px;
-    height: 60vh;
-    width: 20vw;
+    height: 50vh;
+    width: 12vw;
 }
 
 .titre {
     font-family: Sofia;
-    width: 20vw;
+}
+
+.nav-item {
+    font-family: Bahnschrift;
 }
