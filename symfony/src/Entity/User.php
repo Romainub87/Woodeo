@@ -61,7 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @ORM\Column(name="admin", type="boolean", nullable=false)
      */
-    private $admin = '0';
+    private $admin;
 
     /**
      * @var string|null
@@ -83,21 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Series", inversedBy="user")
-     * @ORM\JoinTable(name="user_series",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="series_id", referencedColumnName="id")
-     *   }
-     * )
-     */
-    private $series = array();
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
      * @ORM\ManyToMany(targetEntity="Episode", inversedBy="user")
      * @ORM\JoinTable(name="user_episode",
      *   joinColumns={
@@ -111,12 +96,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $episode = array();
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Series", inversedBy="user")
+     * @ORM\JoinTable(name="user_series",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="series_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $series = array();
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->series = new \Doctrine\Common\Collections\ArrayCollection();
         $this->episode = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->series = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,30 +209,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Series>
-     */
-    public function getSeries(): Collection
-    {
-        return $this->series;
-    }
-
-    public function addSeries(Series $series): self
-    {
-        if (!$this->series->contains($series)) {
-            $this->series->add($series);
-        }
-
-        return $this;
-    }
-
-    public function removeSeries(Series $series): self
-    {
-        $this->series->removeElement($series);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Episode>
      */
     public function getEpisode(): Collection
@@ -256,19 +232,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserIdentifier(): string 
-    { 
-        return $this->getEmail(); 
-    }
-
-    public function getRoles(): array 
-    { 
-        return ['ROLE_USER']; 
-    }
-
-    public function eraseCredentials() 
+    /**
+     * @return Collection<int, Series>
+     */
+    public function getSeries(): Collection
     {
-
+        return $this->series;
     }
+
+    public function addSeries(Series $series): self
+    {
+        if (!$this->series->contains($series)) {
+            $this->series->add($series);
+        }
+
+        return $this;
+    }
+
+    public function removeSeries(Series $series): self
+    {
+        $this->series->removeElement($series);
+
+        return $this;
+    }
+
+    public function getUserIdentifier(): string { return $this->getEmail(); }
+    public function getRoles(): array { return ['ROLE_USER']; }
+    public function eraseCredentials() { }
 
 }
