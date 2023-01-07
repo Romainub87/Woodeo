@@ -7,10 +7,18 @@
 }
 
 body {
-    background-color: black;
     min-height: 100vh;
     width: 100vw;
 }
+
+.page {
+    background: linear-gradient(204deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(47,156,179,1) 100%);    top: 0;
+    left: 0;
+    position: cover;
+    width: 100%;
+    height: 100%;
+}
+
 .pagination {
     color: white;
     display: flex;
@@ -30,7 +38,7 @@ body {
 
 .poster {
     width: 350px;
-    max-height: 700px;
+    max-height: 650px;
     height: 50vh;
 }
 
@@ -41,4 +49,70 @@ body {
 
 .nav-item {
     font-family: Bahnschrift;
+}
+
+/* Style description */
+
+.titre-serie {
+    font-family: Bahnschrift;
+}
+
+.description {
+    font-family: Bahnschrift;
+}
+
+
+/* Style register */
+#registration_form_name {
+    background-color: black;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid blue;
+    margin: 10px 0px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+#registration_form_email {
+    background-color: black;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid blue;
+    margin: 10px 0px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+#registration_form_plainPassword {
+    background-color: black;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid blue;
+    margin: 10px 0px;
+    padding: 5px;
+}
+
+/* style Connexion */
+label {
+    color: white; 
+}
+
+#inputPassword {
+    margin-bottom: 0px;
+}
+
+.remember {
+    width: 30px;
+    height: 30px;
+}
+
+.conn-section  {
+    color: white;
+    background-color: black;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid blue;
+    margin: 10px 0px;
+    margin-bottom: 20px;
+    padding: 5px;
 }
