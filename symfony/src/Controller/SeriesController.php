@@ -24,7 +24,7 @@ class SeriesController extends AbstractController
         $liste_series = $paginator->paginate(
             $series,
             $request->query->getInt('page',1),
-            4
+            8
         );
 
         return $this->render('series/index.html.twig', [
