@@ -18,12 +18,27 @@
             <li class="nav-item -mb-px px-5 mr-1">
               <a class="inline-block py-4  text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
             </li>
-            <li class="hidden nav-item px-5 mr-1">
+            {% if app.user %}
+            <li class="nav-item px-5 mr-1">
               <a class="inline-block py-4  text-blue-500 hover:text-blue-800 font-semibold" href="#">Mes Séries</a>
             </li>
             <li class="nav-item px-5 mr-1">
+              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">{{app.user.name}}</a>
+            </li>
+            <li class=" nav-item px-5 mr-1">
+              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_logout') }}">Déconnexion</a>
+            </li>
+            <li class=" hidden nav-item px-5 mr-1">
               <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">Connexion</a>
             </li>
+
+            {% else %}
+            <li class="nav-item px-5 mr-1">
+              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">Connexion</a>
+            </li>
+          {% endif %}
+            
+            
           </ul>
         </ul>
         {% block body %}{% endblock %}
