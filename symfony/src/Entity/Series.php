@@ -116,6 +116,13 @@ class Series
     private $genre = array();
 
     /**
+     * @var \Season
+     *
+     * @ORM\OneToMany(targetEntity="Season", mappedBy="series")
+     */
+    private $seasons;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -124,6 +131,7 @@ class Series
         $this->user = new \Doctrine\Common\Collections\ArrayCollection();
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
         $this->genre = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->seasons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -348,6 +356,41 @@ class Series
     {
         if ($this->genre->removeElement($genre)) {
             $genre->removeSeries($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Season>
+     */
+    public function getSeasons(): Collection
+    {
+        return $this->seasons;
+    }
+
+    public function getSeasonsNumber(): int
+    {
+        return $this->getSeasons()->count();
+    }
+
+    public function addSeason(Season $season): self
+    {
+        if (!$this->seasons->contains($season)) {
+            $this->seasons->add($season);
+            $season->setSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeason(Season $season): self
+    {
+        if ($this->seasons->removeElement($season)) {
+            // set the owning side to null (unless already changed)
+            if ($season->getSeries() === $this) {
+                $season->setSeries(null);
+            }
         }
 
         return $this;

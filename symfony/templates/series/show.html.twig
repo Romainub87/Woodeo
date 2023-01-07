@@ -9,41 +9,44 @@
 
 {% block body %}
 
-    <div class="container flex flex-col text-white">
-        <div>
-            <h1 class="text-5xl font-semibold font-mono">{{ series.title }}</h1>
-        </div>
-        <div class="flex">
-            <div>
-                <div><img src="{{ series.displayPoster }}" alt="poster" width="450px"></div>
+    <div class="description w-4/5 m-auto flex flex-col text-white font-semibold">
+        <h1 class="titre-serie mb-5 text-6xl font-semibold">{{ series.title }}</h1>
+        <div class"flex flex-row>
+            <div class="flex">
+                <img src="{{ series.displayPoster }}" alt="poster" class="w-2/5 min-w-48 max-w-md rounded-3xl">
+                <div class="flex flex-col ml-4">
+                    <div class="flex flex-row">
+                        {% for genre in series.getGenre %}
+                        <h1 class="text-xl text-blue-500 hover:text-blue-800 hover:border-blue-800 mr-2 px-4 p-2 border-blue-500 border-2 rounded-3xl">{{ genre.getName }}</h1>
+                        {% endfor %}
+                    </div>
+                    <div class="flex ml-2 mt-5 text-2xl items-center">
+                        <h1 class="pr-4 border-r-2">{{ series.yearStart }}</h1>
+                        {% if series.getSeasonsNumber is same as 1 %}
+                            <h1 class="px-4 border-r-2"> {{ series.getSeasonsNumber }} saison</h1>
+                        {% else %}
+                            <h1 class="px-4 border-r-2"> {{ series.getSeasonsNumber }} saisons</h1>
+                        {% endif %}
+                        {% for country in series.getCountry %}
+                            <h1 class="px-4">{{ country.getName }}</h1>
+                        {% endfor %}
+                        
+                    </div>
+                    <div class="container mt-2">
+                        <div class="flex items-center">
+                            <label class="text-xl mt-2">Synopsis</label>
+                            <div class="border-blue-500 ml-2 border-t border-r h-5 w-full mt-7"></div>
+                        </div>
+                        <p class="border-blue-500 ml-5 text-justify border-l px-5 pb-4">{{ series.plot }}</p>
+           
+                        <div class="border-blue-500 ml-5 border-t w-1/12"></div>
+                    </div>
+                    
+                </div>
             </div>
-            <div>
-            <div class="genre">
-                {% for genre in series.getGenre %}
-                <h1>{{ genre.getName }}</h1>
-                {% endfor %}
-            </div>
-        </div>
-            <div>
-                <tr>
-                    <h1 class="text-3xl">Année de sortie : {{ series.yearStart }}</h1>
-                </tr>
-            </div>
-        </div>
-        
-        </div>
-            <div>
-                <p class="text-white text-20">{{ series.plot }}</p>
-            </div>
-            <tr>
-                <th>Awards</th>
-                <td>{{ series.awards }}</td>
-            </tr>
             
         </div>
     </div>
-
-    <a href="{{ path('app_series_index') }}">back to list</a>
 
  
 
