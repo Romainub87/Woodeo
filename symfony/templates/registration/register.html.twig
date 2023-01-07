@@ -10,11 +10,10 @@
 {% block body %}
    
 
-    <div class=" flex flex-col text-black text-3xl m-auto flex flex-co w-auto items-center p-10">
-        <h1 class="text-5xl pb-4 text-white">Inscription</h1>
-        
+    <div class=" flex flex-col text-black text-3xl m-auto flex flex-co items-center p-10">
+        <h1 class="text-5xl pb-4 text-white font-semibold">Inscription</h1>
             {{ form_start(registrationForm) }}
-            <div class="p-6 text-white flex flex-col justify-center items-center">
+            <div class="p-6 text-white flex flex-col w-screen items-center justify-center font-semibold">
                 {{ form_row(registrationForm.name, {
                     'label': 'Nom'
                 }) }}
@@ -28,6 +27,7 @@
            
         
                 <button type="submit" class="mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold items-center pt-3 pb-4 px-4 rounded focus:outline-none focus:shadow-outline">Créer un compte</button>
+                <a class="text-2xl text-blue-500 underline italic mt-5" href="{{path('app_login')}}">Connectez-vous ici!</a>
             </div>
         {{ form_end(registrationForm) }}
     </div>
