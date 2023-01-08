@@ -27,7 +27,7 @@
             </li>
             {% if app.user.isAdmin() %}
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="#">Dashboard</a>
+              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
             </li>
             {% endif %}
             <li class=" nav-item px-5 mr-1">
