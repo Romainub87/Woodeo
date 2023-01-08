@@ -19,6 +19,14 @@ body {
     height: 100%;
 }
 
+.pagination-b .pagination .current {
+    display: none;
+}
+
+.pagination-b .pagination {
+    margin-bottom: 25px;
+}
+
 .pagination {
     color: white;
     display: flex;
