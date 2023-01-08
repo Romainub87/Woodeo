@@ -123,6 +123,13 @@ class Series
     private $seasons;
 
     /**
+     * @var \ExternalRating
+     *
+     * @ORM\OneToOne(targetEntity="ExternalRating", mappedBy="series")
+     */
+    private $rate;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -392,6 +399,28 @@ class Series
                 $season->setSeries(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRate(): ?ExternalRating
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?ExternalRating $rate): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($rate === null && $this->rate !== null) {
+            $this->rate->setSeries(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($rate !== null && $rate->getSeries() !== $this) {
+            $rate->setSeries($this);
+        }
+
+        $this->rate = $rate;
 
         return $this;
     }

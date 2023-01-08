@@ -41,7 +41,16 @@
            
                         <div class="border-blue-500 ml-5 border-t w-1/12"></div>
                     </div>
-                    
+                    <div class="flex ml-2 mt-5 items-center">
+                        {% for i in 0..9 %}
+                            {% if series.getRate.value|number_format > i and i % 2 == 0 %}
+                                <img width="50px" src="{{ asset('img/etoile_pleine.png') }}">
+                            {% elseif series.getRate.value|number_format <= i and i % 2 == 0 %}
+                                <img width="50px" src="{{ asset('img/etoile_vide.png') }}">
+                            {% endif %}
+                        {% endfor %} 
+                        <h1 class="text-3xl mt-2 ml-5">{{series.getRate.value}}</h1>
+                    </div>
                 </div>
             </div>
             
