@@ -5,9 +5,9 @@
 {% block body %}
     <h1>Tableau de bord administrateur</h1>
     <h2>Promouvoir un utilisateur administrateur : </h2>
-    {{ form_start(form)}}
-    {{ form_errors(form) }}
-    {{ form_row(form.email, {label: "E-mail"}) }}
+    {{ form_start(formPromoteUser)}}
+    {{ form_errors(formPromoteUser) }}
+    {{ form_row(formPromoteUser.email, {label: "E-mail"}) }}
     <button type="submit" class="btn btn-primary">Promouvoir</button>
-    {{ form_end(form)}}
+    {{ form_end(formPromoteUser)}}
 {% endblock %}
