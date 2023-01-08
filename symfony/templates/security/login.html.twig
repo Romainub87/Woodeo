@@ -4,9 +4,7 @@
 
 {% block body %}
 <form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    
 
     {% if app.user %}
         <div class="mb-3">
@@ -39,6 +37,9 @@
         <button class="mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold items-center pt-3 pb-4 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
             Se connecter
         </button>
+        {% if error %}
+            <div class="alert text-xl font-semibold text-red-700 mt-5 alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
         <a class="text-2xl text-blue-500 underline italic mt-5" href="{{path('app_register')}}">Inscrivez-vous ici!</a>
     </div>
 </form>
