@@ -9,10 +9,13 @@
 body {
     min-height: 100vh;
     width: 100vw;
+    background-image: url(fond_site.png);
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .page {
-    background: linear-gradient(204deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(47,156,179,1) 100%);    top: 0;
+    /*background: linear-gradient(204deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(47,156,179,1) 100%);    top: 0;*/
     left: 0;
     position: cover;
     width: 100%;
@@ -98,11 +101,6 @@ body {
     border: 2px solid blue;
     margin: 10px 0px;
     padding: 5px;
-}
-
-.infos li {
-    color: red;
-    font-size: 12px;
 }
 
 /* style Connexion */
