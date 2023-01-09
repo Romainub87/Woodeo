@@ -35,6 +35,9 @@
             "migrations/.gitignore"
         ]
     },
+    "gregwar/captcha-bundle": {
+        "version": "v1.0.0"
+    },
     "knplabs/knp-paginator-bundle": {
         "version": "v6.0.1"
     },
