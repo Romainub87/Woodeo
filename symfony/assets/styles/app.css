@@ -2,17 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 ::-webkit-scrollbar {
     display: none;
+}
+
+:root {
+    --color-custom: rgb(2, 210, 255);
 }
 
 body {
     min-height: 100vh;
     width: 100vw;
+    background-image: url(fond_site.png);
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: Bahnschrift;
+}
+
+.barre {
+    background: rgba(0,0, 37,0.35);
 }
 
 .page {
-    background: linear-gradient(204deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(47,156,179,1) 100%);    top: 0;
+    /*background: linear-gradient(204deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 60%, rgba(47,156,179,1) 100%);    top: 0;*/
     left: 0;
     position: cover;
     width: 100%;
@@ -51,23 +65,16 @@ body {
 }
 
 .titre {
-    font-family: Sofia;
     width: 350px;
 }
 
-.nav-item {
-    font-family: Bahnschrift;
+.serie-encadre {
+    box-shadow: 0px 0px 20px 0px var(--color-custom);
 }
+
 
 /* Style description */
 
-.titre-serie {
-    font-family: Bahnschrift;
-}
-
-.description {
-    font-family: Bahnschrift;
-}
 
 
 /* Style register */
@@ -98,6 +105,11 @@ body {
     border: 2px solid blue;
     margin: 10px 0px;
     padding: 5px;
+}
+
+.infos li {
+    color: red;
+    font-size: 12px;
 }
 
 /* style Connexion */
