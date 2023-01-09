@@ -31,6 +31,7 @@ class RegistrationController extends AbstractController
             );
             $user->setAdmin(false);
             $user->setName($form->get('name')->getData());
+            $user->setRegisterDate(new \DateTime());
 
             $entityManager->persist($user);
             $entityManager->flush();

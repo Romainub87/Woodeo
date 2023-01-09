@@ -11,19 +11,20 @@
 
     </head>
     <body class="page">
-        <ul class="flex items-center justify-between pt-1 pb-2 mb-5 rounded-b-2xl border-b-4 border-cyan-900 border-b">
+      <div class="navbar">
+        <ul class="barre backdrop-blur-lg mb-10 flex items-center justify-between text-blue-500 pt-1 pb-2 top-0 rounded-b-2xl w-screen fixed border-b-4 border-blue-custom border-b">
             <img class="px-4 h-48 md:h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/>
             <img class="px-4 h-48 md:h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
             <ul class="flex text-5xl xl:text-2xl md:text-3xl ">
             <li class="nav-item -mb-px px-5 mr-1">
-              <a class="inline-block py-4  text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
             </li>
             {% if app.user %}
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4  text-blue-500 hover:text-blue-800 font-semibold" href="#">Mes Séries</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="#">Mes Séries</a>
             </li>
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">{{app.user.name}}</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">{{app.user.name}}</a>
             </li>
             {% if app.user.isAdmin() %}
             <li class="nav-item px-5 mr-1">
@@ -31,21 +32,29 @@
             </li>
             {% endif %}
             <li class=" nav-item px-5 mr-1">
-              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_logout') }}">Déconnexion</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_logout') }}">Déconnexion</a>
             </li>
             <li class=" hidden nav-item px-5 mr-1">
-              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">Connexion</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">Connexion</a>
             </li>
 
             {% else %}
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_login') }}">Connexion</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">Connexion</a>
             </li>
           {% endif %}
             
             
           </ul>
         </ul>
+      </div>
+        <div class="mt-36">
         {% block body %}{% endblock %}
+        </div>
+      
+        {% block javascripts %}
+          {{ encore_entry_link_tags('app')}}
+        {% endblock %}
+        
     </body>
 </html>
