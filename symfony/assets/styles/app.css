@@ -103,6 +103,11 @@ body {
     padding: 5px;
 }
 
+.infos li {
+    color: red;
+    font-size: 12px;
+}
+
 /* style Connexion */
 label {
     color: white; 
