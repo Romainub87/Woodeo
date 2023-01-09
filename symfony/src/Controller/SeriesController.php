@@ -19,11 +19,11 @@ class SeriesController extends AbstractController
     {
         $series = $entityManager
             ->getRepository(Series::class)
-            ->findBy(array(), array('title'=> 'ASC'));
+            ->findBy(array(), array('title' => 'ASC'));
 
         $liste_series = $paginator->paginate(
             $series,
-            $request->query->getInt('page',1),
+            $request->query->getInt('page', 1),
             8
         );
 
@@ -35,11 +35,12 @@ class SeriesController extends AbstractController
     #[Route('/{id}', name: 'app_series_show', methods: ['GET'])]
     public function show(Series $series): Response
     {
+
+        $seasons = $series->getSeasons();
+
         return $this->render('series/show.html.twig', [
             'series' => $series,
+            'seasons' => $seasons,
         ]);
     }
-    
 }
-
-
