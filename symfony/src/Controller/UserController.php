@@ -102,4 +102,17 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/promote', name: 'app_user_promote', methods: ['GET'])]
+    public function promote(User $user, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $user->setAdmin(!$user->isAdmin());
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
