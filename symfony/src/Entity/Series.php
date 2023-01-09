@@ -214,6 +214,7 @@ class Series
 
     public function getYoutubeTrailer(): ?string
     {
+        $this->youtubeTrailer = preg_replace('/watch\?v=/','embed/',$this->youtubeTrailer);
         return $this->youtubeTrailer;
     }
 
