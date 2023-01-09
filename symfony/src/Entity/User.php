@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -225,6 +227,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function contain(Episode $episode): bool
+    {
+        if (!$this->episode->contains($episode)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function removeEpisode(Episode $episode): self
     {
         $this->episode->removeElement($episode);
@@ -259,5 +270,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string { return $this->getEmail(); }
     public function getRoles(): array { return ['ROLE_USER']; }
     public function eraseCredentials() { }
+
+    public function __toString() { return (string)$this->id; }
 
 }
