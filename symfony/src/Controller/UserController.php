@@ -81,7 +81,7 @@ class UserController extends AbstractController
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+        if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
         
