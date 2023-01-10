@@ -46,7 +46,6 @@ body {
     align-items: center;
     justify-content: space-around;
     font-size: xx-large;
-    width: 100vw;
 }
 
 .pagination .page {
@@ -81,6 +80,16 @@ body {
 
 .poster {
     max-height: 600px;
+}
+
+/* Syyle liste admin */
+
+#email {
+    margin-left: 15px;
+    border-radius: 15px;
+    padding: 5px;
+    color: black;
+    width: 300px;
 }
 
 /* Style register */

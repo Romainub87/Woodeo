@@ -14,8 +14,9 @@
             <div class="flex h-full items-center m-auto lg:items-start lg:flex-row flex-col">
                 <div class="flex flex-col items-center">
                 <img src="{{ series.displayPoster }}" alt="poster" class="poster w-2/5 min-w-48 max-w-md rounded-3xl mb-5">
-                <a href="{{ path('app_series_add',  {'id': series.id, 'user_id':app.user.id}) }} "><button class="text-2xl" type="submit">Suivre</button></a>  
                 {% if app.user %}
+                <a href="{{ path('app_series_add',  {'id': series.id, 'user_id':app.user.id}) }} "><button class="text-2xl" type="submit">Suivre</button></a>  
+                {# Affichage de la liste des séries suivis par le user pour tester la fonctionnalité (A supprimer des que la fonction est faite) #}
                 {% for serie in app.user.getSeries %}
                 <p>serie: {{ serie.title }}</p>
                 {% endfor %}
