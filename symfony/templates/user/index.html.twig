@@ -1,17 +1,12 @@
-{# {% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
-{% endblock %} #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord administrateur - liste utilisateurs{% endblock %}
 {% block body %}
-    {# <style>
-    body {
-        background-image: none;
-    }
-    </style> #}
+    <h1>Tableau de bord administrateur</h1>
     <h1>Liste des utilisateurs</h1>
     <div class="pagination-h">
         {{ knp_pagination_render(users)}}
     </div>
-    <script src="https://kit.fontawesome.com/204bbbe9f0.js" crossorigin="anonymous"></script>
 
     {{ form_start(UserSearchForm) }}
     {{ form_row(UserSearchForm.email, {
@@ -23,7 +18,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                {# <th>Id</th> #}
                 <th>Nom</th>
                 <th>E-mail</th>
                 {# <th>Password</th> #}
@@ -36,7 +31,7 @@
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
+                {# <td>{{ user.id }}</td> #}
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 {# <td>{{ user.password }}</td> #}
@@ -44,7 +39,9 @@
                 <td>{{ user.admin ? 'Oui' : 'Non' }}</td>
                 {# <td>{{ user.userId }}</td> #}
                 <td>
-                    <a href="#"><i class="fa-solid fa-person"></i></i>Incarner</a>
+                    {% if not is_granted('IS_IMPERSONATOR') %}
+                    <a href="{{ path('app_series_index', {'_switch_user': user.email}) }}"><i class="fa-solid fa-person"></i></i>Incarner</a>
+                    {% endif %}
                     {# <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a> #}
                     {% if user.isAdmin() %}
                     <a href="{{ path('app_user_promote', {'id': user.id}) }}"><i class="fa-solid fa-minus"></i>rétrograder</a>
