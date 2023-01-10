@@ -24,14 +24,39 @@ class SeriesController extends AbstractController
             ->getRepository(Series::class)
             ->findBy(array(), array('title' => 'ASC'));
         
+        $seriesRandom=$series;
+        
         $liste_series = $paginator->paginate(
             $series,
             $request->query->getInt('page', 1),
             8
         );
+
+        /*Boucle pour les 8 premiers de $series*/
+        $tmp = false;
+        while(!$tmp){
+            $tmp = true;
+            #random series
+            shuffle($seriesRandom);
+            for($i=0;$i<8;$i++){
+                for($j=0;$j<10;$j++){
+                    if($liste_series[$i]->getId() == $seriesRandom[$j]->getId()){
+                        $tmp = false;
+                    }
+                }
+            }
+        }
+
+        $liste_seriesRandom = $paginator->paginate(
+            $seriesRandom,
+            $request->query->getInt('page', 1),
+            10
+        );
                 
+
         return $this->render('series/index.html.twig', [
             'series' => $liste_series,
+            'seriesRandom' => $liste_seriesRandom,
         ]);
     }
 
@@ -57,21 +82,50 @@ class SeriesController extends AbstractController
         return $this->redirectToRoute('app_series_show', ['id'=>$series->getId()], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/random', name: 'app_series_random', methods: ['GET'])]
+
+    /* TEST ------------------------------------------------------- */
+    /*
+    #[Route('/random', name: 'app_series_index', methods: ['GET'])]
     public function random(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         $series = $entityManager
-            ->getRepository(Series::class);
-         
+            ->getRepository(Series::class)
+            ->findBy(array(), array('title' => 'ASC'));
         
-        $liste_seriesRandom = $paginator->paginate(
+        $seriesRandom=$series;
+        
+        $liste_series = $paginator->paginate(
             $series,
+            $request->query->getInt('page', 1),
+            8
+        );
+
+        #Boucle pour les 8 premiers de $series
+        $tmp = false;
+        while(!$tmp){
+            $tmp = true;
+            #random series
+            shuffle($seriesRandom);
+            for($i=0;$i<8;$i++){
+                for($j=0;$j<10;$j++){
+                    if($liste_series[$i]->getId() == $seriesRandom[$j]->getId()){
+                        $tmp = false;
+                    }
+                }
+            }
+        }
+
+        $liste_seriesRandom = $paginator->paginate(
+            $seriesRandom,
             $request->query->getInt('page', 1),
             10
         );
                 
+
         return $this->render('series/random.html.twig', [
+            'series' => $liste_series,
             'seriesRandom' => $liste_seriesRandom,
         ]);
     }
+    */
 }

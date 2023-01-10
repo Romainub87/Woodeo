@@ -7,7 +7,36 @@
 {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
-{% block body %}      
+{% block body %}   
+
+<div class="pagination-h">
+            {{ knp_pagination_render(seriesRandom)}}
+        </div>
+<div class="flex flex-wrap flex-row w-full items-center justify-center mb-5">
+        {% for serie in seriesRandom %}
+            <div class="serie-encadre border-none border-4 rounded-3xl flex flex-col-reverse mb-4 h-auto mx-10 mt-10 items-center">
+     
+                <h3 class="titre w-full titre font-bold text-white text-xl text-center pt-5 pb-4">{{ serie.title }} </h3>
+                
+                <div class="poster w-full">
+                    <a href="{{ path('app_series_show', {'id': serie.id})}}">
+                        <img class="border-none rounded-b-none rounded-3xl h-full w-full" src="{{ serie.displayPoster }}" alt="poster">
+                    </a>
+                    <a>
+                        <img class="serie-plus absolute" width="60px" src="{{ asset('img/plus.png') }}" />
+                        <img class="serie-check absolute" width="60px" src="{{ asset('img/check.png') }}" />
+                    </a>
+                </div>
+                
+            
+            </div>
+        
+        {% endfor %}
+    </div>
+     <div class="pagination-b">
+            {{ knp_pagination_render(seriesRandom)}}
+    </div>
+
         <div class="pagination-h">
             {{ knp_pagination_render(series)}}
         </div>
@@ -31,13 +60,11 @@
             </div>
         
         {% endfor %}
-        
-        </div>
-
+    </div>
         <div class="pagination-b">
             {{ knp_pagination_render(series)}}
         </div>
-
+</div>
 
 
 {% endblock %}
