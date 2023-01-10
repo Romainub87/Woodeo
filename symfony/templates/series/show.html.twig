@@ -51,6 +51,7 @@
                         {% endfor %} 
                         <h1 class="text-3xl mt-2 ml-5">{{series.getRate.value}}</h1>
                     </div>
+                    <a href="{{ path('app_rating_new', {'id': series.id}) }}">Mettre une note</a>
                 </div>
             </div>
             

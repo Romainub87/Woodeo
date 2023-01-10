@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Series;
 
 #[Route('/rating')]
 class RatingController extends AbstractController
@@ -25,8 +26,8 @@ class RatingController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_rating_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_rating_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
         $rating = new Rating();
         $form = $this->createForm(RatingType::class, $rating);
@@ -34,6 +35,7 @@ class RatingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $rating->setUser($this->getUser());
+            $rating->setSeries($series);
             $entityManager->persist($rating);
             $entityManager->flush();
 
