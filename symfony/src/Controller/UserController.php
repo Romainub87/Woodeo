@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Series;
+use App\Entity\Seasons;
 use App\Entity\Episode;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,7 +84,7 @@ class UserController extends AbstractController
         if (!$this->getUser() || !$this->getUser()->isAdmin()) {
             return $this->redirectToRoute('app_series_index');
         }
-
+        
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
