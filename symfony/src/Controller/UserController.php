@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -104,12 +106,5 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/add', name: 'app_user_add', methods: ['POST'])]
-    public function add_episode(Episode $episode): Response
-    {
-        
-        $this->addEpisode($episode);
-
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-    }
+    
 }

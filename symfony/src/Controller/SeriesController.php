@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Series;
 use App\Form\SeriesType;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Doctrine\ORM\EntityRepository;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -20,6 +22,7 @@ class SeriesController extends AbstractController
         $series = $entityManager
             ->getRepository(Series::class)
             ->findBy(array(), array('title' => 'ASC'));
+
 
         $liste_series = $paginator->paginate(
             $series,
@@ -42,5 +45,15 @@ class SeriesController extends AbstractController
             'series' => $series,
             'seasons' => $seasons,
         ]);
+    }
+
+    #[Route('/{id}/{user_id}/add', name: 'app_series_add', methods: ['GET', 'POST'])]
+    public function add_serie(Series $series, User $user): Response
+    {
+        
+        $user->addSeries($series);
+        echo 'Ajout';
+
+        return $this->redirectToRoute('app_series_show', ['id'=>$series->getId()], Response::HTTP_SEE_OTHER);
     }
 }
