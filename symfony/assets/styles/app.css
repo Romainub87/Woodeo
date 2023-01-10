@@ -13,7 +13,6 @@
 }
 
 body {
-    min-height: 100vh;
     width: 100vw;
     background-image: url(fond_site.png);
     background-size: cover;
@@ -75,7 +74,14 @@ body {
 
 /* Style description */
 
+.description {
+    width: 90vw;
+    margin:auto;
+}
 
+.poster {
+    max-height: 600px;
+}
 
 /* Style register */
 #registration_form_name {
