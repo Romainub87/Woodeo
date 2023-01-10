@@ -7,11 +7,10 @@
 {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
-{% block body %}
+{% block body %}      
         <div class="pagination-h">
             {{ knp_pagination_render(series)}}
         </div>
-
         <div class="flex flex-wrap flex-row w-full items-center justify-center mb-5">
         {% for series in series %}
             <div class="serie-encadre border-none border-4 rounded-3xl flex flex-col-reverse mb-4 h-auto mx-10 mt-10 items-center">

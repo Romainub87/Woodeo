@@ -23,14 +23,13 @@ class SeriesController extends AbstractController
         $series = $entityManager
             ->getRepository(Series::class)
             ->findBy(array(), array('title' => 'ASC'));
-
-
+        
         $liste_series = $paginator->paginate(
             $series,
             $request->query->getInt('page', 1),
             8
         );
-
+                
         return $this->render('series/index.html.twig', [
             'series' => $liste_series,
         ]);
@@ -56,5 +55,23 @@ class SeriesController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_show', ['id'=>$series->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/random', name: 'app_series_random', methods: ['GET'])]
+    public function random(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
+    {
+        $series = $entityManager
+            ->getRepository(Series::class);
+         
+        
+        $liste_seriesRandom = $paginator->paginate(
+            $series,
+            $request->query->getInt('page', 1),
+            10
+        );
+                
+        return $this->render('series/random.html.twig', [
+            'seriesRandom' => $liste_seriesRandom,
+        ]);
     }
 }
