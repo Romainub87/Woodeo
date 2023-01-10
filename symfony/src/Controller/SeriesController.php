@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Series;
 use App\Form\SeriesType;
 use App\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,11 +49,11 @@ class SeriesController extends AbstractController
     }
 
     #[Route('/{id}/{user_id}/add', name: 'app_series_add', methods: ['GET', 'POST'])]
-    public function add_serie(Series $series, User $user): Response
+    public function add_serie(Series $series, EntityManagerInterface $entityManager): Response
     {
         
-        $user->addSeries($series);
-        echo 'Ajout';
+        $this->getUser()->addSeries($series);
+        $entityManager->flush();
 
         return $this->redirectToRoute('app_series_show', ['id'=>$series->getId()], Response::HTTP_SEE_OTHER);
     }
