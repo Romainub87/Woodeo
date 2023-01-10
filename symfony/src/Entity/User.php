@@ -227,15 +227,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function contain(Episode $episode): bool
-    {
-        if (!$this->episode->contains($episode)) {
-            return false;
-        }
-
-        return true;
-    }
-
     public function removeEpisode(Episode $episode): self
     {
         $this->episode->removeElement($episode);
@@ -265,6 +256,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->series->removeElement($series);
 
         return $this;
+    }
+
+    public function getEpisodeCount(Series $series): int
+    {
+
+        $episodeCount = 0;
+
+        foreach ($series->getSeasons() as $saison) {
+            foreach ($saison->getEpisodes() as $ep) {
+                $episodeCount += 1;
+            }
+        }
+        return $episodeCount;
+    }
+
+    public function getAvancement(Series $series): int
+    {
+
+        $count = 0;
+
+        foreach ($this->getEpisode() as $ep) {
+            if ($ep->getSeason()->getSeries()->getId() == $series->getId()) {
+                $count += 1;
+            }
+        }
+
+        return $count;
     }
 
     public function getUserIdentifier(): string { return $this->getEmail(); }
