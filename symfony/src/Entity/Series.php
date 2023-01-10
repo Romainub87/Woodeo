@@ -119,6 +119,7 @@ class Series
      * @var \Season
      *
      * @ORM\OneToMany(targetEntity="Season", mappedBy="series")
+     * @ORM\OrderBy({"number" = "ASC"})
      */
     private $seasons;
 
@@ -214,6 +215,7 @@ class Series
 
     public function getYoutubeTrailer(): ?string
     {
+        $this->youtubeTrailer = preg_replace('/watch\?v=/','embed/',$this->youtubeTrailer);
         return $this->youtubeTrailer;
     }
 
