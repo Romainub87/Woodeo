@@ -268,7 +268,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getUserIdentifier(): string { return $this->getEmail(); }
-    public function getRoles(): array { return ['ROLE_USER']; }
+    public function getRoles(): array 
+    { 
+        if ($this->isAdmin()) { return ['ROLE_ADMIN']; }
+        return ['ROLE_USER'];
+    }
     public function eraseCredentials() { }
 
     public function __toString() { return (string)$this->id; }

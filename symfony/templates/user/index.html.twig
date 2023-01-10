@@ -1,41 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord administrateur - liste utilisateurs{% endblock %}
 {% block body %}
+    <h1>Tableau de bord administrateur</h1>
     <h1>Liste des utilisateurs</h1>
+    <div class="pagination-h">
+        {{ knp_pagination_render(users)}}
+    </div>
+
+    {{ form_start(UserSearchForm) }}
+    {{ form_row(UserSearchForm.email, {
+        'label': 'E-mail',
+    }) }}
+    <button type="submit">Chercher</button>
+    {{ form_end(UserSearchForm) }}
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Email</th>
+                {# <th>Id</th> #}
+                <th>Nom</th>
+                <th>E-mail</th>
                 {# <th>Password</th> #}
-                <th>RegisterDate</th>
-                <th>Admin</th>
-                <th>UserId</th>
-                <th>actions</th>
+                <th>Date d'enregistrement</th>
+                <th>Administrateur</th>
+                {# <th>UserId</th> #}
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
+                {# <td>{{ user.id }}</td> #}
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 {# <td>{{ user.password }}</td> #}
-                <td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.admin ? 'Yes' : 'No' }}</td>
-                <td>{{ user.userId }}</td>
+                <td>{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>
+                <td>{{ user.admin ? 'Oui' : 'Non' }}</td>
+                {# <td>{{ user.userId }}</td> #}
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                    {% if not is_granted('IS_IMPERSONATOR') %}
+                    <a href="{{ path('app_series_index', {'_switch_user': user.email}) }}"><i class="fa-solid fa-person"></i></i>Incarner</a>
+                    {% endif %}
+                    {# <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a> #}
+                    {% if user.isAdmin() %}
+                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><i class="fa-solid fa-minus"></i>rétrograder</a>
+                    {% else %}
+                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><i class="fa-solid fa-plus"></i>promouvoir</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">Aucun résultat</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    {# <a href="{{ path('app_user_new') }}">Crée un nouvel utilisateur</a> #}
+    <div class="pagination-b">
+        {{ knp_pagination_render(users)}}
+    </div>
+
 {% endblock %}
