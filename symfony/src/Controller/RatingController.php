@@ -29,11 +29,11 @@ class RatingController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $rating = new Rating();
-        $rating->setUser($this->getUser());
         $form = $this->createForm(RatingType::class, $rating);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $rating->setUser($this->getUser());
             $entityManager->persist($rating);
             $entityManager->flush();
 
