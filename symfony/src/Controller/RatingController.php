@@ -29,6 +29,9 @@ class RatingController extends AbstractController
     #[Route('/new/{id}', name: 'app_rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_series_index');
+        }
         $rating = new Rating();
         $form = $this->createForm(RatingType::class, $rating);
         $form->handleRequest($request);
@@ -39,7 +42,7 @@ class RatingController extends AbstractController
             $entityManager->persist($rating);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_rating_show', array('id' => $rating->getId()));
         }
 
         return $this->renderForm('rating/new.html.twig', [

@@ -14,7 +14,6 @@ class RatingType extends AbstractType
         $builder
             ->add('value')
             ->add('comment')
-            //->add('series')
         ;
     }
 
