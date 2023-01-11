@@ -91,6 +91,26 @@ class SeriesController extends AbstractController
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/random/{id}/{user_id}/remove_from_random', name: 'app_series_remove_from_random', methods: ['GET', 'POST'])]
+    public function remove_serie_from_random(Series $series, EntityManagerInterface $entityManager): Response
+    {
+
+        $this->getUser()->removeSeries($series);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+#[Route('/{id}/{user_id}/add_from_random', name: 'app_series_add_from_random', methods: ['GET', 'POST'])]
+    public function add_serie_from_random(Series $series, EntityManagerInterface $entityManager): Response
+    {
+
+        $this->getUser()->addSeries($series);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}/{user_id}/add_episode', name: 'app_episode_add', methods: ['GET', 'POST'])]
     public function add_episode(Episode $episode, EntityManagerInterface $entityManager): Response
     {
