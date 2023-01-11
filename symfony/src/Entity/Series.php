@@ -119,6 +119,7 @@ class Series
      * @var \Season
      *
      * @ORM\OneToMany(targetEntity="Season", mappedBy="series")
+     * @ORM\OrderBy({"number" = "ASC"})
      */
     private $seasons;
 
@@ -188,7 +189,7 @@ class Series
     }
 
     public function displayPoster() {
-        $this->poster = "data:image/mng;base64,".base64_encode(stream_get_contents($this->getPoster()));
+        $this->poster = "data:image/png;base64,".base64_encode(stream_get_contents($this->getPoster()));
 
         return $this->poster;
     }
@@ -214,6 +215,7 @@ class Series
 
     public function getYoutubeTrailer(): ?string
     {
+        $this->youtubeTrailer = preg_replace('/watch\?v=/','embed/',$this->youtubeTrailer);
         return $this->youtubeTrailer;
     }
 

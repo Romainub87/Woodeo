@@ -12,13 +12,15 @@
     --color-custom: rgb(2, 210, 255);
 }
 
+html {
+    font-family: Bahnschrift;
+}
+
 body {
-    min-height: 100vh;
     width: 100vw;
     background-image: url(fond_site.png);
     background-size: cover;
     background-attachment: fixed;
-    font-family: Bahnschrift;
 }
 
 .barre {
@@ -47,7 +49,6 @@ body {
     align-items: center;
     justify-content: space-around;
     font-size: xx-large;
-    width: 100vw;
 }
 
 .pagination .page {
@@ -75,7 +76,24 @@ body {
 
 /* Style description */
 
+.description {
+    width: 90vw;
+    margin:auto;
+}
 
+.poster {
+    max-height: 600px;
+}
+
+/* Syyle liste admin */
+
+#email {
+    margin-left: 15px;
+    border-radius: 15px;
+    padding: 5px;
+    color: black;
+    width: 300px;
+}
 
 /* Style register */
 #registration_form_name {

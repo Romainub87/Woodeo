@@ -9,11 +9,21 @@
 
 {% block body %}
 
-    <div class="description w-4/5 m-auto flex flex-col text-white font-semibold">
-        <h1 class="titre-serie mb-5 text-6xl font-semibold">{{ series.title }}</h1>
-        <div class"flex flex-row>
-            <div class="flex">
-                <img src="{{ series.displayPoster }}" alt="poster" class="w-2/5 min-w-48 max-w-md rounded-3xl">
+    <div class="description m-auto lg:w-4/5 flex flex-col text-white font-semibold">
+        <h1 class="titre-serie mb-5 text-6xl font-semibold lg:text-left text-center pt-5">{{ series.title }}</h1>
+            <div class="flex h-full items-center m-auto lg:items-start lg:flex-row flex-col">
+
+                <div class="flex flex-col items-center">
+                <img src="{{ series.displayPoster }}" alt="poster" class="poster w-2/5 min-w-48 max-w-md rounded-3xl mb-5">
+                {% if app.user %}
+                    {% if series in app.user.getSeries %}
+                        <a href="{{ path('app_series_remove',  {'id': series.id, 'user_id':app.user.id}) }} "><button class="text-2xl" type="submit">Enlever</button></a>  
+                    {% else %}
+                        <a href="{{ path('app_series_add',  {'id': series.id, 'user_id':app.user.id}) }} "><button class="text-2xl" type="submit">Suivre</button></a>  
+                    {% endif %}
+                {% endif %}
+                </div>
+
                 <div class="flex flex-col ml-4">
                     <div class="flex flex-row">
                         {% for genre in series.getGenre %}
@@ -41,18 +51,75 @@
            
                         <div class="border-blue-500 ml-5 border-t w-1/12"></div>
                     </div>
-                    <div class="flex ml-2 mt-5 items-center">
-                        {% for i in 0..9 %}
-                            {% if series.getRate.value|number_format > i and i % 2 == 0 %}
-                                <img width="50px" src="{{ asset('img/etoile_pleine.png') }}">
-                            {% elseif series.getRate.value|number_format <= i and i % 2 == 0 %}
-                                <img width="50px" src="{{ asset('img/etoile_vide.png') }}">
-                            {% endif %}
-                        {% endfor %} 
-                        <h1 class="text-3xl mt-2 ml-5">{{series.getRate.value}}</h1>
+                    <div class="p-2 flex items-baseline">
+                        <h1 class="text-xl mr-2">Avec </h1>
+                        {% for actor in series.actor %}
+                            <h1 class="text-md mx-1" >{{ actor.name }} /</h1>
+                        {% endfor %}
+                    </div>
+                    <div class=" flex flex-row flex-wrap ml-2 mt-5 mb-5 justify-between">
+                        <div class="flex flex-col items-top mb-5">
+                            <div class="flex mb-5">
+                                {% for i in 0..9 %}
+                                    {% if series.getRate.value|number_format > i and i % 2 == 0 %}
+                                        <img class="h-12 w-12" src="{{ asset('img/etoile_pleine.png') }}">
+                                    {% elseif series.getRate.value|number_format <= i and i % 2 == 0 %}
+                                        <img class="w-12 h-12" src="{{ asset('img/etoile_vide.png') }}">
+                                    {% endif %}
+                                {% endfor %} 
+                                <h1 class="text-3xl mt-2 ml-5">{{series.getRate.value}}</h1>
+                            </div>
+
+                            <div class="w-96 flex flex-col">
+
+                                <div id="accordion-collapse" class="w-full" data-accordion="collapse">
+                                    {% for season in seasons %}
+                                    <h2 id="accordion-collapse-heading-{{ season.number }}">
+                                        <button type="button" class="flex items-center justify-between p-5 w-full font-medium text-left border border-blue-500 text-gray-90 bg-black hover:bg-black focus:bg-black focus:hover:bg-black" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
+                                            <div class="flex items-center">
+                                                <span>Saison {{ season.number }}</span>
+                                                                                     
+                                            </div>
+                                            <svg data-accordion-icon class="w-6 h-6 shrink-0 rotate-180" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                        </button>
+                                    </h2>
+                                    <div id="accordion-collapse-body-{{ season.number }}" class="w-40" aria-labelledby="accordion-collapse-heading-{{season.number}}">
+                                        <div class="flex flex-wrap w-96 px-4 py-2 border border-gray-200 ">
+                                            <ul class="w-full text-xl">
+                                            {% for episod in season.episodes %}
+                                                <li class="flex justify-between items-center px-4 py-2">
+                                                       <h1 >{{ episod.number }} - {{ episod.title }}</h1>
+                                                       {% if app.user %}
+                                                            {% if episod in app.user.getEpisode %}
+                                                            
+                                                                <a href="{{ path('app_episode_remove',  {'id': episod.id, 'user_id':app.user.id}) }} "><img class="w-12 h-12" src="{{ asset('img/check.png') }}"></a>  
+                                                            {% else %}
+                                                                <a href="{{ path('app_episode_add',  {'id': episod.id, 'user_id':app.user.id}) }} "><img class="w-12 h-12" src="{{ asset('img/plus.png') }}"></a>  
+                                                            {% endif %}
+                                                        {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    
+                                   
+                                
+                                    
+                                <script src="https://unpkg.com/flowbite@1.3.3/dist/flowbite.js"></script>
+                            </div>
+                            
+                                    
+                                
+                            </div>
+                        </div>
+                        <div>
+                            <iframe class="rounded-3xl mb-10 md:mb-0" width="560" height="315" src="{{ series.getYoutubeTrailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        </div>
                     </div>
                 </div>
-            </div>
+            
             
         </div>
     </div>

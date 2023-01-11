@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -256,8 +258,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getEpisodeCount(Series $series): int
+    {
+
+        $episodeCount = 0;
+
+        foreach ($series->getSeasons() as $saison) {
+            foreach ($saison->getEpisodes() as $ep) {
+                $episodeCount += 1;
+            }
+        }
+        return $episodeCount;
+    }
+
+    public function getAvancement(Series $series): int
+    {
+
+        $count = 0;
+
+        foreach ($this->getEpisode() as $ep) {
+            if ($ep->getSeason()->getSeries()->getId() == $series->getId()) {
+                $count += 1;
+            }
+        }
+
+        return $count;
+    }
+
     public function getUserIdentifier(): string { return $this->getEmail(); }
-    public function getRoles(): array { return ['ROLE_USER']; }
+    public function getRoles(): array 
+    { 
+        if ($this->isAdmin()) { return ['ROLE_ADMIN']; }
+        return ['ROLE_USER'];
+    }
     public function eraseCredentials() { }
+
+    public function __toString() { return (string)$this->id; }
 
 }

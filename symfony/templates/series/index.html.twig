@@ -1,13 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste séries{% endblock %}
+{% block title %}Liste séries
+{% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
-{{ encore_entry_link_tags('app') }}
-    {% endblock %}
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
 
 {% block body %}
+    <h1>Séries Aléatoires</h1>
+	<iframe src="{{ path('app_series_random')}}" style="width: 100%; height: 450px; border: 1px solid black;"></iframe>
+    <div style="height: 30px;"></div>
+
         <div class="pagination-h">
             {{ knp_pagination_render(series)}}
         </div>
@@ -16,12 +21,25 @@
         {% for series in series %}
             <div class="serie-encadre border-none border-4 rounded-3xl flex flex-col-reverse mb-4 h-auto mx-10 mt-10 items-center">
      
-                <h3 class="titre w-full titre font-bold text-white text-2xl text-center pt-5 pb-4">{{ series.title }}</h3>
+                <h3 class="titre w-full titre font-bold text-white text-xl text-center pt-5 pb-4">{{ series.title }} </h3>
                 
-                <div class="poster w-full"><a href="{{ path('app_series_show', {'id': series.id})}}">
-                    <img class="border-none rounded-b-none rounded-3xl h-full w-full" src="{{ series.displayPoster }}" alt="poster">
-                </a>
+                <div class="poster w-full">
+                    <a href="{{ path('app_series_show', {'id': series.id})}}">
+                        <img class="border-none rounded-b-none rounded-3xl h-full w-full" src="{{ series.displayPoster }}" alt="poster">
+                    </a>
+                    {% if app.user %}
+                    {% if series in app.user.getSeries  %}
+                    <a  href="{{ path('app_series_remove',  {'id': series.id, 'user_id':app.user.id}) }}">
+                        <img class="serie-plus  absolute" width="60px" src="{{ asset('img/check.png') }}" />
+                    </a>
+                    {% else %}
+                    <a href="{{ path('app_series_add',  {'id': series.id, 'user_id':app.user.id}) }}">
+                        <img class="serie-check absolute" width="60px" src="{{ asset('img/plus.png') }}" />
+                    </a>
+                    {% endif %}
+                    {% endif %}
                 </div>
+                
             
             </div>
         
@@ -32,7 +50,5 @@
         <div class="pagination-b">
             {{ knp_pagination_render(series)}}
         </div>
-
-
 
 {% endblock %}

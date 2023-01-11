@@ -5,6 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        <script src="https://kit.fontawesome.com/204bbbe9f0.js" crossorigin="anonymous"></script>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -13,18 +14,18 @@
     <body class="page">
       <div class="navbar">
         <ul class="barre backdrop-blur-lg mb-10 flex items-center justify-between text-blue-500 pt-1 pb-2 top-0 rounded-b-2xl w-screen fixed border-b-4 border-blue-custom border-b">
-            <img class="px-4 h-48 md:h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/>
-            <img class="px-4 h-48 md:h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
+            <a href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
+            <img class="px-4 h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
             <ul class="flex text-5xl xl:text-2xl md:text-3xl ">
             <li class="nav-item -mb-px px-5 mr-1">
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
             </li>
             {% if app.user %}
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="#">Mes Séries</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
             </li>
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">{{app.user.name}}</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">{{app.user.email}}</a>
             </li>
             {% if app.user.isAdmin() %}
             <li class="nav-item px-5 mr-1">
@@ -48,13 +49,24 @@
           </ul>
         </ul>
       </div>
-        <div class="mt-36">
+        <div class="mt-40">
         {% block body %}{% endblock %}
         </div>
-      
         {% block javascripts %}
           {{ encore_entry_link_tags('app')}}
         {% endblock %}
-        
+        {% if is_granted('IS_IMPERSONATOR') %}
+          <div style="margin-bottom: 75px;"></div>
+          <div style="position: fixed;
+                    bottom: 0;
+                    width: 100%;
+                    background-color: #333;">
+          
+            <div class="bg-red-500 text-white text-center p-4">
+              Vous incarnez actuellement <i class="fa-solid fa-user"></i><strong>{{ app.user.email }}</strong> |
+              <a href="{{ impersonation_exit_path(path('app_admin_dashboard') ) }}" style="text-decoration: underline;"><i class="fa-solid fa-right-from-bracket"></i> Arrêter d'incarner</a>
+            </div>
+          </div>
+        {% endif %}
     </body>
 </html>

@@ -4,29 +4,53 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Series;
+use App\Entity\Seasons;
+use App\Entity\Episode;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+use App\Entity\UserSearch;
+use App\Form\UserSearchType;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         if (!$this->getUser() || !$this->getUser()->isAdmin()) {
             return $this->redirectToRoute('app_series_index');
         }
 
+        $search = new UserSearch();
+        $form = $this->createForm(UserSearchType::class, $search);
+        $form->handleRequest($request);
+
         $users = $entityManager
-            ->getRepository(User::class)
+            ->getRepository(User::class) 
             ->findAll();
 
+        if ($search->getEmail()) {
+            foreach ($users as $key => $user) {
+                if (!str_contains($user->getEmail(), $search->getEmail()) ) {
+                    unset($users[$key]);
+                }
+            }
+        }
+
+        $users_list = $paginator->paginate(
+            $users,
+            $request->query->getInt('page',1),
+            7
+        );
+
         return $this->render('user/index.html.twig', [
-            'users' => $users,
+            'users' => $users_list,
+            'UserSearchForm' => $form->createView(),
         ]);
     }
 
@@ -57,10 +81,10 @@ class UserController extends AbstractController
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+        if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
-
+        
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -99,6 +123,19 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
         }
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/promote', name: 'app_user_promote', methods: ['GET'])]
+    public function promote(User $user, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $user->setAdmin(!$user->isAdmin());
+        $entityManager->flush();
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
