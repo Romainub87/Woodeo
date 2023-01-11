@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <link rel="icon" href="{{ asset('img/logo_icone.ico')}} ">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         <script src="https://kit.fontawesome.com/204bbbe9f0.js" crossorigin="anonymous"></script>
         {% block stylesheets %}
@@ -14,9 +14,9 @@
     </head>
     <body class="page">
       <div class="navbar z-10 absolute">
-        <ul class="barre backdrop-blur-lg mb-10 flex items-center justify-between text-blue-500 pt-1 pb-2 top-0 rounded-b-2xl w-screen fixed border-b-4 border-blue-custom border-b">
-            <a href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
-            <img class="px-4 h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
+        <ul class="barre backdrop-blur-lg flex items-center justify-between text-blue-500 pt-1 pb-2 top-0 rounded-b-2xl w-screen fixed border-b-4 border-blue-custom border-b">
+            <a class="hidden xl:inline" href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
+            <a class="inline xl:hidden" href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/></a>
             <ul class="flex text-5xl xl:text-2xl md:text-3xl ">
             <li class="nav-item -mb-px px-5 mr-1">
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
@@ -39,10 +39,6 @@
                     </ul>
                   </div>
             </li>
-            
-            <li class=" nav-item px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="">Déconnexion</a>
-            </li>
             <li class=" hidden nav-item px-5 mr-1">
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">Connexion</a>
             </li>
@@ -57,7 +53,7 @@
           </ul>
         </ul>
       </div>
-        <div class="mt-40">
+        <div class="xl:mt-40 mt-52">
         {% block body %}{% endblock %}
         </div>
         {% block javascripts %}

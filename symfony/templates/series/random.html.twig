@@ -9,20 +9,14 @@
 			background-image: none;
 		}
 	</style>
-	<div class="flex flex-row w-full h-full">
-		{% for serie in series %}
-			<div class="serie-encadre border-none border-4 rounded-3xl flex flex-col-reverse mb-4 h-auto mx-10 mt-5 items-center">
-				<h3 class="titre w-full titre font-bold text-white text-xl text-center pt-5 pb-4">{{ serie.title }}
-				</h3>
-				<div class="poster w-full">
-					<a href="{{ path('app_series_show', {'id': serie.id})}}">
-						<img class="border-none rounded-b-none rounded-3xl h-full w-full" src="{{ serie.poster }}" alt="poster">
+	<base target="_parent">
+	<div class="carrousel flex flex-row w-full h-full items-center pb-10">
+		{% for serie in seriesRand %}
+				<div class="mx-px px-5 w-1/10 justify-center h-full">
+					<a href="{{ path('app_series_show', {'id': serie.id})}} class="w-full h-full">
+						<img class="border-none rounded-3xl w-full h-full" src="{{ serie.poster }}" alt="poster">
 					</a>
-					<a>
-						<img class="serie-plus absolute" width="60px" src="{{ asset('img/plus.png') }}"/>
-						<img class="serie-check absolute" width="60px" src="{{ asset('img/check.png') }}"/>
-					</a>
-				</div>
+					
 			</div>
 		{% endfor %}
 	</div>
