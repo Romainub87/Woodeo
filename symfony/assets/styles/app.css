@@ -160,6 +160,20 @@ body {
     padding: 5px;
 }
 
+#registration_form_captcha {
+    background-color: black;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid blue;
+    margin: 10px 0px;
+    padding: 5px;
+}
+
+.captcha_image {
+    border-radius: 5px;
+    padding: 2px;
+}
+
 .infos li {
     color: red;
     font-size: 12px;
