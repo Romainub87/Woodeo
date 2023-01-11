@@ -1,0 +1,35 @@
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block body %}
+	<style>
+		body {
+			background-image: none;
+		}
+	</style>
+	<base target="_parent">
+	<div class="flex flex-row w-full h-full">
+		{% for serie in seriesRand %}
+			<div class="serie-encadre border-none border-4 rounded-3xl flex flex-col-reverse mb-4 h-64 w-48 mx-10 mt-5">
+				<div class="poster w-full h-full">
+					{% if app.user %}
+                    {% if seriesRand in app.user.getSeries  %}
+                    <a  href="{{ path('app_series_remove_from_random',  {'id': serie.id, 'user_id':app.user.id}) }}">
+                        <img class="bg-blue-900 rounded-2xl rounded-bl-none rounded-tr-none serie-plus  absolute" width="60px" src="{{ asset('img/check.png') }}" />
+                    </a>
+                    {% else %}
+                    <a href="{{ path('app_series_add_from_random',  {'id': serie.id, 'user_id':app.user.id}) }}">
+                        <img class="bg-blue-900 serie-check absolute rounded-2xl rounded-bl-none rounded-tr-none" width="60px" src="{{ asset('img/plus.png') }}" />
+                    </a>
+                    {% endif %}
+                    {% endif %}
+					<a href="{{ path('app_series_show', {'id': serie.id})}} class="h-full w-full">
+						<img class="border-none rounded-3xl h-64 w-48" src="{{ serie.poster }}" alt="poster">
+					</a>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

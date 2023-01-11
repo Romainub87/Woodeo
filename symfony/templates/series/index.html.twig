@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste séries{% endblock %}
+{% block title %}Liste séries
+{% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
-{{ encore_entry_link_tags('app') }}
-    {% endblock %}
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
 
 {% block body %}
+	<iframe src="{{ path('app_series_random')}}" class="w-full h-96"></iframe>
+    <div style="height: 30px;"></div>
+
         <div class="pagination-h">
             {{ knp_pagination_render(series)}}
         </div>
@@ -26,7 +30,7 @@
                     </a>
                     {% else %}
                     <a href="{{ path('app_series_add_from_index',  {'id': series.id, 'user_id':app.user.id}) }}">
-                        <img class="serie-check absolute rounded-2xl rounded-bl-none rounded-tr-none" width="60px" src="{{ asset('img/plus.png') }}" />
+                        <img class="bg-blue-900 serie-check absolute rounded-2xl rounded-bl-none rounded-tr-none" width="60px" src="{{ asset('img/plus.png') }}" />
                     </a>
                     {% endif %}
                     {% endif %}
@@ -48,7 +52,5 @@
         <div class="pagination-b">
             {{ knp_pagination_render(series)}}
         </div>
-
-
 
 {% endblock %}

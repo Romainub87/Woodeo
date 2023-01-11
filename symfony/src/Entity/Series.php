@@ -189,7 +189,7 @@ class Series
     }
 
     public function displayPoster() {
-        $this->poster = "data:image/mng;base64,".base64_encode(stream_get_contents($this->getPoster()));
+        $this->poster = "data:image/png;base64,".base64_encode(stream_get_contents($this->getPoster()));
 
         return $this->poster;
     }
