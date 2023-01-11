@@ -9,8 +9,13 @@
 {% endblock %}
 
 {% block body %}
-	
-        <iframe src="{{ path('app_series_random')}}" class="w-full h-80 "></iframe>
+    <iframe src="{{ path('app_series_random')}}" class="w-full h-80 "></iframe>
+
+		{{ form_start(SeriesSearchForm) }}
+			{{ form_widget(SeriesSearchForm) }}
+			<button class="btn btn-primary">Rechercher</button>
+		{{ form_end(SeriesSearchForm) }}
+        
         <div class="pagination-h">
             {{ knp_pagination_render(series)}}
         </div>
