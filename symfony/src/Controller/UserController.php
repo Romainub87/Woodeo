@@ -79,14 +79,21 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user,Request $req,  PaginatorInterface $pag): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
+
+        $liste_series = $pag->paginate(
+            $user->getSeries(),
+            $req->query->getInt('page', 1),
+            5
+        );
         
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'seriesList' => $liste_series,
         ]);
     }
 
