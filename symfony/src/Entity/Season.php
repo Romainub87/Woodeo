@@ -88,6 +88,11 @@ class Season
         return $this->episodes;
     }
 
+    public function numberEpisode(): int
+    {
+        return $this->episodes->count();
+    }
+
     public function addEpisode(Episode $episode): self
     {
         if (!$this->episodes->contains($episode)) {

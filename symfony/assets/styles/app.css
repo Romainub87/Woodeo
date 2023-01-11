@@ -12,12 +12,15 @@
     --color-custom: rgb(2, 210, 255);
 }
 
+html {
+    font-family: Bahnschrift;
+}
+
 body {
     width: 100vw;
     background-image: url(fond_site.png);
     background-size: cover;
     background-attachment: fixed;
-    font-family: Bahnschrift;
 }
 
 .barre {

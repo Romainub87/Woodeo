@@ -2,13 +2,20 @@
 
 namespace App\Controller;
 
+use App\Form\SeriesType;
 use App\Entity\Series;
+use App\Entity\User;
+use App\Entity\Season;
+use App\Entity\Episode;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -64,11 +71,75 @@ class SeriesController extends AbstractController
     #[Route('/{id}/{user_id}/add', name: 'app_series_add', methods: ['GET', 'POST'])]
     public function add_serie(Series $series, EntityManagerInterface $entityManager): Response
     {
-        
+
         $this->getUser()->addSeries($series);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_series_show', ['id'=>$series->getId()], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_series_show', ['id' => $series->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/{user_id}/remove', name: 'app_series_remove', methods: ['GET', 'POST'])]
+    public function remove_serie(Series $series, EntityManagerInterface $entityManager): Response
+    {
+
+        $this->getUser()->removeSeries($series);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_show', ['id' => $series->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/{user_id}/add_episode', name: 'app_episode_add', methods: ['GET', 'POST'])]
+    public function add_episode(Episode $episode, EntityManagerInterface $entityManager): Response
+    {
+
+
+
+        $series = $episode->getSeason()->getSeries();
+        $season = $episode->getSeason();
+
+        foreach ($season->getEpisodes() as $episod) {
+
+            if ($episod->getNumber() <= $episode->getNumber()) {
+                $this->getUser()->addEpisode($episod);
+            }
+        }
+
+        foreach ($series->getSeasons() as $seasons) {
+            if ($episode->getSeason()->getNumber() > $seasons->getNumber()) {
+                foreach ($seasons->getEpisodes() as $episod) {
+                    $this->getUser()->addEpisode($episod);
+                }
+            }
+        }
+        $this->getUser()->addSeries($series);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_show', ['id' => $series->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/{user_id}/remove_episode', name: 'app_episode_remove', methods: ['GET', 'POST'])]
+    public function remove_episode(Episode $episode, EntityManagerInterface $entityManager): Response
+    {
+
+
+        $series = $episode->getSeason()->getSeries();
+        $season = $episode->getSeason();
+
+        foreach ($season->getEpisodes() as $episod) {
+            if ($episod->getNumber() <= $episode->getNumber()) {
+                $this->getUser()->removeEpisode($episod);
+            }
+        }
+        foreach ($series->getSeasons() as $seasons) {
+            if ($episode->getSeason()->getNumber() <= $seasons->getNumber()) {
+                foreach ($seasons->getEpisodes() as $episod) {
+                    $this->getUser()->removeEpisode($episod);
+                }
+            }
+        }
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_show', ['id' => $series->getId()], Response::HTTP_SEE_OTHER);
     }
     
 }
