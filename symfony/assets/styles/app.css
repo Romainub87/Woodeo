@@ -73,6 +73,10 @@ body {
     box-shadow: 0px 0px 20px 0px var(--color-custom);
 }
 
+.dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
 
 /* Style description */
 

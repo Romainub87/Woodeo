@@ -7,12 +7,13 @@
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         <script src="https://kit.fontawesome.com/204bbbe9f0.js" crossorigin="anonymous"></script>
         {% block stylesheets %}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
     </head>
     <body class="page">
-      <div class="navbar">
+      <div class="navbar z-10 absolute">
         <ul class="barre backdrop-blur-lg mb-10 flex items-center justify-between text-blue-500 pt-1 pb-2 top-0 rounded-b-2xl w-screen fixed border-b-4 border-blue-custom border-b">
             <a href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
             <img class="px-4 h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/>
@@ -25,15 +26,22 @@
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
             </li>
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">{{app.user.email}}</a>
+                  <div class="dropdown inline-block">
+                    <button class=" text-blue-500 font-semibold py-4 rounded inline-flex items-center">
+                      <span class="mr-1">{{ app.user.email}} </span>
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                    </button>
+                    <ul class="dropdown-menu absolute hidden text-white pt-1">
+                      {% if app.user.isAdmin() %}
+                      <li class=""><a class="rounded-t bg-blue-500 hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a></li>
+                      {% endif %}
+                      <li class=""><a class="rounded-b bg-blue-500 hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    </ul>
+                  </div>
             </li>
-            {% if app.user.isAdmin() %}
-            <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 text-blue-500 hover:text-blue-800 font-semibold" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
-            </li>
-            {% endif %}
+            
             <li class=" nav-item px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_logout') }}">Déconnexion</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="">Déconnexion</a>
             </li>
             <li class=" hidden nav-item px-5 mr-1">
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">Connexion</a>
