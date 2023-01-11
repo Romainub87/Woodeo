@@ -1,13 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste séries{% endblock %}
+{% block title %}Liste séries
+{% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
-{{ encore_entry_link_tags('app') }}
-    {% endblock %}
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
+	{{ encore_entry_link_tags('app') }}
+{% endblock %}
 
 {% block body %}
+    <h1>Séries Aléatoires</h1>
+	<iframe src="{{ path('app_series_random')}}" style="width: 100%; height: 450px; border: 1px solid black;"></iframe>
+    <div style="height: 30px;"></div>
+
         <div class="pagination-h">
             {{ knp_pagination_render(series)}}
         </div>
@@ -45,7 +50,5 @@
         <div class="pagination-b">
             {{ knp_pagination_render(series)}}
         </div>
-
-
 
 {% endblock %}
