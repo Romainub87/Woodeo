@@ -29,7 +29,7 @@
             <tr>
                 {# <th>Id</th> #}
                 <th>Nom</th>
-                <th>E-mail</th>
+                <th class="">E-mail</th>
                 {# <th>Password</th> #}
                 {#<th>Date d'enregistrement</th>#}
                 {#<th>Administrateur</th>#}
@@ -41,22 +41,27 @@
         {% for user in users %}
             <tr >
                 {# <td>{{ user.id }}</td> #}
-                <td class="h-10 text-xl">{{ user.name }}</td>
-                <td >{{ user.email }}</td>
+                {% if user.isAdmin() %}
+                    <td class="h-7 text-xl border">{{ user.name }}<h1><i class="fa-solid mr-2 fa-person"></i>Admin</h1></td>
+                {% else %}
+                    <td class="h-7 text-xl border">{{ user.name }}</td>
+                {% endif %}
+                
+                <td class=" border">{{ user.email }}</td>
                 {# <td>{{ user.password }}</td> #}
                 {#<td>{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>#}
                 {#<td>{{ user.admin ? 'Oui' : 'Non' }}</td>#}
                 {# <td>{{ user.userId }}</td> #}
-                <td class="flex justify-around h-10 m-2.5 no-wrap items-center">
+                <td class=" md:flex-row flex-col flex justify-around no-wrap items-center border">
                     
                     {% if not is_granted('IS_IMPERSONATOR') %}
                     <a class="bg-blue-800 hover:bg-blue-600 flex items-center m-5 p-2 rounded-2xl no-wrap" href="{{ path('app_series_index', {'_switch_user': user.email}) }}"><i class="fa-solid mr-2 fa-person"></i></i>Incarner</a>
                     {% endif %}
                     {# <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a> #}
                     {% if user.isAdmin() %}
-                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><i class="fa-solid fa-minus"></i>rétrograder</a>
+                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} "></a>
                     {% else %}
-                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><i class="fa-solid fa-plus"></i>promouvoir</a>
+                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} "></a>
                     {% endif %}
                 </td>
             </tr>

@@ -2,40 +2,55 @@
 
 namespace App\Controller;
 
-use App\Form\SeriesType;
 use App\Entity\Series;
-use App\Entity\User;
-use App\Entity\Season;
+use App\Entity\SeriesSearch;
+use App\Form\SeriesSearchType;
 use App\Entity\Episode;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
-    {
+    {     
+        $search = new SeriesSearch();
+        $form = $this->createForm(SeriesSearchType::class, $search);
+        $form->handleRequest($request);
+
         $series = $entityManager
             ->getRepository(Series::class)
             ->createQueryBuilder('s')
             ->orderBy('s.title', 'ASC');
+
+        if ($search->getTitre()) {
+            $series
+                ->andWhere('s.title LIKE :title')
+                ->setParameter('title', '%'.$search->getTitre().'%');
+        }
+
+        if ($search->getGenre()) {
+            $series
+                ->leftJoin('s.genre', 'g')
+                ->addSelect('g')
+                ->andWhere('g.id LIKE :genre')
+                ->setParameter('genre', $search->getGenre()->getId());
+        }
 
         $liste_series = $paginator->paginate(
             $series,
             $request->query->getInt('page', 1),
             8
         );
-                
+
         return $this->render('series/index.html.twig', [
             'series' => $liste_series,
+            'SeriesSearchForm' => $form->createView(),
         ]);
     }
 
