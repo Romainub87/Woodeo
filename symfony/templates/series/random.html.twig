@@ -14,7 +14,7 @@
 		{% for serie in seriesRand %}
 				<div class="mx-px px-5 w-1/10 justify-center h-full">
 					{% if app.user %}
-                    {% if seriesRand in app.user.getSeries  %}
+                    {% if serie in app.user.getSeries  %}
                     <a  href="{{ path('app_series_remove_from_random',  {'id': serie.id, 'user_id':app.user.id}) }}">
                         <img class="bg-blue-900 rounded-2xl rounded-bl-none rounded-tr-none serie-plus h-64 absolute" width="50px" src="{{ asset('img/check.png') }}" />
                     </a>
