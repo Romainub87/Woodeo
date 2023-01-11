@@ -14,19 +14,20 @@
     <a href="{{ path('app_series_index') }}"><button class=" bg-blue-800 hover:bg-blue-custom p-2 rounded-2xl m-5 ml-0" type="submit" >Retour à l'accueil</button></a>
     <h1 class="text-3xl text-blue-500 mb-2 font-semibold">{{ user.name }}</h1>
     <h1 class="text-2xl text-blue-500">Vos séries suivies</h1>
-    <div class="pagination-h">
+
+    <div class=" pagination-my-series">
         {{ knp_pagination_render(seriesList)}}
     </div>
+    
     <div class="flex w-full ">
-       
-        <div class="flex flex-row w-full flex-wrap items-center">
+        <div class="flex flex-row w-full flex-wrap items-center justify-center">
        
                 {% for serie in seriesList %}
-                <div class="flex flex-col w-48 mx-5">
+                <div class="flex flex-col w-64 mx-5">
                     <h3 class=" font-bold text-white text-center my-5">{{ serie.title }} </h3>
                     <div class="serie-encadre flex flex-col-reverse rounded-2xl mx-5">
                         <a href="{{ path('app_series_show', {'id': serie.id})}}">
-                            <img class=" rounded-h rounded-2xl" src="{{ serie.displayPoster }}">
+                            <img class=" rounded-h rounded-2xl w-full h-80" src="{{ serie.displayPoster }}">
                         </a>
                     </div>
                     {% if app.user.getAvancement(serie) < app.user.getEpisodeCount(serie) %}

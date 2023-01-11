@@ -88,7 +88,7 @@ class UserController extends AbstractController
         $liste_series = $pag->paginate(
             $user->getSeries(),
             $req->query->getInt('page', 1),
-            12
+            5
         );
         
         return $this->render('user/show.html.twig', [

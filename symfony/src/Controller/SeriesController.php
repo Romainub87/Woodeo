@@ -42,6 +42,12 @@ class SeriesController extends AbstractController
     #[Route('/random', name: 'app_series_random')]
     public function random(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
+
+        $series = $entityManager
+        ->getRepository(Series::class)
+        ->createQueryBuilder('s')
+        ->orderBy('s.title', 'ASC');
+
         $seriesRand = $entityManager
             ->getConnection()
             ->query('SELECT id, title, poster FROM series ORDER BY RAND() LIMIT 10')

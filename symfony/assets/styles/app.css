@@ -35,15 +35,9 @@ body {
     height: 100%;
 }
 
-.pagination-b .pagination .current {
-    display: none;
-}
+/* Style paginations */
 
-.pagination-b .pagination {
-    margin-bottom: 25px;
-}
-
-.pagination {
+.pagination-h .pagination{
     color: white;
     display: flex;
     align-items: center;
@@ -51,19 +45,45 @@ body {
     font-size: 45px;
 }
 
-
-
-.pagination .page {
+.pagination-h .page {
     display: none;
 }
 
-.pagination .current {
-    font-size: 35px;
-}
-
-.pagination .current::before {
+.pagination-h .current::before {
     content: "Page ";
 }
+
+.pagination-b .pagination{
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 45px;
+    margin-bottom: 25px;
+}
+
+.pagination-b .page {
+    display: none;
+}
+
+.pagination-b .pagination .current {
+    display: none;
+}
+
+.pagination-my-series {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 45px;
+}
+
+.pagination-my-series .current {
+    color: rgb(59 130 246);
+    text-decoration: underline;
+}
+
+
 
 .carrousel {
     width: max-content;
