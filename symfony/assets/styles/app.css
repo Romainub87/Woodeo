@@ -59,6 +59,10 @@ body {
     content: "Page ";
 }
 
+.carrousel {
+    width: max-content;
+}
+
 .poster {
     width: 350px;
     max-height: 650px;
