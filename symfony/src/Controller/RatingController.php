@@ -32,11 +32,25 @@ class RatingController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
+
+        $exist = $entityManager
+                ->getConnection()
+                ->prepare("SELECT * FROM rating WHERE user_id = :user_id and series_id = :series_id");
+        
+        if($exist->executeQuery(['user_id'=>$this->getUser()->getId(), 'series_id'=>$series->getId()])){
+            if(count(array($exist)) === 1) {
+                foreach($exist as $e) {
+                    return $this->redirectToRoute('app_rating_show', array('id' => $e->getId()));
+                }
+
+            }
+        }
+    
         $rating = new Rating();
         $form = $this->createForm(RatingType::class, $rating);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if (($form->isSubmitted() && $form->isValid())) {
             $rating->setUser($this->getUser());
             $rating->setSeries($series);
             $entityManager->persist($rating);

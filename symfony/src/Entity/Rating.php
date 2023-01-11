@@ -32,7 +32,7 @@ class Rating
     /**
      * @var string|null
      *
-     * @ORM\Column(name="comment", type="text", length=50000, nullable=true)
+     * @ORM\Column(name="comment", type="text", length=5000, nullable=true)
      */
     private $comment;
 

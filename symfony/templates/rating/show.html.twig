@@ -27,8 +27,9 @@
     </table>
 
     {# <a href="{{ path('app_rating_index') }}">back to list</a> #}
-
-    <a href="{{ path('app_rating_edit', {'id': rating.id}) }}">edit</a>
+    {% if rating.user %}
+        <a href="{{ path('app_rating_edit', {'id': rating.id}) }}">edit</a>
+    {% endif %}
 
     {{ include('rating/_delete_form.html.twig') }}
 {% endblock %}
