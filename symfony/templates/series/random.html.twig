@@ -10,25 +10,23 @@
 		}
 	</style>
 	<base target="_parent">
-	<div class="flex flex-row w-full h-full">
+	<div class="flex flex-row w-full h-64">
 		{% for serie in seriesRand %}
-			<div class="serie-encadre border-none border-4 rounded-3xl flex flex-col-reverse mb-4 h-64 w-48 mx-10 mt-5">
-				<div class="poster w-full h-full">
+				<div class="poster mx-px px-5 w-52 h-full">
 					{% if app.user %}
                     {% if seriesRand in app.user.getSeries  %}
                     <a  href="{{ path('app_series_remove_from_random',  {'id': serie.id, 'user_id':app.user.id}) }}">
-                        <img class="bg-blue-900 rounded-2xl rounded-bl-none rounded-tr-none serie-plus  absolute" width="60px" src="{{ asset('img/check.png') }}" />
+                        <img class="bg-blue-900 rounded-2xl rounded-bl-none rounded-tr-none serie-plus h-64 absolute" width="50px" src="{{ asset('img/check.png') }}" />
                     </a>
                     {% else %}
                     <a href="{{ path('app_series_add_from_random',  {'id': serie.id, 'user_id':app.user.id}) }}">
-                        <img class="bg-blue-900 serie-check absolute rounded-2xl rounded-bl-none rounded-tr-none" width="60px" src="{{ asset('img/plus.png') }}" />
+                        <img class="bg-blue-900 serie-check absolute rounded-2xl rounded-bl-none rounded-tr-none" width="50px" src="{{ asset('img/plus.png') }}" />
                     </a>
                     {% endif %}
                     {% endif %}
 					<a href="{{ path('app_series_show', {'id': serie.id})}} class="h-full w-full">
-						<img class="border-none rounded-3xl h-64 w-48" src="{{ serie.poster }}" alt="poster">
+						<img class="border-none rounded-3xl w-36 h-52" src="{{ serie.poster }}" alt="poster">
 					</a>
-				</div>
 			</div>
 		{% endfor %}
 	</div>
