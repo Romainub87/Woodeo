@@ -8,8 +8,15 @@
     display: none;
 }
 
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+ }
+
 :root {
     --color-custom: rgb(2, 210, 255);
+    --blue-500:rgb(59 130 246);
 }
 
 html {
@@ -35,7 +42,57 @@ body {
     height: 100%;
 }
 
-/* Style paginations */
+/* #region style recherche série accueil */
+
+.search-serie 
+{
+    padding: 5px;
+}
+
+.search-serie label {
+    font-size: large;
+}
+
+.search-serie > div {
+    display: flex;
+    align-items: baseline;
+    margin: 5px;
+}
+
+.search-serie > div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 20px;
+}
+
+#genre {
+    background-color: var(--blue-500);
+    height: 30px;
+    border-radius: 15px;
+    padding-bottom: 1px;
+    padding-left: 10px;
+    align-self: center;
+}
+
+#genre option {
+    background-color: white;
+    padding: 3px;
+    align-items: center;
+    text-align: left;
+}
+
+#titre {
+    background-color: var(--blue-500);
+    height: 30px;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+/* #endregion */
+
+
+/* #region style pagination */
 
 .pagination-h .pagination{
     color: white;
@@ -79,21 +136,14 @@ body {
 }
 
 .pagination-my-series .current {
-    color: rgb(59 130 246);
+    color: var(--blue-500);
     text-decoration: underline;
 }
 
-
+/* #endregion */
 
 .carrousel {
     width: max-content;
-}
-
-.poster {
-    width: 350px;
-    max-height: 650px;
-    min-height: 500px;
-    height: 50vh;
 }
 
 .titre {
@@ -109,7 +159,7 @@ body {
   }
 
 
-/* Style description */
+/* #region style description série */
 
 .description {
     width: 90vw;
@@ -117,10 +167,15 @@ body {
 }
 
 .poster {
-    max-height: 600px;
+    width: 350px;
+    max-height: 650px;
+    min-height: 500px;
+    height: 50vh;
 }
 
-/* Syyle liste admin */
+/* #endregion */
+
+/* #region Style liste admin */
 
 #email {
     margin-left: 15px;
@@ -130,7 +185,9 @@ body {
     width: 300px;
 }
 
-/* Style register */
+/* #endregion */
+
+/* #region Style register */
 #registration_form_name {
     background-color: black;
     display: flex;
@@ -179,7 +236,9 @@ body {
     font-size: 12px;
 }
 
-/* style Connexion */
+/* #endregion */
+
+/* #region style Connexion */
 label {
     color: white; 
 }
@@ -203,3 +262,4 @@ label {
     margin-bottom: 20px;
     padding: 5px;
 }
+/* #endregion */

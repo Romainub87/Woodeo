@@ -11,11 +11,15 @@
 {% block body %}
     <iframe src="{{ path('app_series_random')}}" class="w-full h-80 "></iframe>
 
+    
 		{{ form_start(SeriesSearchForm) }}
+        <div class="search-serie flex justify-between w-4/5 mx-auto">
 			{{ form_widget(SeriesSearchForm) }}
-			<button class="btn btn-primary">Rechercher</button>
-		{{ form_end(SeriesSearchForm) }}
         
+			<button class="bg-blue-700 hover:bg-blue-600 text-xl text-white px-5 p-px rounded-2xl">Rechercher</button>
+        </div>
+		{{ form_end(SeriesSearchForm) }}
+    
         <div class="pagination-h">
             {{ knp_pagination_render(series)}}
         </div>
