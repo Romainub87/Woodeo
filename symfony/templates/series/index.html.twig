@@ -16,23 +16,26 @@
         {% for series in series %}
             <div class="serie-encadre border-none border-4 rounded-3xl flex flex-col-reverse mb-4 h-auto mx-10 mt-10 items-center">
      
-                <h3 class="titre w-full titre font-bold text-white text-xl text-center pt-5 pb-4">{{ series.title }} </h3>
+                <h3 class="titre w-full titre font-bold text-white text-2xl text-center pt-5 pb-4">{{ series.title }} </h3>
                 
                 <div class="poster w-full">
-                    <a href="{{ path('app_series_show', {'id': series.id})}}">
-                        <img class="border-none rounded-b-none rounded-3xl h-full w-full" src="{{ series.displayPoster }}" alt="poster">
-                    </a>
                     {% if app.user %}
                     {% if series in app.user.getSeries  %}
-                    <a  href="{{ path('app_series_remove',  {'id': series.id, 'user_id':app.user.id}) }}">
-                        <img class="serie-plus  absolute" width="60px" src="{{ asset('img/check.png') }}" />
+                    <a  href="{{ path('app_series_remove_from_index',  {'id': series.id, 'user_id':app.user.id}) }}">
+                        <img class="bg-blue-900 rounded-2xl rounded-bl-none rounded-tr-none serie-plus  absolute" width="60px" src="{{ asset('img/check.png') }}" />
                     </a>
                     {% else %}
-                    <a href="{{ path('app_series_add',  {'id': series.id, 'user_id':app.user.id}) }}">
-                        <img class="serie-check absolute" width="60px" src="{{ asset('img/plus.png') }}" />
+                    <a href="{{ path('app_series_add_from_index',  {'id': series.id, 'user_id':app.user.id}) }}">
+                        <img class="serie-check absolute rounded-2xl rounded-bl-none rounded-tr-none" width="60px" src="{{ asset('img/plus.png') }}" />
                     </a>
                     {% endif %}
                     {% endif %}
+                    <a href="{{ path('app_series_show', {'id': series.id})}}">
+                        <img class="border-none rounded-b-none rounded-3xl h-full w-full" src="{{ series.displayPoster }}" alt="poster"></img>
+
+                       
+                    </a>
+                    
                 </div>
                 
             

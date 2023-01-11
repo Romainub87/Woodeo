@@ -3,7 +3,7 @@
 {% block title %}{{series.title}}{% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
+
 {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
@@ -87,8 +87,8 @@
                                         <div class="flex flex-wrap w-96 px-4 py-2 border border-gray-200 ">
                                             <ul class="w-full text-xl">
                                             {% for episod in season.episodes %}
-                                                <li class="flex justify-between items-center px-4 py-2">
-                                                       <h1 >{{ episod.number }} - {{ episod.title }}</h1>
+                                                <li class="flex justify-between items-center px-5 py-2">
+                                                       <h1 class="mr-5">{{ episod.number }} - {{ episod.title }}</h1>
                                                        {% if app.user %}
                                                             {% if episod in app.user.getEpisode %}
                                                             

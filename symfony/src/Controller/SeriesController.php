@@ -61,6 +61,16 @@ class SeriesController extends AbstractController
         return $this->redirectToRoute('app_series_show', ['id' => $series->getId()], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{id}/{user_id}/add_from_index', name: 'app_series_add_from_index', methods: ['GET', 'POST'])]
+    public function add_serie_from_index(Series $series, EntityManagerInterface $entityManager): Response
+    {
+
+        $this->getUser()->addSeries($series);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}/{user_id}/remove', name: 'app_series_remove', methods: ['GET', 'POST'])]
     public function remove_serie(Series $series, EntityManagerInterface $entityManager): Response
     {
@@ -69,6 +79,16 @@ class SeriesController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_show', ['id' => $series->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/{user_id}/remove_from_index', name: 'app_series_remove_from_index', methods: ['GET', 'POST'])]
+    public function remove_serie_from_index(Series $series, EntityManagerInterface $entityManager): Response
+    {
+
+        $this->getUser()->removeSeries($series);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/{user_id}/add_episode', name: 'app_episode_add', methods: ['GET', 'POST'])]
