@@ -42,17 +42,17 @@ class SeriesController extends AbstractController
     #[Route('/random', name: 'app_series_random')]
     public function random(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-        $series = $entityManager
+        $seriesRand = $entityManager
             ->getConnection()
             ->query('SELECT id, title, poster FROM series ORDER BY RAND() LIMIT 10')
             ->fetchAllAssociative();
         
-        foreach ($series as &$serie) {
+        foreach ($seriesRand as &$serie) {
             $serie['poster'] = "data:image/png;base64,".base64_encode($serie['poster']);
         };
         
         return $this->render('series/random.html.twig', [
-            'series' => $series,
+            'seriesRand' => $seriesRand,
         ]);
     }
 
@@ -88,6 +88,7 @@ class SeriesController extends AbstractController
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
     #[Route('/{id}/{user_id}/remove', name: 'app_series_remove', methods: ['GET', 'POST'])]
     public function remove_serie(Series $series, EntityManagerInterface $entityManager): Response
     {
@@ -103,6 +104,27 @@ class SeriesController extends AbstractController
     {
 
         $this->getUser()->removeSeries($series);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/random/{id}/{user_id}/remove_from_random', name: 'app_series_remove_from_random', methods: ['GET', 'POST'])]
+    public function remove_serie_from_random(Series $series, EntityManagerInterface $entityManager): Response
+    {
+
+        $this->getUser()->removeSeries($series);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+#[Route('/{id}/{user_id}/add_from_random', name: 'app_series_add_from_random', methods: ['GET', 'POST'])]
+    public function add_serie_from_random(Series $series, EntityManagerInterface $entityManager): Response
+    {
+
+        $this->getUser()->addSeries($series);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
