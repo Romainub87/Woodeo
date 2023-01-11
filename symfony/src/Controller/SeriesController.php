@@ -81,7 +81,6 @@ class SeriesController extends AbstractController
     #[Route('/{id}/{user_id}/add_from_index', name: 'app_series_add_from_index', methods: ['GET', 'POST'])]
     public function add_serie_from_index(Series $series, EntityManagerInterface $entityManager): Response
     {
-
         $this->getUser()->addSeries($series);
         $entityManager->flush();
 
@@ -92,7 +91,11 @@ class SeriesController extends AbstractController
     #[Route('/{id}/{user_id}/remove', name: 'app_series_remove', methods: ['GET', 'POST'])]
     public function remove_serie(Series $series, EntityManagerInterface $entityManager): Response
     {
-
+        foreach ($this->getUser()->getEpisode() as $ep) {
+            if ($ep->getSeason()->getSeries() == $series) {
+                $this->getUser()->removeEpisode($ep);
+            }
+        }
         $this->getUser()->removeSeries($series);
         $entityManager->flush();
 
@@ -103,6 +106,11 @@ class SeriesController extends AbstractController
     public function remove_serie_from_index(Series $series, EntityManagerInterface $entityManager): Response
     {
 
+        foreach ($this->getUser()->getEpisode() as $ep) {
+            if ($ep->getSeason()->getSeries() == $series) {
+                $this->getUser()->removeEpisode($ep);
+            }
+        }
         $this->getUser()->removeSeries($series);
         $entityManager->flush();
 
@@ -112,7 +120,11 @@ class SeriesController extends AbstractController
     #[Route('/random/{id}/{user_id}/remove_from_random', name: 'app_series_remove_from_random', methods: ['GET', 'POST'])]
     public function remove_serie_from_random(Series $series, EntityManagerInterface $entityManager): Response
     {
-
+        foreach ($this->getUser()->getEpisode() as $ep) {
+            if ($ep->getSeason()->getSeries() == $series) {
+                $this->getUser()->removeEpisode($ep);
+            }
+        }
         $this->getUser()->removeSeries($series);
         $entityManager->flush();
 

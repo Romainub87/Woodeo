@@ -41,7 +41,7 @@
         {% for user in users %}
             <tr >
                 {# <td>{{ user.id }}</td> #}
-                <td class="px-10 h-10 text-xl">{{ user.name }}</td>
+                <td class="h-10 text-xl">{{ user.name }}</td>
                 <td >{{ user.email }}</td>
                 {# <td>{{ user.password }}</td> #}
                 {#<td>{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>#}
@@ -68,7 +68,7 @@
         </tbody>
     </table>
     {# <a href="{{ path('app_user_new') }}">Crée un nouvel utilisateur</a> #}
-    <div class="pagination-b absolute bottom-0 w-11/12">
+    <div class="pagination-b bottom-0 mx-auto w-11/12">
         {{ knp_pagination_render(users)}}
     </div>
 </div>
