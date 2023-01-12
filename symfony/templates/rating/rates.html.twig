@@ -1,0 +1,35 @@
+{#% extends 'base.html.twig' %#}
+
+{% block title %}Rating index{% endblock %}
+
+{% block body %}
+    <h1>Rating index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Value</th>
+                <th>Comment</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in seriesRates %}
+            <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.value }}</td>
+                <td>{{ r.comment }}</td>
+                <td>{{ r.date ? r.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <a href="{{ path('app_rating_new') }}">Create new</a> #}
+{% endblock %}
