@@ -22,6 +22,8 @@ class SeriesSearch {
      */
     private $date;
 
+    private $trier;
+
     public function getTitre(): ?string
     {
         return $this->titre;
@@ -52,6 +54,17 @@ class SeriesSearch {
     public function setDate(\DateTime $date): SeriesSearch
     {
         $this->date = $date;
+        return $this;
+    }
+
+    public function getTrier(): ?bool
+    {
+        return $this->trier;
+    }
+
+    public function setTrier(bool $trier): SeriesSearch
+    {
+        $this->trier = $trier;
         return $this;
     }
 }
