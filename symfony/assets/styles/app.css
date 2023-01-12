@@ -40,6 +40,7 @@ body {
 
 
 
+
 /* #region style recherche série accueil */
 
 .search-serie 
@@ -62,6 +63,10 @@ body {
     flex-direction: column;
     align-items: start;
     margin-left: 20px;
+}
+
+.search-serie  li {
+  display: none;
 }
 
 #genre {
@@ -358,4 +363,10 @@ label {
  
 
   /* endregion */
+
+  /* #region style espace commentaires */
+
+  #rating {
+    background-color: blue;
+  }
   

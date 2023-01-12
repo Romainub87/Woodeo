@@ -14,14 +14,30 @@
     {% if app.user.id == user.id %}
     <a href="{{ path('app_series_index') }}"><button class=" text-white hover:text-blue-900 bg-blue-800 hover:bg-blue-custom p-2 rounded-2xl m-5 ml-0" type="submit" >Retour à l'accueil</button></a>
     <h1 class="text-3xl text-cyan-200 mb-2 font-semibold">{{ user.name }}</h1>
-    <h1 class="text-2xl text-white">Vos séries suivies</h1>
+    <div class="flex items-baseline text-white">
+        <h1 class="text-xl pr-5 border-r-2">Vos séries suivies</h1>
+        {%if user.getSeries|length == 1%}
+        <h1 class="text-xl ml-5">{{ user.getSeries|length }} série suivie</h1>
+        {% else %}
+        <h1 class="text-xl ml-5">{{ user.getSeries|length }} séries suivies</h1>
+        {% endif %}
+        </div>
+    
     {% else %}
     <a href="{{ path('app_admin_dashboard') }}"><button class=" text-white hover:text-blue-900 bg-blue-800 hover:bg-blue-custom p-2 rounded-2xl m-5 ml-0" type="submit" >Retour</button></a>
-    <h1 class="text-2xl text-cyan-200 mb-2 font-semibold">Les séries suivies de {{user.name}}</h1>
-    <h1 class="text-xl text-white">{{user.email}}</h1>
-    <h1 class="text-xl text-white">Inscrit le : {{ user.getRegisterDate()|date("d/m/y") }}</h1>
+    <div class="flex items-baseline text-cyan-200">
+    <h1 class="text-2xl  mb-2 font-semibold">Séries suivies par {{user.name}}</h1>
+    <h1 class="text-xl  ml-2">({{user.email}})</h1>
+    </div>
+    <div class="flex items-baseline text-white">
+    <h1 class="text-xl pr-5 border-r-2">Membre depuis le {{ user.getRegisterDate()|date("d/m/y") }}</h1>
     {% endif %}
-    <h1 class="text-xl text-white">Nombre de séries suivies : {{ user.getSeries|length }}</h1>
+    {%if user.getSeries|length == 1%}
+    <h1 class="text-xl ml-5">{{ user.getSeries|length }} série suivie</h1>
+    {% else %}
+    <h1 class="text-xl ml-5">{{ user.getSeries|length }} séries suivies</h1>
+    {% endif %}
+    </div>
 
     <div class=" pagination-my-series">
         {{ knp_pagination_render(seriesList)}}
@@ -38,12 +54,14 @@
                             <img class=" rounded-h rounded-2xl w-full h-80" src="{{ serie.displayPoster }}">
                         </a>
                     </div>
-                    {% if app.user.getAvancement(serie) < app.user.getEpisodeCount(serie) %}
+                    {% set avance = user.getAvancement(serie) %}
+                    {% set count = user.getEpisodeCount(serie) %}
+                    {% if avance < count %}
                     <div class="mt-2">
                         <h1 class="text-center text-lg text-white">Episodes vus</h1>
-                        <h1 class="text-center text-md text-white">{{ app.user.getAvancement(serie) }}/{{app.user.getEpisodeCount(serie)}}</h1>
+                        <h1 class="text-center text-md text-white">{{ avance }}/{{count}}</h1>
                     </div>
-                    {% elseif app.user.getAvancement(serie) == app.user.getEpisodeCount(serie) %}
+                    {% elseif avance == count %}
                     <div class="mt-2">
                         <h1 class="text-center text-lg text-white">Terminée</h1>
                     </div>

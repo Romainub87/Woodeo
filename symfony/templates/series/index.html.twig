@@ -30,26 +30,22 @@
                 
                 <div class="poster w-full">
                     {% if app.user %}
-                    {% if series in app.user.getSeries  %}
-                    <a  href="{{ path('app_series_remove_from_index',  {'id': series.id, 'user_id':app.user.id}) }}">
-                        <img class="backdrop-blur-sm bg-white/30 shadow-[3px_3px_15px_2px_rgba(0,0,0,0.3)] hover:bg-red-500/50  rounded-2xl rounded-bl-none rounded-tr-none serie-plus  absolute" width="60px" src="{{ asset('img/check.png') }}" />
-                    </a>
-                    {% else %}
-                    <a href="{{ path('app_series_add_from_index',  {'id': series.id, 'user_id':app.user.id}) }}">
-                        <img class="backdrop-blur-sm bg-white/20 shadow-[3px_3px_15px_2px_rgba(0,0,0,0.3)] hover:bg-green-500/50 serie-check absolute rounded-2xl rounded-bl-none rounded-tr-none" width="60px" src="{{ asset('img/plus.png') }}" />
-                    </a>
+                        {% if series in app.user.getSeries  %}
+                        <a href="{{ path('app_series_remove_from_index',  {'id': series.id, 'user_id':app.user.id}) }}">
+                            <img class="backdrop-blur-sm bg-white/20 shadow-[3px_3px_15px_2px_rgba(0,0,0,0.5)] hover:bg-red-500/50  rounded-2xl rounded-bl-none rounded-tr-none serie-plus  absolute" width="60px" src="{{ asset('img/check.png') }}" />
+                        </a>
+                        {% else %}
+                        <a href="{{ path('app_series_add_from_index',  {'id': series.id, 'user_id':app.user.id}) }}">
+                            <img class="backdrop-blur-sm bg-white/20 shadow-[3px_3px_15px_2px_rgba(0,0,0,0.5)] hover:bg-green-500/50 serie-check absolute rounded-2xl rounded-bl-none rounded-tr-none" width="60px" src="{{ asset('img/plus.png') }}" />
+                        </a>
+                        {% endif %}
                     
-                    {% endif %}
-                    {% endif %}
+                        {% endif %}
                     <a href="{{ path('app_series_show', {'id': series.id})}}">
-                        <img class="border-none rounded-b-none rounded-3xl h-full w-full" src="{{ series.displayPoster }}" alt="poster"></img>
-
-                       
+                        <img class="border-none rounded-b-none rounded-3xl h-full w-full" src="{{ series.displayPoster }}" alt="poster"></img>  
                     </a>
-                    
-                </div>
                 
-            
+                </div>
             </div>
         
         {% endfor %}

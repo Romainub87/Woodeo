@@ -272,9 +272,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $episodeCount = 0;
 
         foreach ($series->getSeasons() as $saison) {
-            foreach ($saison->getEpisodes() as $ep) {
-                $episodeCount += 1;
-            }
+            $episodeCount += $saison->getEpisodes()->count() ;
         }
         return $episodeCount;
     }
