@@ -24,10 +24,13 @@ class SeriesSearchType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
             ])
-            ->add('trier', ChoiceType::class, [
+            ->add('Trier', ChoiceType::class, [
                 'choices'  => [
-                    'Les meilleurs notations d abord' => false,
-                    'Les pires notations d abord' => true,
+                    'Aucun' => 0,
+                    'Les plus récents d abord' => 1,
+                    'Les plus anciens d abord' => 2,
+                    'Les meilleurs notations d abord' => 3,
+                    'Les pires notations d abord' => 4,
                 ],
             ])
             #->add('date', DateType::class)

@@ -5,7 +5,8 @@ namespace App\Entity;
 use App\Entity\Genre;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class SeriesSearch {
+class SeriesSearch
+{
 
     /**
      * @var string|null
@@ -22,7 +23,7 @@ class SeriesSearch {
      */
     private $date;
 
-    private $trier;
+    private $Trier;
 
     public function getTitre(): ?string
     {
@@ -57,14 +58,15 @@ class SeriesSearch {
         return $this;
     }
 
-    public function getTrier(): ?bool
+    
+    public function getTrier(): ?int
     {
-        return $this->trier;
+        return $this->Trier;
     }
-
-    public function setTrier(bool $trier): SeriesSearch
+    
+    public function setTrier(int $Trier): SeriesSearch
     {
-        $this->trier = $trier;
+        $this->Trier = $Trier;
         return $this;
     }
 }

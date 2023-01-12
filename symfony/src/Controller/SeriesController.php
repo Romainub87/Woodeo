@@ -9,6 +9,7 @@ use App\Entity\SeriesSearch;
 use App\Form\SeriesSearchType;
 use App\Entity\Episode;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,67 +45,50 @@ class SeriesController extends AbstractController
                 ->setParameter('genre', $search->getGenre()->getId());
         }
 
-        if ($search->getTrier()) {
-            $series
-                ->leftJoin('s.rate', 'r')
-                ->addSelect('r')
-                ->orderBy('r.value', 'ASC');
+        switch($search->getTrier()){
+            case 1:
+                $series
+                    ->orderBy('s.yearStart', 'DESC');
+                break;
+            case 2:
+                $series
+                    ->orderBy('s.yearStart', 'ASC');
+                break;
+            case 3:
+                $series = $entityManager
+                ->getRepository(Series::class)
+                ->createQueryBuilder('s')
+                ->select('s.title, s.id, s.poster as displayPoster')
+                ->leftJoin('s.rate', 'er')
+                ->groupBy('s.id')
+                ->addSelect('AVG(er.value) as avgValue')
+                ->orderBy('avgValue', 'DESC')
+                ->getQuery()
+                ->getResult();
+            
+                foreach ($series as &$serie) {
+                    $serie['displayPoster'] = "data:image/png;base64,".base64_encode(stream_get_contents($serie['displayPoster']));
+                };
+                break;
+            case 4:
+                $series = $entityManager
+                ->getRepository(Series::class)
+                ->createQueryBuilder('s')
+                ->select('s.title, s.id, s.poster as displayPoster')
+                ->leftJoin('s.rate', 'er')
+                ->groupBy('s.id')
+                ->addSelect('AVG(er.value) as avgValue')
+                ->orderBy('avgValue', 'ASC')
+                ->getQuery()
+                ->getResult();
+            
+                foreach ($series as &$serie) {
+                    $serie['displayPoster'] = "data:image/png;base64,".base64_encode(stream_get_contents($serie['displayPoster']));
+                };
+                break;
+            default:
+                break;
         }
-
-        /*-------------------------------------------*/
-
-        // // avg external rating by series
-        // $externalRating = $entityManager
-        //     ->getRepository(ExternalRating::class)
-        //     ->createQueryBuilder('er')
-        //     ->select('AVG(er.value) as avgValue')
-        //     ->groupBy('er.series')
-        //     ->getQuery()
-        //     ->getResult();
-
-        if($search->getTrier() == true) {
-            $series = $entityManager
-            ->getRepository(Series::class)
-            ->createQueryBuilder('s')
-            ->select('s.title, s.id, s.poster as displayPoster')
-            ->leftJoin('s.rate', 'er')
-            ->groupBy('s.id')
-            ->addSelect('AVG(er.value) as avgValue')
-            ->orderBy('avgValue', 'ASC')
-            ->getQuery()
-            ->getResult();
-
-            foreach ($series as &$serie) {
-                $serie['displayPoster'] = "data:image/png;base64,".base64_encode(stream_get_contents($serie['displayPoster']));
-            };
-        }
-        
-        if($search->getTrier() == false) {
-            $series = $entityManager
-            ->getRepository(Series::class)
-            ->createQueryBuilder('s')
-            ->select('s.title, s.id, s.poster as displayPoster')
-            ->leftJoin('s.rate', 'er')
-            ->groupBy('s.id')
-            ->addSelect('AVG(er.value) as avgValue')
-            ->orderBy('avgValue', 'DESC')
-            ->getQuery()
-            ->getResult();
-
-            foreach ($series as &$serie) {
-                $serie['displayPoster'] = "data:image/png;base64,".base64_encode(stream_get_contents($serie['displayPoster']));
-            };
-        }
-        
-
-        
-        // foreach ($externalRating as $rating) {
-        //     $seriesOrder
-        //         ->andWhere('s.id LIKE :id')
-        //         ->setParameter('id', $rating['series']);
-        // }
-
-        /*-------------------------------------------*/
 
         $liste_series = $paginator->paginate(
             $series,
