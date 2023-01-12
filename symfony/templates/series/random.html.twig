@@ -12,9 +12,9 @@
 	<base target="_parent">
 	<div class="carrousel flex flex-row w-full h-full items-center pb-10">
 		{% for serie in seriesRand %}
-				<div class="mx-px px-5 w-1/10 justify-center h-full">
-					<a href="{{ path('app_series_show', {'id': serie.id})}} class="w-full h-full">
-						<img class="border-none rounded-3xl w-full h-full" src="{{ serie.poster }}" alt="poster">
+				<div class="mx-px px-5 justify-center h-full">
+					<a href="{{ path('app_series_show', {'id': serie.id})}} class="w-48 h-full">
+						<img class="border-none rounded-3xl w-48 h-full" src="{{ serie.poster }}" alt="poster">
 					</a>
 					
 			</div>

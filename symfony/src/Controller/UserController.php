@@ -45,7 +45,7 @@ class UserController extends AbstractController
         $users_list = $paginator->paginate(
             $users,
             $request->query->getInt('page',1),
-            7
+            5
         );
 
         $users_list->setTemplate('knp_paginator/sliding.html.twig');

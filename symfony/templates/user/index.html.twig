@@ -37,20 +37,20 @@
         <tbody class="text-center">
         {% for user in users %}
             <tr >
-                <td class="h-10 text-xl">{{ user.name }}</td>
-                <td >{{ user.email }}</td>
-                <td>{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>
-                <td class="flex justify-around h-10 m-2.5 no-wrap items-center">
-                    {% if not is_granted('IS_IMPERSONATOR') %}
+                <td class="h-7 text-xl border">{{ user.name }}</td>
+                <td class=" border">{{ user.email }}</td>
+                <td class=" border">{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>
+                <td class=" md:flex-row flex-col flex justify-around no-wrap items-center border">
+                {% if not is_granted('IS_IMPERSONATOR') %}
                     <a class="bg-blue-800 hover:bg-blue-600 flex items-center m-5 p-2 rounded-2xl no-wrap" href="{{ path('app_series_index', {'_switch_user': user.email}) }}"><i class="fa-solid mr-2 fa-person"></i></i>Incarner</a>
-                    {% endif %}
+                {% endif %}
                 </td>
 
-                <td>
+                <td class=" border">
                     {% if user.isAdmin() %}
-                    <a href="{{ path('app_user_promote', {'id': user.id}) }}" ><img width="75px" src="{{ asset('img/admin_plein.png') }}" style="margin: auto;"></img></a>
+                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
                     {% else %}
-                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img width="75px" src="{{ asset('img/admin_eteint.png') }}" style="margin: auto;"></img></a>
+                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
                     {% endif %}
                 </td>
             </tr>

@@ -17,9 +17,9 @@
                 <img src="{{ series.displayPoster }}" alt="poster" class="poster w-2/5 min-w-48 max-w-md rounded-3xl mb-5">
                 {% if app.user %}
                     {% if series in app.user.getSeries %}
-                        <a href="{{ path('app_series_remove',  {'id': series.id, 'user_id':app.user.id}) }} "><button class="text-2xl" type="submit">Enlever</button></a>  
+                        <a href="{{ path('app_series_remove',  {'id': series.id, 'user_id':app.user.id}) }} "><button class="rounded-2xl text-2xl p-4 px-10 hover:bg-red-600 bg-red-700" type="submit">Enlever</button></a>  
                     {% else %}
-                        <a href="{{ path('app_series_add',  {'id': series.id, 'user_id':app.user.id}) }} "><button class="text-2xl" type="submit">Suivre</button></a>  
+                        <a href="{{ path('app_series_add',  {'id': series.id, 'user_id':app.user.id}) }} "><button class="rounded-2xl text-2xl p-4 px-10 hover:bg-blue-600 bg-blue-700" type="submit">Suivre</button></a>  
                     {% endif %}
                 {% endif %}
                 </div>
@@ -60,14 +60,20 @@
                     <div class=" flex flex-row flex-wrap ml-2 mt-5 mb-5 justify-between">
                         <div class="flex flex-col items-top mb-5">
                             <div class="flex mb-5">
-                                {% for i in 0..9 %}
-                                    {% if series.getRate.value|number_format > i and i % 2 == 0 %}
-                                        <img class="h-12 w-12" src="{{ asset('img/etoile_pleine.png') }}">
-                                    {% elseif series.getRate.value|number_format <= i and i % 2 == 0 %}
-                                        <img class="w-12 h-12" src="{{ asset('img/etoile_vide.png') }}">
-                                    {% endif %}
+                                {% for i in range(0.5, 5) %}
+                                        {% if series.getRate.value|number_format/2 >= i %}
+                                            {% if series.getRate.value|number_format/2 > i %}
+                                                <img class="h-12 w-12 mx-1" src="{{ asset('img/star_fill.png') }}">
+                                            {% elseif series.getRate.value|number_format/2 == i %}
+                                                <img class="h-12 w-12 mx-1" src="{{ asset('img/star_demi.png') }}">
+                                            {% endif %}
+                                        {% else %}
+                                            <img class="h-12 w-12 mx-1" src="{{ asset('img/star_empty.png') }}">
+                                        {% endif %}
+                                        
+            
                                 {% endfor %} 
-                                <h1 class="text-3xl mt-2 ml-5">{{series.getRate.value}}</h1>
+                                <h1 class="text-3xl mt-2 ml-5">{{series.getRate.value|number_format/2}}/5</h1>
                             </div>
 
                             <div class="w-96 flex flex-col">
@@ -83,21 +89,24 @@
                                             <svg data-accordion-icon class="w-6 h-6 shrink-0 rotate-180" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                         </button>
                                     </h2>
-                                    <div id="accordion-collapse-body-{{ season.number }}" class="w-40" aria-labelledby="accordion-collapse-heading-{{season.number}}">
-                                        <div class="flex flex-wrap w-96 px-4 py-2 border border-gray-200 ">
+                                    <div id="accordion-collapse-body-{{ season.number }}" class="w-full" aria-labelledby="accordion-collapse-heading-{{season.number}}">
+                                        <div class="flex flex-wrap w-full px-5 py-2 border border-blue-500 ">
                                             <ul class="w-full text-xl">
                                             {% for episod in season.episodes %}
-                                                <li class="flex justify-between items-center px-5 py-2">
-                                                       <h1 class="mr-5">{{ episod.number }} - {{ episod.title }}</h1>
+                                            
+                                                <li class="flex items-center px-3 py-2">
+                                                       
                                                        {% if app.user %}
                                                             {% if episod in app.user.getEpisode %}
                                                             
-                                                                <a href="{{ path('app_episode_remove',  {'id': episod.id, 'user_id':app.user.id}) }} "><img class="w-12 h-12" src="{{ asset('img/check.png') }}"></a>  
+                                                                <a class="w-10 h-10" href="{{ path('app_episode_remove',  {'id': episod.id, 'user_id':app.user.id}) }} "><img class="w-10 h-10 bg-white rounded-3xl " src="{{ asset('img/check.png') }}"></a>  
                                                             {% else %}
-                                                                <a href="{{ path('app_episode_add',  {'id': episod.id, 'user_id':app.user.id}) }} "><img class="w-12 h-12" src="{{ asset('img/plus.png') }}"></a>  
+                                                                <a class="w-10 h-10" href="{{ path('app_episode_add',  {'id': episod.id, 'user_id':app.user.id}) }} "><img class="min-w-10 w-10 h-10 bg-white rounded-3xl "  src="{{ asset('img/plus.png') }}"></a>  
                                                             {% endif %}
                                                         {% endif %}
+                                                        <h1 class="ml-10 w-64 text-left">{{ episod.number }} - {{ episod.title }}</h1>
                                                 </li>
+                                                
                                             {% endfor %}
                                             </ul>
                                         </div>
