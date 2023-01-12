@@ -129,19 +129,6 @@ body {
     display: none;
 }
 
-.pagination-my-series {
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    font-size: 45px;
-}
-
-.pagination-my-series .current {
-    color: var(--blue-500);
-    text-decoration: underline;
-}
-
 /* #endregion */
 
 .carrousel {

@@ -85,6 +85,8 @@ class SeriesController extends AbstractController
 
         $seasons = $series->getSeasons();
 
+        
+
         return $this->render('series/show.html.twig', [
             'series' => $series,
             'seasons' => $seasons,
