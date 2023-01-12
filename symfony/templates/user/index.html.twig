@@ -1,41 +1,87 @@
-{% block body %}
-    <h1>Liste des utilisateurs</h1>
+{% extends 'base.html.twig' %}
 
-    <table class="table">
-        <thead>
+{% block title %}
+{% if app.user.isAdmin() %}Tableau de bord administrateur 
+{% else %}Liste utilisateurs
+{% endif %}{% endblock %}
+{% block body %}
+<div class="text-white w-11/12 mx-auto">
+    <div class="flex flex-col w-full">
+        {% if app.user.isAdmin() %}
+        <h1 class="text-3xl text-center mb-2">Tableau de bord administrateur</h1>
+        {% else %}
+        <h1 class="text-3xl text-center mb-2">Liste des utilisateurs</h1>
+        {% endif %}
+        
+        
+        <div class="pagination-h ">
+            {{ knp_pagination_render(users)}}
+        </div>
+        {{ form_start(UserSearchForm) }}
+            <div class="text-lg items-center flex w-full px-10 py-2 justify-between">
+                {{ form_row(UserSearchForm.email, {
+                'label': 'E-mail',
+                }) }}
+            <button class="text-black bg-blue-500 rounded-2xl p-2 hover:bg-blue-custom" type="submit">Chercher</button>
+        </div>
+        {{ form_end(UserSearchForm) }}
+    </div>
+    
+    <table class="table w-full">
+        <thead class="bg-white text-2xl text-black h-16">
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Email</th>
-                {# <th>Password</th> #}
-                <th>RegisterDate</th>
-                <th>Admin</th>
-                <th>UserId</th>
-                <th>actions</th>
+                <th>Nom</th>
+                <th>E-mail</th>
+                <th>Date d'enregistrement</th>
+                <th>Voir profil</th>
+                {% if app.user.isAdmin() %}
+                    <th>Incarner</th>
+                    <th>Administrateur</th>
+                {% endif %}
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
         {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                {# <td>{{ user.password }}</td> #}
-                <td>{{ user.registerDate ? user.registerDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.admin ? 'Yes' : 'No' }}</td>
-                <td>{{ user.userId }}</td>
-                <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+            <tr >
+                <td class="h-7 text-xl border">{{ user.name }}</td>
+                <td class=" border">{{ user.email }}</td>
+                <td class=" border">{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>
+                <td class="  md:flex-row flex-col flex justify-around no-wrap items-center border">
+                    <a class="border-2 border-blue-600 bg-blue-980 hover:bg-blue-600 flex items-center m-5 p-2 rounded-2xl no-wrap" href="{{ path('app_user_show', {'id': user.id }) }}">
+                            
+                    <i class="fa-solid fa-eye mr-2"></i>Voir profil</a>
                 </td>
+                {% if app.user.isAdmin() %}
+                    <td class=" no-wrap items-center border">
+                        {% if not is_granted('IS_IMPERSONATOR') %}
+                            <a class=" mx-auto w-min bg-blue-800 hover:bg-blue-600 flex items-center m-5 p-2 rounded-2xl no-wrap" href="{{ path('app_series_index', {'_switch_user': user.email}) }}">
+                            
+                            <i class="fa-solid mr-2 fa-person"></i></i>Incarner</a>
+                        {% endif %}
+                    </td>
+
+                    <td class=" border">
+                        {% if user.isAdmin() %}
+                        <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
+                        {% else %}
+                        <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
+                        {% endif %}
+                    </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">Aucun résultat</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <div class="pagination-b bottom-0 mx-auto w-11/12">
+        {{ knp_pagination_render(users)}}
+    </div>
+</div>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    
+</div>
+
 {% endblock %}

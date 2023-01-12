@@ -8,17 +8,22 @@
     display: none;
 }
 
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+ }
+
 :root {
     --color-custom: rgb(2, 210, 255);
-}
+    --blue-500:rgb(59 130 246);
+  }
 
 body {
-    min-height: 100vh;
     width: 100vw;
     background-image: url(fond_site.png);
     background-size: cover;
     background-attachment: fixed;
-    font-family: Bahnschrift;
 }
 
 .barre {
@@ -33,35 +38,99 @@ body {
     height: 100%;
 }
 
-.pagination-b .pagination .current {
-    display: none;
+
+
+/* #region style recherche série accueil */
+
+.search-serie 
+{
+    padding: 5px;
 }
 
-.pagination-b .pagination {
-    margin-bottom: 25px;
+.search-serie label {
+    font-size: large;
 }
 
-.pagination {
+.search-serie > div {
+    display: flex;
+    align-items: baseline;
+    margin: 5px;
+}
+
+.search-serie > div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 20px;
+}
+
+#genre {
+    background-color: var(--blue-500);
+    height: 30px;
+    border-radius: 15px;
+    padding-bottom: 1px;
+    padding-left: 10px;
+    padding-right: 15px;
+    align-self: center;
+    width: max-content;
+}
+
+#genre option {
+    background-color: white;
+    padding: 3px;
+    align-items: center;
+    text-align: left;
+}
+
+#titre {
+    background-color: var(--blue-500);
+    height: 30px;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+/* #endregion */
+
+
+/* #region style pagination */
+
+.pagination-h .pagination{
     color: white;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    font-size: xx-large;
-    width: 100vw;
+    font-size: 45px;
 }
 
-.pagination .page {
+.pagination-h .page {
     display: none;
 }
 
-.pagination .current::before {
+.pagination-h .current::before {
     content: "Page ";
 }
 
-.poster {
-    width: 350px;
-    max-height: 650px;
-    height: 50vh;
+.pagination-b .pagination{
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 45px;
+    margin-bottom: 25px;
+}
+
+.pagination-b .page {
+    display: none;
+}
+
+.pagination-b .pagination .current {
+    display: none;
+}
+
+/* #endregion */
+
+.carrousel {
+    width: max-content;
 }
 
 .titre {
@@ -72,12 +141,40 @@ body {
     box-shadow: 0px 0px 20px 0px var(--color-custom);
 }
 
+.dropdown:hover .dropdown-menu {
+    display: block;
+  }
 
-/* Style description */
 
+/* #region style description série */
 
+.description {
+    width: 90vw;
+    margin:auto;
+}
 
-/* Style register */
+.poster {
+    width: 350px;
+    max-height: 650px;
+    min-height: 500px;
+    height: 50vh;
+}
+
+/* #endregion */
+
+/* #region Style liste admin */
+
+#email {
+    margin-left: 15px;
+    border-radius: 15px;
+    padding: 5px;
+    color: black;
+    width: 300px;
+}
+
+/* #endregion */
+
+/* #region Style register */
 #registration_form_name {
     background-color: black;
     display: flex;
@@ -107,12 +204,28 @@ body {
     padding: 5px;
 }
 
+#registration_form_captcha {
+    background-color: black;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid blue;
+    margin: 10px 0px;
+    padding: 5px;
+}
+
+.captcha_image {
+    border-radius: 5px;
+    padding: 2px;
+}
+
 .infos li {
     color: red;
     font-size: 12px;
 }
 
-/* style Connexion */
+/* #endregion */
+
+/* #region style Connexion */
 label {
     color: white; 
 }
@@ -136,3 +249,113 @@ label {
     margin-bottom: 20px;
     padding: 5px;
 }
+/* #endregion */
+
+/* #region style Burger Menu */
+
+  summary {
+    writing-mode: vertical-lr;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    margin: 25px;
+    border: 2px solid var(--secoColor);
+    border-radius: var(--cornerRad);
+    color: var(--secoColor);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: transform 200ms ease-in-out 0s;
+  }
+  summary::before,
+  summary::after {
+    position: static;
+    top: 0;
+    left: 0;
+  }
+  summary::before {
+    content: "";
+  }
+  summary::after {
+    content: "III";
+    font-size: 50px;
+    letter-spacing: -1px;
+  }
+  summary:hover {
+    transform: scale(1.1);
+  }
+  summary::marker {
+    font-size: 0;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  details[open] .menu {
+    animation-name: menuAnim;
+  }
+  details[open] summary::before {
+    content: "X";
+    font-size: 50px;
+  }
+  details[open] summary::after {
+    content: "";
+  }
+
+  .menu {
+    height: 50vh;
+    width: 50vw;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    animation: closeMenu 300ms ease-in-out forwards;
+  }
+  .menu a {
+    color: var(--blue-500);
+    text-decoration: none;
+    text-align: center;
+    transition: filter 200ms linear 0s;
+    font-size: xx-large;
+  }
+  .menu a:nth-last-of-type(1) {
+    border-bottom: none;
+  }
+  .menu a:hover {
+    filter: brightness(200%);
+  }
+  details::before {
+    color: var(--secoColor);
+    position: absolute;
+    padding: 20px 15px;
+    opacity: 0.4;
+  }
+  details[open]::before {
+    animation: fadeMe 300ms linear forwards;
+  }
+  @keyframes menuAnim {
+    0% {
+      height: 0;
+      position: absolute;
+      background-color: white;
+        right: 0;
+        top: 0    }
+    100% {
+      height: max-content;
+      position: absolute;
+      background-color: white;
+      right: 0;
+    }
+  }
+  @keyframes fadeMe {
+    0% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+ 
+
+  /* endregion */
+  

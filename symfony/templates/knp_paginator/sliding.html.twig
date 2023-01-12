@@ -1,0 +1,55 @@
+{# default Sliding pagination control implementation #}
+{% if pageCount > 1 %}
+    <div class="pagination flex justify-around items-center mt-2">
+        {% if first is defined and current != first %}
+            <span class="first">
+                <a href="{{ path(route, query|merge({(pageParameterName): first})) }}"><img width="50px" src="{{ asset('img/bouton_next_next.png') }}" style="transform: rotate(180deg);"></img></a>
+            </span>
+        {% else %}
+            <span class="previous">
+                <img width="50px" src="{{ asset('img/bouton_next_next.png') }}" style="transform: rotate(180deg); filter: brightness(0.2);"></img>
+            </span>
+        {% endif %}
+
+        {% if previous is defined %}
+            <span class="previous">
+                <a rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}"><img width="40px" src="{{ asset('img/bouton_next.png') }}" style="transform: rotate(180deg);"></img></a>
+            </span>
+        {% else %}
+            <span class="previous">
+                <img width="40px" src="{{ asset('img/bouton_next.png') }}" style="transform: rotate(180deg); filter: brightness(0.2);"></img>
+            </span>
+        {% endif %}
+            <div class="flex text-3xl text-white items-center h-full">
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <span class="page items-center mx-5">
+                    <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                </span>
+            {% else %}
+                <span class="current mx-5 border-2 rounded-2xl p-1 px-2">{{ page }}</span>
+            {% endif %}
+        {% endfor %}
+            </div>
+
+        {% if next is defined %}
+            <span class="next">
+                <a rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}"><img width="40px" src="{{ asset('img/bouton_next.png') }}"></img></a>
+            </span>
+        {% else %}
+            <span class="next">
+                <img width="40px" src="{{ asset('img/bouton_next.png') }}" style="filter: brightness(0.2);"></img>
+            </span>
+        {% endif %}
+
+        {% if last is defined and current != last %}
+            <span class="last">
+                <a href="{{ path(route, query|merge({(pageParameterName): last})) }}"><img width="50px" src="{{ asset('img/bouton_next_next.png') }}"></img></a>
+            </span>
+        {% else %}
+            <span class="next">
+                <img width="40px" src="{{ asset('img/bouton_next_next.png') }}" style="filter: brightness(0.2);"></img>
+            </span>
+        {% endif %}
+    </div>
+{% endif %}

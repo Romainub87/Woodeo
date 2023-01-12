@@ -3,16 +3,10 @@
 {% block title %}Tableau de bord administrateur{% endblock %}
 
 {% block body %}
-    <h1>Tableau de bord administrateur</h1>
-    <h2>Promouvoir un utilisateur administrateur : </h2>
-    {{ form_start(formPromoteUser)}}
-    {{ form_errors(formPromoteUser) }}
-    {{ form_row(formPromoteUser.email, {label: "E-mail"}) }}
-    <button type="submit" class="btn btn-primary">Promouvoir</button>
-    {{ form_end(formPromoteUser)}}
+    <h1 class="text-3xl text-white">Tableau de bord administrateur</h1>
     <iframe src="/user" 
      width="100%" 
-     height="400" 
+     height="500" 
      style="border:2px solid orange">
     </iframe>
 {% endblock %}

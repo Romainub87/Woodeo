@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -264,42 +266,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserIdentifier(): string { return $this->getEmail(); }
-    public function getRoles(): array { return ['ROLE_USER']; }
-    public function eraseCredentials() { }
-
-    public function __toString()
+    public function getEpisodeCount(Series $series): int
     {
-        return $this->name;
-    }
 
-    /**
-     * @return Collection<int, Rating>
-     */
-    public function getRates(): Collection
-    {
-        return $this->rates;
-    }
+        $episodeCount = 0;
 
-    public function addRate(Rating $rate): self
-    {
-        if (!$this->rates->contains($rate)) {
-            $this->rates->add($rate);
+        foreach ($series->getSeasons() as $saison) {
+            foreach ($saison->getEpisodes() as $ep) {
+                $episodeCount += 1;
+            }
         }
-
-        return $this;
+        return $episodeCount;
     }
 
-    public function removeRate(Rating $rate): self
+    public function getAvancement(Series $series): int
     {
-        if ($this->rates->removeElement($rate)) {
-            // set the owning side to null (unless already changed)
-            if ($rate->getSeries() === $this) {
-                $rate->setSeries(null);
+
+        $count = 0;
+
+        foreach ($this->getEpisode() as $ep) {
+            if ($ep->getSeason()->getSeries()->getId() == $series->getId()) {
+                $count += 1;
             }
         }
 
-        return $this;
+        return $count;
     }
+
+    public function getUserIdentifier(): string { return $this->getEmail(); }
+    public function getRoles(): array 
+    { 
+        if ($this->isAdmin()) { return ['ROLE_ADMIN']; }
+        return ['ROLE_USER'];
+    }
+    public function eraseCredentials() { }
+
+    public function __toString() { return (string)$this->id; }
 
 }
