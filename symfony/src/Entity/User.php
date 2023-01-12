@@ -113,12 +113,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $series = array();
 
     /**
+     * @var \ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Rating", mappedBy="series")
+     */
+    private $rates;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->episode = new \Doctrine\Common\Collections\ArrayCollection();
         $this->series = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rates = new ArrayCollection();
     }
 
     public function getId(): ?int
