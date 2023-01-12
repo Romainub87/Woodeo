@@ -21,10 +21,14 @@
             <details class="flex md:hidden items-center z-20">
               <summary></summary>
               <nav class="menu">
+                {% if app.user %}
                 <h1 class="text-center text-2xl pb-5 mt-5 mb-7 border-b-2">{{app.user.email}} </h1>
+                {% endif %}
                 <a class="inline-block mb-5  font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+                {% if app.user %}
                 <a class="inline-block my-5 font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
-                {% if app.user.isAdmin() %}
+                {% endif %}
+                {% if app.user and app.user.isAdmin() %}
                 <a class="block my-5 whitespace-no-wrap font-semibold" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
                 {% endif %}
                 <li class=""><a class="my-5 block whitespace-no-wrap font-semibold" href="{{ path('app_logout') }}">Déconnexion</a></li>
@@ -40,18 +44,16 @@
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
             </li>
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_admin_dashboard') }}">Users</a>
-            </li>
-            <li class="nav-item px-5 mr-1">
                   <div class="dropdown inline-block">
                     <button class=" text-blue-500 hover:text-blue-custom font-semibold py-4 rounded inline-flex items-center">
                       <span class="mr-1">{{ app.user.email}} </span>
                       <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
                     </button>
                     <ul class="dropdown-menu absolute hidden text-white pt-1">
-                      {% if app.user.isAdmin() %}
-                      <li class=""><a class="rounded-t bg-blue-500 hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a></li>
-                      {% endif %}
+                      <li class=""><a class="rounded-t bg-blue-500 hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap" href="{{ path('app_admin_dashboard') }}">
+                      {% if app.user.isAdmin() %}Tableau de bord
+                      {% else %}Utilisateurs
+                      {% endif %}</a></li>
                       <li class=""><a class="rounded-b bg-blue-500 hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap" href="{{ path('app_logout') }}">Déconnexion</a></li>
                     </ul>
                   </div>
