@@ -42,6 +42,8 @@ body {
     height: 100%;
 }
 
+
+
 /* #region style recherche série accueil */
 
 .search-serie 
@@ -271,6 +273,7 @@ label {
     text-align: center;
     width: 50px;
     height: 50px;
+    margin: 25px;
     border: 2px solid var(--secoColor);
     border-radius: var(--cornerRad);
     color: var(--secoColor);
@@ -307,33 +310,27 @@ label {
   }
   details[open] summary::before {
     content: "X";
-    font-size: xx-large;
+    font-size: 50px;
   }
   details[open] summary::after {
     content: "";
   }
+
   .menu {
-    height: 100vh;
-    width: 100vw;
-    border-radius: var(--cornerRad);
-    margin-top: 8px;
+    height: 50vh;
+    width: 50vw;
+    border-radius: 25px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
+    justify-content: space-around;
     animation: closeMenu 300ms ease-in-out forwards;
   }
   .menu a {
-    padding: 24px 24px;
-    margin: 15px 16px;
-    color: var(--secoColor);
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    color: var(--blue-500);
     text-decoration: none;
     text-align: center;
     transition: filter 200ms linear 0s;
-  }
-  .menu a:nth-of-type(1) {
-    padding-top: 24px;
+    font-size: xx-large;
   }
   .menu a:nth-last-of-type(1) {
     border-bottom: none;
@@ -344,8 +341,7 @@ label {
   details::before {
     color: var(--secoColor);
     position: absolute;
-    margin-left: 80px;
-    padding: 10px 10px;
+    padding: 20px 15px;
     opacity: 0.4;
   }
   details[open]::before {
@@ -354,9 +350,15 @@ label {
   @keyframes menuAnim {
     0% {
       height: 0;
-    }
+      position: absolute;
+      background-color: white;
+        right: 0;
+        top: 0    }
     100% {
-      height: 100vh;
+      height: max-content;
+      position: absolute;
+      background-color: white;
+      right: 0;
     }
   }
   @keyframes fadeMe {
@@ -367,4 +369,8 @@ label {
       opacity: 0;
     }
   }
+
+ 
+
+  /* endregion */
   
