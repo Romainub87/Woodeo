@@ -1,10 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tableau de bord administrateur - liste utilisateurs{% endblock %}
+{% block title %}
+{% if app.user.isAdmin() %}Tableau de bord administrateur 
+{% else %}Liste utilisateurs
+{% endif %}{% endblock %}
 {% block body %}
 <div class="text-white w-11/12 mx-auto">
     <div class="flex flex-col w-full">
-        {% if not is_granted('IS_IMPERSONATOR') %}
+        {% if app.user.isAdmin() %}
         <h1 class="text-3xl text-center mb-2">Tableau de bord administrateur</h1>
         {% else %}
         <h1 class="text-3xl text-center mb-2">Liste des utilisateurs</h1>
