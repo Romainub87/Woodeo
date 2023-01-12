@@ -15,9 +15,23 @@
     <body class="page">
       <div class="navbar z-10 absolute">
         <ul class="barre backdrop-blur-lg flex items-center justify-between text-blue-500 pt-1 pb-2 top-0 rounded-b-2xl w-screen fixed border-b-4 border-blue-custom border-b">
-            <a class="hidden xl:inline" href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
-            <a class="inline xl:hidden" href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/></a>
-            <ul class="flex text-2xl ">
+            <a class="hidden xl:inline" href="{{ path('app_series_index') }}"><img class="px-4 h-36 md:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
+            <a class="inline xl:hidden" href="{{ path('app_series_index') }}"><img class="px-4 h-36 md:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/></a>
+
+            <details class="flex md:hidden items-center z-20">
+              <summary></summary>
+              <nav class="menu">
+                <h1 class="text-center text-2xl pb-5 mt-5 mb-7 border-b-2">{{app.user.email}} </h1>
+                <a class="inline-block mb-5  font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+                <a class="inline-block my-5 font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
+                {% if app.user.isAdmin() %}
+                <a class="block my-5 whitespace-no-wrap font-semibold" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
+                {% endif %}
+                <li class=""><a class="my-5 block whitespace-no-wrap font-semibold" href="{{ path('app_logout') }}">Déconnexion</a></li>
+              </nav>
+            </details>
+
+            <ul class="menu-pc text-2xl hidden md:flex">
             <li class="nav-item -mb-px px-5 mr-1">
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
             </li>
@@ -56,6 +70,7 @@
           </ul>
         </ul>
       </div>
+     
         <div class="xl:mt-40 mt-52">
         {% block body %}{% endblock %}
         </div>
