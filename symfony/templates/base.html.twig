@@ -7,7 +7,7 @@
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         <script src="https://kit.fontawesome.com/204bbbe9f0.js" crossorigin="anonymous"></script>
         {% block stylesheets %}
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia|Bahnschrift">
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Sofia|Bahnschrift">
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
@@ -21,13 +21,20 @@
             <details class="flex md:hidden items-center z-20">
               <summary></summary>
               <nav class="menu">
-                <h1 class="text-center text-2xl pb-5 mt-5 mb-7 border-b-2">{{app.user.email}} </h1>
-                <a class="inline-block mb-5  font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
-                <a class="inline-block my-5 font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
+                {% if app.user%}
+                  <h1 class="text-center text-2xl pb-5 mt-5 mb-7 border-b-2">{{app.user.email}} </h1>
+                
+                  <a class="inline-block mb-5  font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+                
+                  <a class="inline-block my-5 font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
                 {% if app.user.isAdmin() %}
-                <a class="block my-5 whitespace-no-wrap font-semibold" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
+                  <a class="block my-5 whitespace-no-wrap font-semibold" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
                 {% endif %}
-                <li class=""><a class="my-5 block whitespace-no-wrap font-semibold" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                  <a class="my-5 block whitespace-no-wrap font-semibold" href="{{ path('app_logout') }}">Déconnexion</a>
+                  {% else %}
+                  <a class="inline-block py-4  font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+                  <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">Connexion</a>
+                {% endif %}
               </nav>
             </details>
 

@@ -90,6 +90,8 @@ class UserController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
+
+        $liste_series->setTemplate('knp_paginator/sliding.html.twig');
         
         return $this->render('user/show.html.twig', [
             'user' => $user,
