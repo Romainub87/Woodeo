@@ -78,9 +78,8 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user,Request $req, PaginatorInterface $pag): Response
+    public function show(User $user,Request $req, EntityManagerInterface $entityManager, PaginatorInterface $pag): Response
     {
-
         $liste_series = $pag->paginate(
             $user->getSeries(),
             $req->query->getInt('page', 1),
