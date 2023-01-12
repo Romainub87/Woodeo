@@ -22,10 +22,6 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
-            return $this->redirectToRoute('app_series_index');
-        }
-
         $search = new UserSearch();
         $form = $this->createForm(UserSearchType::class, $search);
         $form->handleRequest($request);

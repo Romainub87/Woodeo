@@ -30,8 +30,11 @@
                 <th>Nom</th>
                 <th>E-mail</th>
                 <th>Date d'enregistrement</th>
-                <th>Incarner</th>
-                <th>Administrateur</th>
+                <th>Voir profil</th>
+                {% if app.user.isAdmin() %}
+                    <th>Incarner</th>
+                    <th>Administrateur</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody class="text-center">
@@ -40,19 +43,28 @@
                 <td class="h-7 text-xl border">{{ user.name }}</td>
                 <td class=" border">{{ user.email }}</td>
                 <td class=" border">{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>
-                <td class=" md:flex-row flex-col flex justify-around no-wrap items-center border">
-                {% if not is_granted('IS_IMPERSONATOR') %}
-                    <a class="bg-blue-800 hover:bg-blue-600 flex items-center m-5 p-2 rounded-2xl no-wrap" href="{{ path('app_series_index', {'_switch_user': user.email}) }}"><i class="fa-solid mr-2 fa-person"></i></i>Incarner</a>
-                {% endif %}
+                <td class="  md:flex-row flex-col flex justify-around no-wrap items-center border">
+                    <a class="border-2 border-blue-600 bg-blue-980 hover:bg-blue-600 flex items-center m-5 p-2 rounded-2xl no-wrap" href="{{ path('app_user_show', {'id': user.id }) }}">
+                            
+                    <i class="fa-solid fa-eye mr-2"></i>Voir profil</a>
                 </td>
+                {% if app.user.isAdmin() %}
+                    <td class=" no-wrap items-center border">
+                        {% if not is_granted('IS_IMPERSONATOR') %}
+                            <a class=" mx-auto w-min bg-blue-800 hover:bg-blue-600 flex items-center m-5 p-2 rounded-2xl no-wrap" href="{{ path('app_series_index', {'_switch_user': user.email}) }}">
+                            
+                            <i class="fa-solid mr-2 fa-person"></i></i>Incarner</a>
+                        {% endif %}
+                    </td>
 
-                <td class=" border">
-                    {% if user.isAdmin() %}
-                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
-                    {% else %}
-                    <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
-                    {% endif %}
-                </td>
+                    <td class=" border">
+                        {% if user.isAdmin() %}
+                        <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
+                        {% else %}
+                        <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
+                        {% endif %}
+                    </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

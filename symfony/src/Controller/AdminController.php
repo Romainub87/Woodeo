@@ -15,9 +15,6 @@ class AdminController extends AbstractController
     #[Route('/admin_dashboard', name: 'app_admin_dashboard')]
     public function index(Request $request, ManagerRegistry $doctrine): Response
     {
-        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
-            return $this->redirectToRoute('app_series_index');
-        }
         return $this->redirectToRoute('app_user_index');
 
         return $this->render('admin/index.html.twig', [
