@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Rating
@@ -27,12 +28,17 @@ class Rating
      *
      * @ORM\Column(name="value", type="integer", nullable=false)
      */
+    #[Assert\Range(
+        min: 0,
+        max: 10,
+        notInRangeMessage: 'Veuillez entrer une valeur entre {{ min }} et {{ max }}',
+    )]
     private $value;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="comment", type="text", length=0, nullable=true)
+     * @ORM\Column(name="comment", type="text", length=5000, nullable=true)
      */
     private $comment;
 
@@ -62,6 +68,11 @@ class Rating
      * })
      */
     private $user;
+
+    public function __construct() 
+    {
+        $this->date = new \DateTime();
+    }
 
     public function getId(): ?int
     {

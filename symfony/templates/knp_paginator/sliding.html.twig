@@ -3,21 +3,21 @@
     <div class="pagination flex justify-around items-center mt-2">
         {% if first is defined and current != first %}
             <span class="first">
-                <a href="{{ path(route, query|merge({(pageParameterName): first})) }}"><img width="50px" src="{{ asset('img/bouton_next_next.png') }}" style="transform: rotate(180deg);"></img></a>
+                <a href="{{ path(route, query|merge({(pageParameterName): first})) }}"><img class="hover:scale-110 rotate-180" width="50px" src="{{ asset('img/bouton_next_next.png') }}" ></img></a>
             </span>
         {% else %}
             <span class="previous">
-                <img width="50px" src="{{ asset('img/bouton_next_next.png') }}" style="transform: rotate(180deg); filter: brightness(0.2);"></img>
+                <img class="opacity-20 rotate-180" width="50px" src="{{ asset('img/bouton_next_next.png') }}"></img>
             </span>
         {% endif %}
 
         {% if previous is defined %}
             <span class="previous">
-                <a rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}"><img width="40px" src="{{ asset('img/bouton_next.png') }}" style="transform: rotate(180deg);"></img></a>
+                <a rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}"><img class="hover:scale-110 rotate-180" width="40px" src="{{ asset('img/bouton_next.png') }}"></img></a>
             </span>
         {% else %}
             <span class="previous">
-                <img width="40px" src="{{ asset('img/bouton_next.png') }}" style="transform: rotate(180deg); filter: brightness(0.2);"></img>
+                <img class="opacity-20 rotate-180" width="40px" src="{{ asset('img/bouton_next.png') }}"></img>
             </span>
         {% endif %}
             <div class="flex text-3xl text-white items-center h-full">
@@ -34,21 +34,21 @@
 
         {% if next is defined %}
             <span class="next">
-                <a rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}"><img width="40px" src="{{ asset('img/bouton_next.png') }}"></img></a>
+                <a rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}"><img class="hover:scale-110" width="40px" src="{{ asset('img/bouton_next.png') }}"></img></a>
             </span>
         {% else %}
             <span class="next">
-                <img width="40px" src="{{ asset('img/bouton_next.png') }}" style="filter: brightness(0.2);"></img>
+                <img class="opacity-20" width="40px" src="{{ asset('img/bouton_next.png') }}"></img>
             </span>
         {% endif %}
 
         {% if last is defined and current != last %}
             <span class="last">
-                <a href="{{ path(route, query|merge({(pageParameterName): last})) }}"><img width="50px" src="{{ asset('img/bouton_next_next.png') }}"></img></a>
+                <a href="{{ path(route, query|merge({(pageParameterName): last})) }}"><img class="hover:scale-110" width="50px" src="{{ asset('img/bouton_next_next.png') }}"></img></a>
             </span>
         {% else %}
             <span class="next">
-                <img width="40px" src="{{ asset('img/bouton_next_next.png') }}" style="filter: brightness(0.2);"></img>
+                <img class="opacity-20" width="40px" src="{{ asset('img/bouton_next_next.png') }}" ></img>
             </span>
         {% endif %}
     </div>
