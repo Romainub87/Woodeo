@@ -98,12 +98,13 @@ class RatingController extends AbstractController
     #[Route('/{id}', name: 'app_rating_delete', methods: ['POST'])]
     public function delete(Request $request, Rating $rating, EntityManagerInterface $entityManager): Response
     {
+        $id = $rating->getSeries()->getId();
         if ($this->isCsrfTokenValid('delete'.$rating->getId(), $request->request->get('_token'))) {
             $entityManager->remove($rating);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_rating_new', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/rates/{id}', name: 'app_rating_rates', methods: ['GET'])]
