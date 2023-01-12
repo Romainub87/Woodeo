@@ -307,7 +307,7 @@ label {
   }
   details[open] summary::before {
     content: "X";
-    font-size: large;
+    font-size: xx-large;
   }
   details[open] summary::after {
     content: "";
