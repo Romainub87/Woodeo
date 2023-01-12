@@ -17,7 +17,19 @@
         <ul class="barre backdrop-blur-lg flex items-center justify-between text-blue-500 pt-1 pb-2 top-0 rounded-b-2xl w-screen fixed border-b-4 border-blue-custom border-b">
             <a class="hidden xl:inline" href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
             <a class="inline xl:hidden" href="{{ path('app_series_index') }}"><img class="px-4 h-36 xl:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/></a>
-            <ul class="flex text-2xl ">
+
+            <details class="absolute top-0 right-0 z-20 bg-white">
+              <summary></summary>
+              <nav class="menu">
+                <a href="#link">Home</a>
+                <a href="#link">Work</a>
+                <a href="#link">Links</a>
+                <a href="#link">Contact</a>
+                <a href="#link">About</a>
+              </nav>
+            </details>
+
+            <ul class="text-2xl flex ">
             <li class="nav-item -mb-px px-5 mr-1">
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
             </li>
@@ -53,6 +65,7 @@
           </ul>
         </ul>
       </div>
+     
         <div class="xl:mt-40 mt-52">
         {% block body %}{% endblock %}
         </div>
