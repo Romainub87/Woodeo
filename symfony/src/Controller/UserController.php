@@ -48,6 +48,8 @@ class UserController extends AbstractController
             5
         );
 
+        $users_list->setTemplate('knp_paginator/sliding.html.twig');
+
         return $this->render('user/index.html.twig', [
             'users' => $users_list,
             'UserSearchForm' => $form->createView(),
