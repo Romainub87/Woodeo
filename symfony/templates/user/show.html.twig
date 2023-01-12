@@ -21,7 +21,7 @@
     <h1 class="text-xl text-white">{{user.email}}</h1>
     <h1 class="text-xl text-white">Inscrit le : {{ user.getRegisterDate()|date("d/m/y") }}</h1>
     {% endif %}
-    <h1 class="text-xl text-white">Nombre de séries suivies : {{ seriesList|length }}</h1>
+    <h1 class="text-xl text-white">Nombre de séries suivies : {{ user.getSeries|length }}</h1>
 
     <div class=" pagination-my-series">
         {{ knp_pagination_render(seriesList)}}
