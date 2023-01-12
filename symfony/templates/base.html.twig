@@ -15,24 +15,24 @@
     <body class="page">
       <div class="navbar z-10 absolute">
         <ul class="barre backdrop-blur-lg flex items-center justify-between text-blue-500 pt-1 pb-2 top-0 rounded-b-2xl w-screen fixed border-b-4 border-blue-custom border-b">
-            <a class="hidden xl:inline" href="{{ path('app_series_index') }}"><img class="px-4 h-36 md:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
-            <a class="inline xl:hidden" href="{{ path('app_series_index') }}"><img class="px-4 h-36 md:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/></a>
+            <a class="hidden xl:inline" href="{{ path('app_index') }}"><img class="px-4 h-36 md:h-24 hidden xl:inline " src="{{ asset('img/logo_pc.png') }}" alt="logo"/></a>
+            <a class="inline xl:hidden" href="{{ path('app_index') }}"><img class="px-4 h-36 md:h-24 xl:hidden " src="{{ asset('img/logo_mobile.png') }}" alt="logo"/></a>
 
             <details class="flex md:hidden items-center z-20">
               <summary></summary>
               <nav class="menu">
-                {% if app.user%}
-                  <h1 class="text-center text-2xl pb-5 mt-5 mb-7 border-b-2">{{app.user.email}} </h1>
+                {% if app.user %}
+                  <h1 class="text-center text-2xl pb-5 mt-5 mb-7 border-b-2"> <i class="fa-solid fa-circle-user"></i> {{app.user.email}}</h1>
                 
-                  <a class="inline-block mb-5  font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+                  <a class="inline-block mb-5  font-semibold" href="{{ path('app_index') }}">Accueil</a>
                 
                   <a class="inline-block my-5 font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
                 {% if app.user.isAdmin() %}
                   <a class="block my-5 whitespace-no-wrap font-semibold" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
                 {% endif %}
-                  <a class="my-5 block whitespace-no-wrap font-semibold" href="{{ path('app_logout') }}">Déconnexion</a>
+                  <a class="my-5 block whitespace-no-wrap font-semibold" href="{{ path('app_logout') }}"> Déconnexion</a>
                   {% else %}
-                  <a class="inline-block py-4  font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+                  <a class="inline-block py-4  font-semibold" href="{{ path('app_index') }}">Accueil</a>
                   <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_login') }}">Connexion</a>
                 {% endif %}
               </nav>
@@ -40,24 +40,25 @@
 
             <ul class="menu-pc text-2xl hidden md:flex">
             <li class="nav-item -mb-px px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Accueil</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_index') }}">Accueil</a>
             </li>
             {% if app.user %}
             <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
+              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Séries</a>
             </li>
-            <li class="nav-item px-5 mr-1">
-                  <div class="dropdown inline-block">
-                    <button class=" text-blue-500 hover:text-blue-custom font-semibold py-4 rounded inline-flex items-center">
-                      <span class="mr-1">{{ app.user.email}} </span>
+            <li class="nav-item px-5">
+                  <div class="dropdown inline-block hover:bg-blue-500 hover:text-white text-blue-500 hover:rounded">
+                    <button class="font-semibold py-4 rounded inline-flex items-center">
+                      <span class="px-2"> <i class="fa-solid fa-circle-user"></i> {{ app.user.email}} </span>
                       <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
                     </button>
                     <ul class="dropdown-menu absolute hidden text-white pt-1">
-                      <li class=""><a class="rounded-t bg-blue-500 hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap" href="{{ path('app_admin_dashboard') }}">
-                      {% if app.user.isAdmin() %}Tableau de bord
-                      {% else %}Utilisateurs
+                      <li class=""><a class="rounded-t bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_admin_dashboard') }}">
+                      {% if app.user.isAdmin() %}<div class="no-wrap"><i class="fa-sharp fa-solid fa-screwdriver-wrench"></i>Tableau de bord</div>
+                      {% else %}<i class="fa-solid fa-users"></i> Utilisateurs
                       {% endif %}</a></li>
-                      <li class=""><a class="rounded-b bg-blue-500 hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                      <li class=""><a class="bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_user_show', {'id':app.user.id}) }}"><i class="fa-solid fa-bookmark pl-1 pr-2"></i> Mes Séries</a></li>
+                      <li class=""><a class="rounded-b bg-blue-500 hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap bg-red-700 hover:bg-red-400" href="{{ path('app_logout') }}"><i class="fa-solid fa-person-through-window"></i> Déconnexion</a></li>
                     </ul>
                   </div>
             </li>

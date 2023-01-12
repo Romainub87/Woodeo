@@ -16,23 +16,28 @@ class SeriesSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre')
+            ->add('titre', null, [
+                'label' => false,
+            ])
             ->add('genre', EntityType::class, [
                 'class' => Genre::class,
+                'label' => false,
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'placeholder' => 'Tous',
+                'placeholder' => 'Tous genres ⌄',
             ])
             ->add('Trier', ChoiceType::class, [
+                'label' => false,
+                'required' => false,
+                'placeholder' => 'Ordre alphabétique ⌄',
                 'choices'  => [
-                    'Aucun' => 0,
-                    'Les plus récents d abord' => 1,
-                    'Les plus anciens d abord' => 2,
-                    'Les meilleurs notations d abord' => 3,
-                    'Les pires notations d abord' => 4,
+                    '⏱️ Plus récents' => 1,
+                    '⏳ Plus ancients' => 2,
+                    '❤️ Meilleurs notes' => 3,
+                    '❤️‍🩹 Pires notes' => 4,
                 ],
             ])
             #->add('date', DateType::class)
