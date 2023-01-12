@@ -55,36 +55,16 @@ class SeriesController extends AbstractController
                     ->orderBy('s.yearStart', 'ASC');
                 break;
             case 3:
-                $series = $entityManager
-                ->getRepository(Series::class)
-                ->createQueryBuilder('s')
-                ->select('s.title, s.id, s.poster as displayPoster')
-                ->leftJoin('s.rate', 'er')
-                ->groupBy('s.id')
-                ->addSelect('AVG(er.value) as avgValue')
-                ->orderBy('avgValue', 'DESC')
-                ->getQuery()
-                ->getResult();
-            
-                foreach ($series as &$serie) {
-                    $serie['displayPoster'] = "data:image/png;base64,".base64_encode(stream_get_contents($serie['displayPoster']));
-                };
+                $series
+                    ->leftJoin('s.rate', 'er')
+                    ->groupBy('s.id')
+                    ->orderBy('AVG(er.value)', 'DESC');
                 break;
             case 4:
-                $series = $entityManager
-                ->getRepository(Series::class)
-                ->createQueryBuilder('s')
-                ->select('s.title, s.id, s.poster as displayPoster')
-                ->leftJoin('s.rate', 'er')
-                ->groupBy('s.id')
-                ->addSelect('AVG(er.value) as avgValue')
-                ->orderBy('avgValue', 'ASC')
-                ->getQuery()
-                ->getResult();
-            
-                foreach ($series as &$serie) {
-                    $serie['displayPoster'] = "data:image/png;base64,".base64_encode(stream_get_contents($serie['displayPoster']));
-                };
+                $series
+                    ->leftJoin('s.rate', 'er')
+                    ->groupBy('s.id')
+                    ->orderBy('AVG(er.value)', 'ASC');
                 break;
             default:
                 break;
