@@ -64,6 +64,10 @@ body {
     margin-left: 20px;
 }
 
+.search-serie  li {
+  display: none;
+}
+
 #genre {
     background-color: var(--blue-500);
     height: 30px;
