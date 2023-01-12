@@ -14,7 +14,15 @@
     {% if app.user.id == user.id %}
     <a href="{{ path('app_series_index') }}"><button class=" text-white hover:text-blue-900 bg-blue-800 hover:bg-blue-custom p-2 rounded-2xl m-5 ml-0" type="submit" >Retour à l'accueil</button></a>
     <h1 class="text-3xl text-cyan-200 mb-2 font-semibold">{{ user.name }}</h1>
-    <h1 class="text-2xl text-white">Vos séries suivies</h1>
+    <div class="flex items-baseline text-white">
+        <h1 class="text-xl pr-5 border-r-2">Vos séries suivies</h1>
+        {%if user.getSeries|length == 1%}
+        <h1 class="text-xl ml-5">{{ user.getSeries|length }} série suivie</h1>
+        {% else %}
+        <h1 class="text-xl ml-5">{{ user.getSeries|length }} séries suivies</h1>
+        {% endif %}
+        </div>
+    
     {% else %}
     <a href="{{ path('app_admin_dashboard') }}"><button class=" text-white hover:text-blue-900 bg-blue-800 hover:bg-blue-custom p-2 rounded-2xl m-5 ml-0" type="submit" >Retour</button></a>
     <div class="flex items-baseline text-cyan-200">
