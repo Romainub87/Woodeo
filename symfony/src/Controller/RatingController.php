@@ -33,6 +33,7 @@ class RatingController extends AbstractController
             return $this->redirectToRoute('app_series_index');
         }
 
+        /*
         $exist = $entityManager
                 ->getConnection()
                 ->prepare("SELECT * FROM rating WHERE user_id = :user_id and series_id = :series_id");
@@ -45,6 +46,7 @@ class RatingController extends AbstractController
 
             }
         }
+        */
     
         $rating = new Rating();
         $form = $this->createForm(RatingType::class, $rating);

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Rating
@@ -27,6 +28,11 @@ class Rating
      *
      * @ORM\Column(name="value", type="integer", nullable=false)
      */
+    #[Assert\Range(
+        min: 0,
+        max: 10,
+        notInRangeMessage: 'Veuillez entrer une valeur entre {{ min }} et {{ max }}',
+    )]
     private $value;
 
     /**

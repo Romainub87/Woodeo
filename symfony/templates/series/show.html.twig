@@ -53,6 +53,7 @@
                     </div>
                     {% if app.user %}
                         <iframe height=300 src="{{ path('app_rating_new', {'id': series.id}) }}"></iframe>
+                        {# <a href="{{ path('app_rating_rates', {'id': series.id}) }}">Voir les avis</a> #}
                     {% endif %}
                 </div>
             </div>
