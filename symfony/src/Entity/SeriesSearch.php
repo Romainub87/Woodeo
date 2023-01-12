@@ -5,7 +5,8 @@ namespace App\Entity;
 use App\Entity\Genre;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class SeriesSearch {
+class SeriesSearch
+{
 
     /**
      * @var string|null
@@ -21,6 +22,8 @@ class SeriesSearch {
      * @var \DateTime|null
      */
     private $date;
+
+    private $Trier;
 
     public function getTitre(): ?string
     {
@@ -52,6 +55,18 @@ class SeriesSearch {
     public function setDate(\DateTime $date): SeriesSearch
     {
         $this->date = $date;
+        return $this;
+    }
+
+    
+    public function getTrier(): ?int
+    {
+        return $this->Trier;
+    }
+    
+    public function setTrier(int $Trier): SeriesSearch
+    {
+        $this->Trier = $Trier;
         return $this;
     }
 }
