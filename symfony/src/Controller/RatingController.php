@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Series;
+use Doctrine\ORM\Query;
 use Symfony\Component\Validator\Constraints\Length;
 
 #[Route('/rating')]
@@ -34,18 +35,19 @@ class RatingController extends AbstractController
             return $this->redirectToRoute('app_series_index');
         }
         
-        $query = $entityManager
-            ->getRepository(Rating::class)
-            ->createQueryBuilder('r')
-            ->where('r.user = :user')
-            ->setParameter('user', $this->getUser())
-            ->andWhere('r.series = :series')
-            ->setParameter('series', $series)
-            ->getQuery()
-            ->getResult();
+        $query = $entityManager->createQuery(
+            "SELECT COUNT(r) AS rate, r.id
+             FROM App\Entity\Rating r 
+             WHERE r.user = :user AND  r.series = :series");
+            
+        $query->setParameter('user', $this->getUser()->getId());
+        $query->setParameter('series', $series->getId());
+    
+      
+        $result= $query->execute();
 
-        if ($query[0] != null) {
-            return $this->redirectToRoute('app_rating_show',array('id' => $series->getId()));
+        if ($result[0]['rate'] > 0) {
+            return $this->redirectToRoute('app_rating_show', array('id' => $result[0]['id']));
         }
 
         $rating = new Rating();
@@ -84,7 +86,7 @@ class RatingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_rating_show', ['id' => $rating->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('rating/edit.html.twig', [
