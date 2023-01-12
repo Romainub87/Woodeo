@@ -111,12 +111,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $series = array();
 
     /**
+     * @var \ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Rating", mappedBy="series")
+     */
+    private $rates;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->episode = new \Doctrine\Common\Collections\ArrayCollection();
         $this->series = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->rates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -263,6 +271,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(Rating $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates->add($rate);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rating $rate): self
+    {
+        if ($this->rates->removeElement($rate)) {
+            // set the owning side to null (unless already changed)
+            if ($rate->getSeries() === $this) {
+                $rate->setSeries(null);
+            }
+        }
+
+        return $this;
     }
 
 }

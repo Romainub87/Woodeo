@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Series;
+use Symfony\Component\Validator\Constraints\Length;
 
 #[Route('/rating')]
 class RatingController extends AbstractController
@@ -32,22 +33,21 @@ class RatingController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
-
-        /*
-        $exist = $entityManager
-                ->getConnection()
-                ->prepare("SELECT * FROM rating WHERE user_id = :user_id and series_id = :series_id");
         
-        if($exist->executeQuery(['user_id'=>$this->getUser()->getId(), 'series_id'=>$series->getId()])){
-            if(count(array($exist)) === 1) {
-                foreach($exist as $e) {
-                    return $this->redirectToRoute('app_rating_show', array('id' => $e->getId()));
-                }
+        $query = $entityManager
+            ->getRepository(Rating::class)
+            ->createQueryBuilder('r')
+            ->where('r.user = :user')
+            ->setParameter('user', $this->getUser())
+            ->andWhere('r.series = :series')
+            ->setParameter('series', $series)
+            ->getQuery()
+            ->getResult();
 
-            }
+        if ($query[0] != null) {
+            return $this->redirectToRoute('app_rating_show',array('id' => $series->getId()));
         }
-        */
-    
+
         $rating = new Rating();
         $form = $this->createForm(RatingType::class, $rating);
         $form->handleRequest($request);
@@ -102,5 +102,14 @@ class RatingController extends AbstractController
         }
 
         return $this->redirectToRoute('app_rating_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/rates/{id}', name: 'app_rating_rates', methods: ['GET'])]
+    public function rates(Series $serie): Response
+    {
+
+        return $this->render('rating/rates.html.twig', [
+            'seriesRates' => $serie->getRates(),
+        ]);
     }
 }

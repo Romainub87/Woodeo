@@ -130,6 +130,13 @@ class Series
     private $rate;
 
     /**
+     * @var \Rating
+     *
+     * @ORM\OneToMany(targetEntity="Rating", mappedBy="series")
+     */
+    private $rates;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -139,6 +146,7 @@ class Series
         $this->actor = new \Doctrine\Common\Collections\ArrayCollection();
         $this->genre = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seasons = new ArrayCollection();
+        $this->rates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -428,6 +436,36 @@ class Series
     public function __toString()
     {
         return $this->title;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(Rating $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates->add($rate);
+            $rate->setSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rating $rate): self
+    {
+        if ($this->rates->removeElement($rate)) {
+            // set the owning side to null (unless already changed)
+            if ($rate->getSeries() === $this) {
+                $rate->setSeries(null);
+            }
+        }
+
+        return $this;
     }
 
 }
