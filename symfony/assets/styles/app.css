@@ -19,10 +19,6 @@ select{
     --blue-500:rgb(59 130 246);
   }
 
-html {
-    font-family: Bahnschrift;
-}
-
 body {
     width: 100vw;
     background-image: url(fond_site.png);
