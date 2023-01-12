@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SeriesSearchType extends AbstractType
 {
@@ -24,6 +25,15 @@ class SeriesSearchType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'placeholder' => 'Tous',
+            ])
+            ->add('Trier', ChoiceType::class, [
+                'choices'  => [
+                    'Aucun' => 0,
+                    'Les plus récents d abord' => 1,
+                    'Les plus anciens d abord' => 2,
+                    'Les meilleurs notations d abord' => 3,
+                    'Les pires notations d abord' => 4,
+                ],
             ])
             #->add('date', DateType::class)
         ;

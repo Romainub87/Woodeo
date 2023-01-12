@@ -78,9 +78,8 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user,Request $req, PaginatorInterface $pag): Response
+    public function show(User $user,Request $req, EntityManagerInterface $entityManager, PaginatorInterface $pag): Response
     {
-
         $liste_series = $pag->paginate(
             $user->getSeries(),
             $req->query->getInt('page', 1),
@@ -90,6 +89,8 @@ class UserController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
+
+        $liste_series->setTemplate('knp_paginator/sliding.html.twig');
         
         return $this->render('user/show.html.twig', [
             'user' => $user,

@@ -19,10 +19,6 @@ select{
     --blue-500:rgb(59 130 246);
   }
 
-html {
-    font-family: Bahnschrift;
-}
-
 body {
     width: 100vw;
     background-image: url(fond_site.png);
@@ -74,7 +70,9 @@ body {
     border-radius: 15px;
     padding-bottom: 1px;
     padding-left: 10px;
+    padding-right: 15px;
     align-self: center;
+    width: max-content;
 }
 
 #genre option {
@@ -127,19 +125,6 @@ body {
 
 .pagination-b .pagination .current {
     display: none;
-}
-
-.pagination-my-series {
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    font-size: 45px;
-}
-
-.pagination-my-series .current {
-    color: var(--blue-500);
-    text-decoration: underline;
 }
 
 /* #endregion */

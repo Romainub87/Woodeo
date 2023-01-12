@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\ExternalRating;
+use App\Entity\Rating;
 use App\Entity\Series;
 use App\Entity\SeriesSearch;
 use App\Form\SeriesSearchType;
 use App\Entity\Episode;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +45,51 @@ class SeriesController extends AbstractController
                 ->setParameter('genre', $search->getGenre()->getId());
         }
 
+        switch($search->getTrier()){
+            case 1:
+                $series
+                    ->orderBy('s.yearStart', 'DESC');
+                break;
+            case 2:
+                $series
+                    ->orderBy('s.yearStart', 'ASC');
+                break;
+            case 3:
+                $series = $entityManager
+                ->getRepository(Series::class)
+                ->createQueryBuilder('s')
+                ->select('s.title, s.id, s.poster as displayPoster')
+                ->leftJoin('s.rate', 'er')
+                ->groupBy('s.id')
+                ->addSelect('AVG(er.value) as avgValue')
+                ->orderBy('avgValue', 'DESC')
+                ->getQuery()
+                ->getResult();
+            
+                foreach ($series as &$serie) {
+                    $serie['displayPoster'] = "data:image/png;base64,".base64_encode(stream_get_contents($serie['displayPoster']));
+                };
+                break;
+            case 4:
+                $series = $entityManager
+                ->getRepository(Series::class)
+                ->createQueryBuilder('s')
+                ->select('s.title, s.id, s.poster as displayPoster')
+                ->leftJoin('s.rate', 'er')
+                ->groupBy('s.id')
+                ->addSelect('AVG(er.value) as avgValue')
+                ->orderBy('avgValue', 'ASC')
+                ->getQuery()
+                ->getResult();
+            
+                foreach ($series as &$serie) {
+                    $serie['displayPoster'] = "data:image/png;base64,".base64_encode(stream_get_contents($serie['displayPoster']));
+                };
+                break;
+            default:
+                break;
+        }
+
         $liste_series = $paginator->paginate(
             $series,
             $request->query->getInt('page', 1),
@@ -67,7 +115,7 @@ class SeriesController extends AbstractController
 
         $seriesRand = $entityManager
             ->getConnection()
-            ->query('SELECT id, title, poster FROM series ORDER BY RAND() LIMIT 10')
+            ->query('SELECT id, title, poster FROM series ORDER BY RAND() LIMIT 8')
             ->fetchAllAssociative();
         
         foreach ($seriesRand as &$serie) {
@@ -84,6 +132,8 @@ class SeriesController extends AbstractController
     {
 
         $seasons = $series->getSeasons();
+
+        
 
         return $this->render('series/show.html.twig', [
             'series' => $series,

@@ -19,10 +19,8 @@
 			<button class="bg-blue-700 hover:bg-blue-600 text-xl text-white px-5 p-px rounded-2xl">Rechercher</button>
         </div>
 		{{ form_end(SeriesSearchForm) }}
-    
-        <div class="pagination-h">
+        
             {{ knp_pagination_render(series)}}
-        </div>
 
         <div class="flex flex-wrap flex-row w-full items-center justify-center mb-5">
         {% for series in series %}
