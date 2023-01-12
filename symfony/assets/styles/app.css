@@ -40,6 +40,7 @@ body {
 
 
 
+
 /* #region style recherche série accueil */
 
 .search-serie 
@@ -362,4 +363,10 @@ label {
  
 
   /* endregion */
+
+  /* #region style espace commentaires */
+
+  #rating {
+    background-color: blue;
+  }
   
