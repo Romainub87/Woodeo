@@ -301,4 +301,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString() { return (string)$this->id; }
 
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(Rating $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates->add($rate);
+            $rate->setSeries($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rating $rate): self
+    {
+        if ($this->rates->removeElement($rate)) {
+            // set the owning side to null (unless already changed)
+            if ($rate->getSeries() === $this) {
+                $rate->setSeries(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
