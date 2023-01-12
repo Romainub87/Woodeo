@@ -22,6 +22,8 @@ class SeriesSearchType extends AbstractType
                 'choice_value' => 'id',
                 'multiple' => false,
                 'expanded' => false,
+                'required' => false,
+                'placeholder' => 'Tous',
             ])
             #->add('date', DateType::class)
         ;
