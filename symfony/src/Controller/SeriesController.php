@@ -115,7 +115,7 @@ class SeriesController extends AbstractController
 
         $seriesRand = $entityManager
             ->getConnection()
-            ->query('SELECT id, title, poster FROM series ORDER BY RAND() LIMIT 10')
+            ->query('SELECT id, title, poster FROM series ORDER BY RAND() LIMIT 8')
             ->fetchAllAssociative();
         
         foreach ($seriesRand as &$serie) {
