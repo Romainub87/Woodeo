@@ -27,6 +27,7 @@ class SeriesSearchType extends AbstractType
                 'placeholder' => 'Tous',
             ])
             ->add('Trier', ChoiceType::class, [
+                'label' => 'Tri',
                 'choices'  => [
                     'Aucun' => 0,
                     'Les plus récents d abord' => 1,
