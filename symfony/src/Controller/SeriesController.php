@@ -48,6 +48,8 @@ class SeriesController extends AbstractController
             8
         );
 
+        $liste_series->setTemplate('knp_paginator/sliding.html.twig');
+
         return $this->render('series/index.html.twig', [
             'series' => $liste_series,
             'SeriesSearchForm' => $form->createView(),
