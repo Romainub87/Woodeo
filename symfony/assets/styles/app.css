@@ -93,6 +93,21 @@ body {
   padding: 3px;
 }
 
+#Trier {
+  background-color: var(--blue-500);
+  height: 30px;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+#Trier option {
+  background-color: white;
+}
+
+#Trier option:hover {
+  color: black;
+}
+
 /* #endregion */
 
 
