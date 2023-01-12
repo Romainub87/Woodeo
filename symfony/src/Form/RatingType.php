@@ -12,7 +12,14 @@ class RatingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('value')
+        ->add('value', null, [
+            'label' => 'Note',
+            'attr' => [
+                'min' => 0,
+                'max' => 10,
+                'step' => 1,
+            ],
+        ])
             ->add('comment')
         ;
     }
