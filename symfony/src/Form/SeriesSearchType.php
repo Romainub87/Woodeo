@@ -27,12 +27,12 @@ class SeriesSearchType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,
-                'placeholder' => 'Tous genres ⌄',
+                'placeholder' => 'Tous genres',
             ])
             ->add('Trier', ChoiceType::class, [
                 'label' => false,
                 'required' => false,
-                'placeholder' => 'Ordre alphabétique ⌄',
+                'placeholder' => 'Ordre alphabétique',
                 'choices'  => [
                     '⏱️ Plus récents' => 1,
                     '⏳ Plus ancients' => 2,
