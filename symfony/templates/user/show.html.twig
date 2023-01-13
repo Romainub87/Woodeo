@@ -64,8 +64,43 @@
                 
                 {% endfor %}
         </div>
-    </div>
 
+        
+    </div>
+    <div class="flex text-white text-xl mt-5">
+    <h1 class="mr-5 pr-5 border-r-2">Listes de vos critiques</h1>
+    {% if rates|length == 1%}
+    <h1 class="">{{ rates|length }} critique</h1>
+    {% else %}
+    <h1 class="">{{ rates|length }} critiques</h1>
+    {% endif %}
+    </div>
+    <div class="flex flex-row mb-10 w-full flex-wrap items-start justify-around mt-3">
+       
+        {% for rate in rates %}
+        <div class="flex-col bg-white p-2 font-semibold rounded-2xl">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl mr-5">{{ rate.series }}</h1>
+                <div class="flex items-center">
+                <h1>{{ rate.value|number_format/2 }}/5</h1>
+                    {% for i in range(0.5, 5) %}
+                        {% if rate.value|number_format/2 >= i %}
+                            {% if rate.value|number_format/2 > i %}
+                                <img class="h-4 w-4 mx-1" src="{{ asset('img/star_fill.png') }}">
+                            {% elseif rate.value|number_format/2 == i %}
+                                <img class="h-4 w-4 mx-1" src="{{ asset('img/star_demi.png') }}">
+                            {% endif %}
+                        {% else %}
+                            <img class="h-4 w-4 mx-1" src="{{ asset('img/star_empty.png') }}">
+                        {% endif %}
+                    {% endfor %} 
+                </div>
+            </div>
+            <h1 class="mt-2 font-semibold">{{ rate.comment }}</h1>
+        </div>
+        
+        {% endfor %}
+</div>
    
             
     

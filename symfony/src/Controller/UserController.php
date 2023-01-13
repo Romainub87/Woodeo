@@ -95,12 +95,15 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_series_index');
         }
 
+        $usercritique = $user->getRates();
+
         $liste_series->setTemplate('knp_paginator/sliding.html.twig');
         
         // render the form
         return $this->render('user/show.html.twig', [
             'user' => $user,
             'seriesList' => $liste_series,
+            'rates'=>$usercritique,
         ]);
     }
 
