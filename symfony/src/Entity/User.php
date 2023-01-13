@@ -115,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var \ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Rating", mappedBy="series")
+     * @ORM\OneToMany(targetEntity="Rating", mappedBy="user")
      */
     private $rates;
 

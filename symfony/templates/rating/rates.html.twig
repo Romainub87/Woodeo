@@ -1,13 +1,13 @@
-{#% extends 'base.html.twig' %#}
+{% extends 'base.html.twig' %}
 
-{% block title %}Rating index{% endblock %}
 
 {% block body %}
-    <h1>Rating index</h1>
+<div class="w-4/5 mx-auto text-white">
+    <h1 class="text-3xl font-bold mb-5">Liste des utilisateurs</h1>
 
-    <table class="table">
+    <table class="flex flex-col w-full">
         <thead>
-            <tr>
+            <tr class="w-full justify-around">
                 <th>Id</th>
                 <th>Value</th>
                 <th>Comment</th>
@@ -15,7 +15,7 @@
                 <th>actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="flex justify-around">
         {% for r in seriesRates %}
             <tr>
                 <td>{{ r.id }}</td>
@@ -25,11 +25,12 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5" class="text-2xl">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+</div>
 
     {# <a href="{{ path('app_rating_new') }}">Create new</a> #}
 {% endblock %}
