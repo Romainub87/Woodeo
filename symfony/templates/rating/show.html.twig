@@ -1,35 +1,44 @@
 {#% extends 'base.html.twig' %#}
 
-{% block title %}Rating{% endblock %}
+{% block stylesheets %}
+{{ encore_entry_link_tags('app') }}
+{% endblock %}
 
 {% block body %}
-    <h1>Rating</h1>
+<style>
+    body {
+        background-image: none;
+    }
+</style>
+   <div class=" bg-white text-black rounded-2xl mt-2">
+    <h1 class="p-5  py-3 text-2xl bg-black text-white text-center font-semibold rounded-2xl rounded-b-none">Votre critique</h1>
+    <div class="flex flex-col m-2">
+        <div class="flex flex-row justify-between ">
+            <div class="flex ">
+            
+                {% for i in range(0.5, 5) %}
+                    {% if rating.value|number_format/2 >= i %}
+                        {% if rating.value|number_format/2 > i %}
+                            <img class="h-6 w-6 mx-1" src="{{ asset('img/star_fill.png') }}">
+                        {% elseif rating.value|number_format/2 == i %}
+                            <img class="h-6 w-6 mx-1" src="{{ asset('img/star_demi.png') }}">
+                        {% endif %}
+                    {% else %}
+                        <img class="h-6 w-6 mx-1" src="{{ asset('img/star_empty.png') }}">
+                    {% endif %}
+                {% endfor %} 
+                <h1 class="mx-2 font-semibold">{{ rating.value/2 }}/5</h1>
+            </div>
+            <h1 class="font-semibold ">{{ rating.date ? rating.date|date('d/m/Y') : '' }}</h1>
+        </div>
+        <p class="break-all mx-2 py-5 w-5/6 font-semibold text-lg leading-snug ">{{ rating.comment }}</p>
+    </div>
+    <div class="inline text-right">{{ include('rating/_delete_form.html.twig') }}</div>
+   
+   
+                
+   
+                
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ rating.id }}</td>
-            </tr>
-            <tr>
-                <th>Value</th>
-                <td>{{ rating.value }}</td>
-            </tr>
-            <tr>
-                <th>Comment</th>
-                <td>{{ rating.comment }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ rating.date ? rating.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    {# <a href="{{ path('app_rating_index') }}">back to list</a> #}
-    {% if rating.user %}
-        <a href="{{ path('app_rating_edit', {'id': rating.id}) }}">edit</a>
-    {% endif %}
-
-    {{ include('rating/_delete_form.html.twig') }}
+    
 {% endblock %}
