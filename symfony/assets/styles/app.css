@@ -70,8 +70,9 @@ body {
 
 #genre {
   background-color: var(--blue-500);
-  height: 30px;
-  border-radius: 15px;
+  height: 40px;
+  margin-right: 5px;
+  border-radius: 5px;
   padding-bottom: 1px;
   padding-left: 10px;
   padding-right: 15px;
@@ -79,8 +80,13 @@ body {
   width: max-content;
 }
 
+.search-accueil {
+  height: 40px;
+  padding-left: 15px;
+}
+
 #genre option {
-  background-color: white;
+  background-color: var(--blue-500);
   padding: 3px;
   align-items: center;
   text-align: left;
@@ -88,24 +94,19 @@ body {
 
 #titre {
   background-color: var(--blue-500);
-  height: 30px;
-  border-radius: 5px;
+  height: 40px;
   padding: 3px;
 }
 
 #Trier {
   background-color: var(--blue-500);
-  height: 30px;
+  height: 40px;
   border-radius: 5px;
   padding: 3px;
 }
 
 #Trier option {
-  background-color: white;
-}
-
-#Trier option:hover {
-  color: black;
+  background-color: var(--blue-500);
 }
 
 /* #endregion */
