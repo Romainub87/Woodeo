@@ -130,7 +130,7 @@
                         <div>
                             <iframe class="rounded-3xl mb-10 md:mb-0" width="560" height="315" src="{{ series.getYoutubeTrailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             {% if app.user %}
-                                <iframe class="w-full" height=400 src="{{ path('app_rating_new', {'id': series.id}) }}"></iframe>
+                                <iframe class="w-full" height=500 src="{{ path('app_rating_new', {'id': series.id}) }}"></iframe>
                                 
                             {% endif %}
                         </div>

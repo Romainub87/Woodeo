@@ -20,7 +20,9 @@ class RatingType extends AbstractType
                 'step' => 1,
             ],
         ])
-            ->add('comment')
+            ->add('comment',null, [
+                'label' => 'Commentaire',
+            ])
         ;
     }
 
