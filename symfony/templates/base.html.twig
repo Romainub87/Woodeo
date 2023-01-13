@@ -27,9 +27,11 @@
                   <a class="inline-block mb-5  font-semibold" href="{{ path('app_index') }}">Accueil</a>
                 
                   <a class="inline-block my-5 font-semibold" href="{{ path('app_user_show', {'id':app.user.id}) }}">Mes Séries</a>
-                {% if app.user.isAdmin() %}
-                  <a class="block my-5 whitespace-no-wrap font-semibold" href="{{ path('app_admin_dashboard') }}">Tableau de bord</a>
+                  <a class="block my-5 whitespace-no-wrap font-semibold" href="{{ path('app_user_index') }}">
+                {% if app.user.isAdmin() %}Tableau de bord
+                {% else %}Utilisateurs
                 {% endif %}
+                </a>
                   <a class="my-5 block whitespace-no-wrap font-semibold" href="{{ path('app_logout') }}"> Déconnexion</a>
                   {% else %}
                   <a class="inline-block py-4  font-semibold" href="{{ path('app_index') }}">Accueil</a>
@@ -42,10 +44,10 @@
             <li class="nav-item -mb-px px-5 mr-1">
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_index') }}">Accueil</a>
             </li>
-            {% if app.user %}
             <li class="nav-item px-5 mr-1">
               <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Séries</a>
             </li>
+            {% if app.user %}
             <li class="nav-item px-5">
                   <div class="dropdown inline-block hover:bg-blue-500 hover:text-white text-blue-500 hover:rounded">
                     <button class="font-semibold py-4 rounded inline-flex items-center">
