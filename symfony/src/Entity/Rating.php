@@ -52,20 +52,16 @@ class Rating
     /**
      * @var \Series
      *
-     * @ORM\ManyToOne(targetEntity="Series")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="series_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="Series", inversedBy="rates")
+     * @ORM\JoinColumn(name="series_id", referencedColumnName="id")
      */
     private $series;
 
     /**
      * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="rates")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 

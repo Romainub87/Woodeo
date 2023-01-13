@@ -48,10 +48,8 @@ class ExternalRating
     /**
      * @var \Series
      *
-     * @ORM\ManyToOne(targetEntity="Series")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="series_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="Series", inversedBy="rate")
+     * @ORM\JoinColumn(name="series_id", referencedColumnName="id")
      */
     private $series;
 

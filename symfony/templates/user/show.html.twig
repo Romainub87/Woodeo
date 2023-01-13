@@ -48,8 +48,8 @@
                             <img class=" rounded-h rounded-2xl w-full h-80" src="{{ serie.displayPoster }}">
                         </a>
                     </div>
-                    {% set avance = user.getAvancement(serie) %}
-                    {% set count = user.getEpisodeCount(serie) %}
+                    {% set avance = user.getAvancement(serie, em) %}
+                    {% set count = serie.getNumEpisodes(em) %}
                     {% if avance < count %}
                     <div class="mt-2">
                         <h1 class="text-center text-lg text-white">Episodes vus</h1>

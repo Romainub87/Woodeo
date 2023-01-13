@@ -104,6 +104,7 @@ class UserController extends AbstractController
             'user' => $user,
             'seriesList' => $liste_series,
             'rates'=>$usercritique,
+            'em' => $entityManager,
         ]);
     }
 
