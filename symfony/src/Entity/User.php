@@ -11,6 +11,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * User
@@ -153,8 +154,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setEmail(string $email): self
     {
-        $this->email = $email;
-
+        if($email != null && str_contains($email, "@")){
+            $this->email = $email;
+        }
         return $this;
     }
 
@@ -165,8 +167,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): self
     {
-        $this->password = $password;
-
+        if(strlen($password) >= 5){
+            $this->password = $password;
+        }
         return $this;
     }
 
