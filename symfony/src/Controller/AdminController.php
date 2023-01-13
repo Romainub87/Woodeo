@@ -2,13 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Form\FormError;
 
 class AdminController extends AbstractController
 {
@@ -17,8 +15,8 @@ class AdminController extends AbstractController
     {
         return $this->redirectToRoute('app_user_index');
 
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
+    //     return $this->render('admin/index.html.twig', [
+    //         'controller_name' => 'AdminController',
+    //     ]);
     }
 }

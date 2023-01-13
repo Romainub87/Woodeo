@@ -18,6 +18,7 @@ class DefaultController extends AbstractController
         $form = $this->createForm(SeriesSearchType::class, $search);
         $form->handleRequest($request);
 
+        //render the form
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
             'form' => $form->createView(),
