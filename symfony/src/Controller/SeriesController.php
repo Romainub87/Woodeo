@@ -28,7 +28,7 @@ class SeriesController extends AbstractController
         $series = $entityManager
             ->getRepository(Series::class)
             ->createQueryBuilder('s')
-            ->orderBy('s.title', 'ASC');
+            ->orderBy('s.poster', 'ASC');
 
         //filter by title
         if ($search->getTitre()) {
@@ -40,8 +40,8 @@ class SeriesController extends AbstractController
         //filter by genre
         if ($search->getGenre()) {
             $series
-                ->leftJoin('s.genre', 'g')
-                ->addSelect('g')
+                ->innerJoin('s.genre', 'g')
+                ->groupBy('s.id')
                 ->andWhere('g.id LIKE :genre')
                 ->setParameter('genre', $search->getGenre()->getId());
         }
@@ -57,13 +57,13 @@ class SeriesController extends AbstractController
                 break;
             case 3: // filter by rate decreasing
                 $series
-                    ->leftJoin('s.rate', 'er')
+                    ->innerJoin('s.rate', 'er')
                     ->groupBy('s.id')
                     ->orderBy('AVG(er.value)', 'DESC');
                 break;
             case 4: // filter by rate increasing
                 $series
-                    ->leftJoin('s.rate', 'er')
+                    ->innerJoin('s.rate', 'er')
                     ->groupBy('s.id')
                     ->orderBy('AVG(er.value)', 'ASC');
                 break;

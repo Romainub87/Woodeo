@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -269,29 +270,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEpisodeCount(Series $series): int
+    public function getAvancement(Series $series, EntityManager $em): int
     {
-
-        $episodeCount = 0;
-
-        foreach ($series->getSeasons() as $saison) {
-            $episodeCount += $saison->getEpisodes()->count() ;
-        }
-        return $episodeCount;
-    }
-
-    public function getAvancement(Series $series): int
-    {
-
-        $count = 0;
-
-        foreach ($this->getEpisode() as $ep) {
-            if ($ep->getSeason()->getSeries()->getId() == $series->getId()) {
-                $count += 1;
-            }
-        }
-
-        return $count;
+        $count = $em->createQueryBuilder()
+            ->select('COUNT(e.id)')
+            ->from(Episode::class, 'e')
+            ->innerjoin('e.user', 'u')
+            ->innerjoin('e.season', 'se')
+            ->innerjoin('se.series', 's')
+            ->where('u = :user')
+            ->andWhere('s.id = :series')
+            ->setParameter('user', $this)
+            ->setParameter('series', $series->getId());
+        return $count->getQuery()->getSingleScalarResult();
     }
 
     public function getUserIdentifier(): string { return $this->getEmail(); }

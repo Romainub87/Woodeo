@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 /**
  * Series
@@ -126,7 +128,7 @@ class Series
     /**
      * @var \ExternalRating
      *
-     * @ORM\OneToOne(targetEntity="ExternalRating", mappedBy="series")
+     * @ORM\OneToMany(targetEntity="ExternalRating", mappedBy="series")
      */
     private $rate;
 
@@ -415,7 +417,7 @@ class Series
 
     public function getRate(): ?ExternalRating
     {
-        return $this->rate;
+        return $this->rate->first();
     }
 
     public function setRate(?ExternalRating $rate): self
@@ -468,6 +470,17 @@ class Series
         }
 
         return $this;
+    }
+
+    public function getNumEpisodes(EntityManagerInterface $em): int
+    {
+        $qb = $em->createQueryBuilder();
+        $qb->select('COUNT(e.id)')
+            ->from(Season::class, 'se')
+            ->join('se.episodes', 'e')
+            ->where('se.series = :series')
+            ->setParameter('series', $this);
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
 }
