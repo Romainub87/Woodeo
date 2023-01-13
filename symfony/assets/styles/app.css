@@ -40,44 +40,6 @@ body {
 
 /* #endregion */
 
-
-/* #region style pagination */
-
-.pagination-h .pagination {
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  font-size: 45px;
-}
-
-.pagination-h .page {
-  display: none;
-}
-
-.pagination-h .current::before {
-  content: "Page ";
-}
-
-.pagination-b .pagination {
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  font-size: 45px;
-  margin-bottom: 25px;
-}
-
-.pagination-b .page {
-  display: none;
-}
-
-.pagination-b .pagination .current {
-  display: none;
-}
-
-/* #endregion */
-
 .carrousel {
   width: max-content;
 }
