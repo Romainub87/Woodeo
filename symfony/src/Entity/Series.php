@@ -450,6 +450,21 @@ class Series
         return $this->rates;
     }
 
+    public function getNumberRates(): int
+    {
+        return $this->rates->count();
+    }
+
+    public function getMoyRates(): int
+    {
+        $count = 0;
+        foreach ($this->rates as $rate) {
+            $count += $rate->getValue();
+        }
+
+        return $count/$this->getRates()->count();
+    }
+
     public function addRate(Rating $rate): self
     {
         if (!$this->rates->contains($rate)) {

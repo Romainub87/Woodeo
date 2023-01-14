@@ -61,17 +61,18 @@
                             <h1 class="text-md mx-1" >{{ actor.name }} /</h1>
                         {% endfor %}
                     </div>
-                    <a class="p-2" href="https://www.imdb.com/title/{{ series.imdb }}">
+                    <a class="p-2 " href="https://www.imdb.com/title/{{ series.imdb }}">
                         <p class="underline">Lien IMDB</p>
                     </a>
                     <div class=" flex flex-row flex-wrap ml-2 mt-5 mb-5 justify-between">
                         <div class="flex flex-col items-top mb-5">
+                            {% if series.getNumberRates != 0%}
                             <div class="flex mb-5">
                                 {% for i in range(0.5, 5) %}
-                                        {% if series.getRate.value|number_format/2 >= i %}
-                                            {% if series.getRate.value|number_format/2 > i %}
+                                        {% if series.getMoyRates/2 >= i %}
+                                            {% if series.getMoyRates/2 > i %}
                                                 <img class="h-12 w-12 mx-1" src="{{ asset('img/star_fill.png') }}">
-                                            {% elseif series.getRate.value|number_format/2 == i %}
+                                            {% elseif series.getMoyRates/2 == i %}
                                                 <img class="h-12 w-12 mx-1" src="{{ asset('img/star_demi.png') }}">
                                             {% endif %}
                                         {% else %}
@@ -80,8 +81,11 @@
                                         
             
                                 {% endfor %} 
-                                <h1 class="text-3xl mt-2 ml-5">{{series.getRate.value|number_format(2)/2}}/5</h1>
+                                <h1 class="text-3xl mt-2 ml-5">{{series.getMoyRates/2}}/5</h1>
                             </div>
+                            {% else %}
+                            <h1 class="text-3xl">Pas assez de notes</h1>
+                            {% endif %}
 
                             <div class="w-96 flex flex-col">
 
