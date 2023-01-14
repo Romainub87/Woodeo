@@ -89,53 +89,62 @@
                             {% endif %}
                            
 
-                            <div class="w-96 flex flex-col">
+                            <div style="width: 34rem;" class="flex flex-col">
 
-                                <div id="accordion-collapse" class="w-full bg-emerald-700" data-accordion="collapse">
+                                <div id="accordion-collapse" class="w-full" data-accordion="collapse">
                                     {% for season in seasons %}
-                                        <h2 id="accordion-collapse-heading-{{ season.number }}">
-                                            {% if season.getAvancement(app.user) <= 10 %}
-                                                <div class="w-full bg-gray-200 rounded-t">
-                                                    <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none " style="width: {{ season.getAvancement(app.user) }}%"> {{ season.getAvancement(app.user) }}%</div>
-                                                </div>
-                                            {% else %}
-                                                <div class="w-full bg-gray-200 rounded-t">
-                                                    <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none " style="width: {{ season.getAvancement(app.user) }}%"> {{ season.getAvancement(app.user) }}%</div>
-                                                </div>
-                                            {%endif%}
+                                    <h2 id="accordion-collapse-heading-{{ season.number }}">
+                                        {% if app.user %}
+                                        {% if season.getAvancement(app.user) <= 10 %}
+                                        <div class="w-full bg-gray-200 rounded-b-none rounded-2xl mt-2">
+                                            <div class="bg-blue-600 text-xs font-medium text-black text-center p-0.5 leading-none rounded-b-none rounded-2xl" style="width: {{ season.getAvancement(app.user) }}%"> {{ season.getAvancement(app.user) }}%</div>
+                                        </div>
+                                    {% else %}
+                                        <div class="w-full bg-gray-200 rounded-b-none rounded-2xl mt-2">
+                                            <div class="bg-blue-600 text-xs font-medium text-white text-center p-0.5 leading-none rounded-b-none rounded-2xl" style="width:{{ season.getAvancement(app.user) }}%"> {{ season.getAvancement(app.user) }}%</div>
+                                        </div>
+                                    {%endif%}
                                             {% if season.getNumberEpisode == season.getNumberEpisodesVus(app.user) %}
-                                                <button type="button" style="background-color:green" class="flex items-center justify-between p-5 w-full font-medium text-left border border-blue-500 text-gray-90 hover:bg-black focus:bg-black focus:hover:bg-black" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
-                                            {% endif %}
-                                            {% if season.getNumberEpisodesVus(app.user) == 0 %} 
-                                                <button type="button" style="background-color:red" class="flex items-center justify-between p-5 w-full font-medium text-left border border-blue-500 text-gray-90 hover:bg-black focus:bg-black focus:hover:bg-black" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
-                                            {% endif %}
-                                            {% if season.getNumberEpisodesVus(app.user) >= 1 and season.getNumberEpisodesVus(app.user) < season.getNumberEpisode %} 
-                                                <button type="button" style="background-color:orange" class="flex items-center justify-between p-5 w-full font-medium text-left border border-blue-500 text-gray-90 hover:bg-black focus:bg-black focus:hover:bg-black" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
+                                                <button type="button" style="background-color: green" class="bg-emerald-600 bg-opacity-80 mb-0.5 flex items-center justify-between p-2 w-full font-medium text-left text-gray-90 hover:bg-emerald-600 focus:bg-gray-600" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
+                                            {% elseif season.getNumberEpisodesVus(app.user) == 0 %} 
+                                                <button type="button" style="background-color: red"  class="bg-gray-600 bg-opacity-80 mb-0.5 flex items-center justify-between p-2 w-full font-medium text-left text-gray-90 hover:bg-gray-600 focus:bg-gray-600" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
+                                            {% else %} 
+                                                <button type="button" class="bg-yellow-400 bg-opacity-70 mb-0.5 flex items-center justify-between p-2 w-full font-medium text-left text-gray-90 hover:bg-opacity-80 focus:bg-gray-600" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
                                             {% endif %}
                                             <div class="flex items-center">
-                                                <span>Saison {{ season.number }} - {{season.getNumberEpisodesVus(app.user)}}/{{season.getNumberEpisode}} épisodes vus</span>                                      
+                                                <span>Saison {{ season.number }} - {{season.getNumberEpisodesVus(app.user)}}/{{season.getNumberEpisode}} épisodes vus</span>                                     
                                             </div>
+                                        {% else %}
+                                            <button type="button" class="bg-gray-600 bg-opacity-80 mb-0.5 flex rounded-3xl rounded-t-none items-center justify-between p-2 w-full font-medium text-left text-gray-90 hover:bg-opacity-90" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
+                                            <div class="flex items-center">
+                                                <span>Saison {{ season.number }} - {{season.getNumberEpisode}} épisodes</span>                                     
+                                            </div>
+                                        {% endif %}
+                                            
+                                            
                                             <svg data-accordion-icon class="w-6 h-6 shrink-0 rotate-180" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                                         </h2>
                                     <div id="accordion-collapse-body-{{ season.number }}" class="w-full hidden" aria-labelledby="accordion-collapse-heading-{{season.number}}">
-                                        <div class="flex flex-wrap w-full px-5 py-2 border border-blue-500 ">
-                                            <ul class="w-full text-xl">
-                                            {% for episod in season.episodes %}
-                                            
-                                                <li class="flex items-center px-3 py-2">
-                                                       
-                                                       {% if app.user %}
-                                                            {% if episod in app.user.getEpisode %}
-                                                            
-                                                                <a class="w-10 h-10" href="{{ path('app_episode_remove',  {'id': episod.id, 'user_id':app.user.id}) }} "><img class="w-10 h-10 bg-white rounded-3xl " src="{{ asset('img/check.png') }}"></a>  
-                                                            {% else %}
-                                                                <a class="w-10 h-10" href="{{ path('app_episode_add',  {'id': episod.id, 'user_id':app.user.id}) }} "><img class="min-w-10 w-10 h-10 bg-white rounded-3xl "  src="{{ asset('img/plus.png') }}"></a>  
-                                                            {% endif %}
-                                                        {% endif %}
-                                                        <h1 class="ml-10 w-64 text-left">{{ episod.number }} - {{ episod.title }}</h1>
+                                        <div class="flex flex-wrap w-full px-4">
+                                            <ul class="w-full text-medium">
+                                            {% if app.user %}
+                                                {% for episod in season.episodes %}
+                                                    {% if episod in app.user.getEpisode %}
+                                                        <li class="flex items-center pr-0 py-0 bg-emerald-600 bg-opacity-60 rounded-3xl mb-0.5">
+                                                        <a class="w-8 h-8" href="{{ path('app_episode_remove',  {'id': episod.id, 'user_id':app.user.id}) }} "><i class="fa-solid fa-square-check text-2xl pl-3"></i></a>  
+                                                    {% else %}
+                                                        <li class="flex items-center pr-0 py-0 bg-gray-600 bg-opacity-60 rounded-3xl mb-0.5">
+                                                        <a class="w-8 h-8" id="test" href="{{ path('app_episode_add',  {'id': episod.id, 'user_id':app.user.id}) }} "><i class="fa-regular fa-square text-2xl pl-3 hover:text-emerald-500"></i></a>  
+                                                    {% endif %}
+                                                    <h1 style="font-size: 0.935rem" class="mx-2 w-full text-left">{{ episod.number }} - {{ episod.title }}</h1>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% for episod in season.episodes %}
+                                                    <li class="flex items-center pr-0 py-0 bg-gray-600 bg-opacity-60 rounded-3xl mb-0.5">
+                                                    <h1 class="mx-2 w-full text-left">{{ episod.number }} - {{ episod.title }}</h1>
+                                                {% endfor %}
                                                 </li>
-                                                
-                                            {% endfor %}
+                                            {% endif %}
                                             </ul>
                                         </div>
                                     </div>
