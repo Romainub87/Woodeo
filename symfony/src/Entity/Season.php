@@ -108,6 +108,11 @@ class Season
         return $nbEpVus;
     }
 
+    public function getAvancement(User $user): int
+    {
+        return ($this->getNumberEpisodesVus($user)*100)/$this->getNumberEpisode();
+    }
+
     public function addEpisode(Episode $episode): self
     {
         if (!$this->episodes->contains($episode)) {
