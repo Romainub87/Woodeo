@@ -123,6 +123,7 @@ class RatingController extends AbstractController
         // Render the form
         return $this->render('rating/rates.html.twig', [
             'seriesRates' => $serie->getRates(),
+            'series' => $serie,
         ]);
     }
 }
