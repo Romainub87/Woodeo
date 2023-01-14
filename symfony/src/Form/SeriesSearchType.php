@@ -5,11 +5,12 @@ namespace App\Form;
 use App\Entity\SeriesSearch;
 use App\Entity\Genre;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class SeriesSearchType extends AbstractType
 {
@@ -40,7 +41,40 @@ class SeriesSearchType extends AbstractType
                     '❤️‍🩹 Pires notes' => 4,
                 ],
             ])
-            #->add('date', DateType::class)
+            ->add('dateMin', IntegerType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'min' => 1900,
+                    'max' => date('Y'),
+                ],
+            ])
+            ->add('dateMax', IntegerType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'min' => 1900,
+                    'max' => date('Y'),
+                ],
+            ])
+            ->add('noteMin', NumberType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'min' => 0,
+                    'max' => 5,
+                    'step' => 0.5,
+                ],
+            ])
+            ->add('noteMax', NumberType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'min' => 0,
+                    'max' => 5,
+                    'step' => 0.5,
+                ],
+            ])
         ;
     }
 

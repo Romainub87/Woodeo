@@ -28,7 +28,7 @@ class SeriesController extends AbstractController
         $series = $entityManager
             ->getRepository(Series::class)
             ->createQueryBuilder('s')
-            ->orderBy('s.poster', 'ASC');
+            ->orderBy('s.title', 'ASC');
 
         //filter by title
         if ($search->getTitre()) {
@@ -46,6 +46,12 @@ class SeriesController extends AbstractController
                 ->setParameter('genre', $search->getGenre()->getId());
         }
 
+        if ($search->getNoteMin() || $search->getNoteMax() || $search->getTrier() == 3 || $search->getTrier() == 4) {
+            $series
+                ->innerJoin('s.rate', 'ra')
+                ->groupBy('s.id');
+        }
+
         switch($search->getTrier()){
             case 1: // filter by year of start decreasing
                 $series
@@ -57,25 +63,46 @@ class SeriesController extends AbstractController
                 break;
             case 3: // filter by rate decreasing
                 $series
-                    ->innerJoin('s.rate', 'er')
-                    ->groupBy('s.id')
-                    ->orderBy('AVG(er.value)', 'DESC');
+                    ->orderBy('AVG(ra.value)', 'DESC');
                 break;
             case 4: // filter by rate increasing
                 $series
-                    ->innerJoin('s.rate', 'er')
-                    ->groupBy('s.id')
-                    ->orderBy('AVG(er.value)', 'ASC');
+                    ->orderBy('AVG(ra.value)', 'ASC');
                 break;
             default:
                 break;
+        }
+
+        if ($search->getDateMin()) {
+            $series
+                ->andWhere('s.yearStart >= :dateMin')
+                ->setParameter('dateMin', $search->getDateMin());
+        }
+
+        if ($search->getDateMax()) {
+            $series
+                ->andWhere('s.yearEnd <= :dateMax')
+                ->setParameter('dateMax', $search->getDateMax());
+        }
+
+        if ($search->getNoteMin()) {
+            $series
+                ->andHaving('AVG(ra.value) >= :noteMin')
+                ->setParameter('noteMin', (($search->getNoteMin()*2)-0.5));
+        }
+
+        if ($search->getNoteMax()) {
+            $series
+                ->andHaving('AVG(ra.value) <= :noteMax')
+                ->setParameter('noteMax', $search->getNoteMax()*2);
         }
 
         // pagination
         $listeSeries = $paginator->paginate(
             $series,
             $request->query->getInt('page', 1),
-            8
+            8,
+            ['wrap-queries' => true, 'distinct' => false]
         );
 
         $listeSeries->setTemplate('knp_paginator/sliding.html.twig');
