@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -415,12 +414,13 @@ class Series
         return $this;
     }
 
-    public function getRate(): ?ExternalRating
+    public function getRate(): ?Collection
     {
-        return $this->rate->first();
+        return $this->rate;
     }
 
-    public function setRate(?ExternalRating $rate): self
+    # TODO: fix this
+    public function setRate(?Collection $rate): self
     {
         // unset the owning side of the relation if necessary
         if ($rate === null && $this->rate !== null) {
@@ -452,17 +452,27 @@ class Series
 
     public function getNumberRates(): int
     {
-        return $this->rates->count();
+        $externals = 0;
+        foreach ($this->getRate() as $rate) {
+            $externals += $rate->getVotes();
+        }
+        return $this->rates->count()+$externals;
     }
 
     public function getMoyRates(): int
     {
+        $notes = 0;
         $count = 0;
+        foreach ($this->getRate() as $rate) {
+            $notes += floatval($rate->getValue())*$rate->getVotes();
+            $count += $rate->getVotes();
+        }
         foreach ($this->rates as $rate) {
-            $count += $rate->getValue();
+            $notes += $rate->getValue();
+            $count++;
         }
 
-        return $count/$this->getRates()->count();
+        return round($notes/$count);
     }
 
     public function addRate(Rating $rate): self

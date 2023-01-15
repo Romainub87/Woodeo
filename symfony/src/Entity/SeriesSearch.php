@@ -23,7 +23,30 @@ class SeriesSearch
      */
     private $date;
 
+    /**
+     * @var int|null
+     */
     private $Trier;
+
+    /**
+     * @var int|null
+     */
+    private $dateMin;
+
+    /**
+     * @var int|null
+     */
+    private $dateMax;
+
+    /**
+     * @var float|null
+     */
+    private $noteMin;
+
+    /**
+     * @var float|null
+     */
+    private $noteMax;
 
     public function getTitre(): ?string
     {
@@ -69,4 +92,49 @@ class SeriesSearch
         $this->Trier = $Trier;
         return $this;
     }
+
+    public function getDateMin(): ?int
+    {
+        return $this->dateMin;
+    }
+
+    public function setDateMin(int $dateMin): SeriesSearch
+    {
+        $this->dateMin = $dateMin;
+        return $this;
+    }
+
+    public function getDateMax(): ?int
+    {
+        return $this->dateMax;
+    }
+
+    public function setDateMax(int $dateMax): SeriesSearch
+    {
+        $this->dateMax = $dateMax;
+        return $this;
+    }
+
+    public function getNoteMin(): ?float
+    {
+        return $this->noteMin;
+    }
+
+    public function setNoteMin(float $noteMin): SeriesSearch
+    {
+        $this->noteMin = $noteMin;
+        return $this;
+    }
+
+    public function getNoteMax(): ?float
+    {
+        return $this->noteMax;
+    }
+
+    public function setNoteMax(float $noteMax): SeriesSearch
+    {
+        $this->noteMax = $noteMax;
+        return $this;
+    }
+
 }
