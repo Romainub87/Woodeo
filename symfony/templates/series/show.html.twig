@@ -81,7 +81,10 @@
                                         
             
                                 {% endfor %} 
-                                <h1 class="text-3xl mt-2 ml-5">({{ series.getNumberRates }} votes)</h1>
+                                <div class="flex items-center">
+                                <h1 class=" text-3xl ml-5">{{series.getMoyRates/2}}/5 </h1>
+                                <h1 class="text-sm mt-2 ml-2">({{ series.getNumberRates }} votes)</h1>
+                                </div>
                             </div>
                             {% else %}
                             <h1 class="text-2xl mb-5">Pas assez de notes</h1>
@@ -100,9 +103,9 @@
                                                 <button type="button" class="bg-gray-600 rounded-3xl bg-opacity-80 mb-0.5 flex items-center justify-between p-2 w-full font-medium text-left text-gray-90 hover:bg-gray-600" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
                                             {% else %} 
                                                 <div class="w-full bg-yellow-400 bg-opacity-70 rounded-t-3xl">
-                                                    <div class="bg-blue-600 text-xs font-medium text-white text-center leading-none  rounded-tl-3xl" style="width:{{ season.getAvancement(app.user) }}%"> {{ season.getAvancement(app.user) }}%</div>
+                                                    <div class="bg-blue-600 text-xs font-medium text-white text-center leading-none  rounded-t-3xl" style="width:{{ season.getAvancement(app.user) }}%"> {{ season.getAvancement(app.user) }}%</div>
                                                 </div>
-                                                <button type="button" class="bg-yellow-400 rounded-b-2xl bg-opacity-70 mb-0.5 flex items-center justify-between p-2 pt-0.5 w-full font-medium text-left text-gray-90 hover:bg-opacity-80" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
+                                                <button type="button" class="bg-yellow-400 rounded-b-xl bg-opacity-70 mb-0.5 flex items-center justify-between p-2 pt-0.5 w-full font-medium text-left text-gray-90 hover:bg-opacity-80" data-accordion-target="#accordion-collapse-body-{{ season.number }}" aria-expanded="true" aria-controls="accordion-collapse-body-{{ season.number }}">
                                             {% endif %}
                                             <div class="flex items-center">
                                                 <span>Saison {{ season.number }} - {{season.getNumberEpisodesVus(app.user)}}/{{season.getNumberEpisode}} épisodes vus</span>                                     
