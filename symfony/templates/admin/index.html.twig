@@ -73,9 +73,13 @@
                     </div>
                 </div>
             </div>
-            <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('app_series_new', {'imdbId' :response.imdbID}) }}">
-                Ajouter
-            </a>
+            {% if already_added %}
+                <h1>La série est déjà dans la base de données</h1>
+                {% else %}
+                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('app_series_new', {'imdbId' :response.imdbID}) }}">
+                    Ajouter
+                </a>
+            {% endif %}
         {% else %}
             <h1>La série n'a pas été trouvé</h>
         {% endif %}

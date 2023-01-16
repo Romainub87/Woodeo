@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use App\Entity\Series;
 
 class AdminController extends AbstractController
 {
@@ -22,8 +23,10 @@ class AdminController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) { 
             $response = $client->request('GET', 'http://www.omdbapi.com/?t='.$form->get('title')->getData().'&apikey=a2996c2f&type=series')->toArray();
+            $already_added = $doctrine->getRepository(Series::class)->findOneBy(['imdb' => $response['imdbID']]);
             return $this->render('admin/index.html.twig', [
                 'response' => $response,
+                'already_added' => $already_added,
                 'form' => $form->createView(),
             ]);
         }
@@ -31,6 +34,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/index.html.twig', [
             'form' => $form->createView(),  
+            'already_added' => null,
             'response' => null,
         ]);
     }
