@@ -131,10 +131,6 @@ class UserController extends AbstractController
             $user->setPassword($passHash);
             $entityManager->flush();
 
-
-
-
-
             return $this->redirectToRoute('app_user_show', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
         }
 
