@@ -48,6 +48,7 @@
                 {% if app.user.isAdmin() %}
                     <th>Incarner</th>
                     <th>Administrateur</th>
+                    <th>Reset</th>
                 {% endif %}
             </tr>
         </thead>
@@ -77,6 +78,9 @@
                         {% else %}
                         <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
                         {% endif %}
+                    </td>
+                    <td class="border">
+                        <a href="{{ path('app_user_reset_mdp', {'id':user.id})}} "><button class="bg-red-500 p-2 rounded-xl">Reset MDP</button></a>
                     </td>
                 {% endif %}
             </tr>
