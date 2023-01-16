@@ -185,6 +185,20 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_user_show', ['id'=> $user->getId()], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{id}/remove_follower', name: 'app_user_remove_follower', methods: ['GET', 'POST'])]
+    public function remove_follower(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $this->getUser()->removeFollowing($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_show', ['id'=> $user->getId()], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}/add_follow', name: 'app_user_add_follow', methods: ['GET', 'POST'])]
     public function add_follow(User $user, EntityManagerInterface $entityManager): Response
     {
