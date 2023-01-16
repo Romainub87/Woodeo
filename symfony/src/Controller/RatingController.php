@@ -59,6 +59,7 @@ class RatingController extends AbstractController
 
         // If form is submitted and valid, persist the rating
         if (($form->isSubmitted() && $form->isValid())) {
+            $rating->setAccepted(false);
             $rating->setValue(intval(round($rating->getValue()*2)));
             $rating->setUser($this->getUser());
             $rating->setSeries($series);

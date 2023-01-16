@@ -65,6 +65,11 @@ class Rating
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $accepted;
+
     public function __construct() 
     {
         $this->date = new \DateTime();
@@ -134,6 +139,19 @@ class Rating
 
         return $this;
     }
+
+    public function isAccepted(): ?bool
+    {
+        return $this->accepted;
+    }
+
+    public function setAccepted(bool $accepted): self
+    {
+        $this->accepted = $accepted;
+
+        return $this;
+    }
+
 
 
 }
