@@ -141,6 +141,36 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/add_follower', name: 'app_user_add_follower', methods: ['GET', 'POST'])]
+    public function add_follower(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $this->getUser()->addFollow($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_show', ['id'=> $user->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/add_follow', name: 'app_user_add_follow', methods: ['GET', 'POST'])]
+    public function add_follow(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $this->getUser()->addFollower($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_show', ['id'=> $user->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+
+
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {

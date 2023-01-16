@@ -85,6 +85,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $country;
 
     /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="following")
+     */
+    private $followers;
+    // followers = ceux qui me follow
+ 
+ 
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="followers")
+     * @ORM\JoinTable(name="following",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="following", referencedColumnName="id")}
+     *      )
+     */
+    private $following;
+    // following = ceux que je follow
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Episode", inversedBy="user")
@@ -129,6 +146,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->episode = new \Doctrine\Common\Collections\ArrayCollection();
         $this->series = new \Doctrine\Common\Collections\ArrayCollection();
         $this->rates = new ArrayCollection();
+        $this->followers = new ArrayCollection();
+        $this->following = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -329,5 +348,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    public function addFollower(User $follower): self
+    {
+        if (!$this->followers->contains($follower)) {
+            $this->followers->add($follower);
+            $follower->addFollowing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollower(User $follower): self
+    {
+        if ($this->followers->removeElement($follower)) {
+            $follower->removeFollowing($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFollowing(): Collection
+    {
+        return $this->following;
+    }
+
+    public function addFollowing(User $following): self
+    {
+        if (!$this->following->contains($following)) {
+            $this->following->add($following);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowing(User $following): self
+    {
+        $this->following->removeElement($following);
+
+        return $this;
+    }
+
+   
+   
 
 }
