@@ -508,4 +508,15 @@ class Series
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    public function getNumberSeasonView(User $user): int
+    {
+        $nb = 0;
+        foreach($this->seasons as $season){
+            if($season->getAvancement($user) >= $season->getNumberEpisode()){
+                $nb ++;
+            }
+        }
+        return $nb;
+    }
+
 }
