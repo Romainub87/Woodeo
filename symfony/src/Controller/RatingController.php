@@ -139,4 +139,42 @@ class RatingController extends AbstractController
             'dateActuelle' => $dateActuelle,
         ]);
     }
+
+    #[Route('rating_gen/{id}', name: 'app_rating_gen', methods: ['GET', 'POST'])]
+    public function rating_gen(EntityManagerInterface $entityManager)
+    {
+        $series = $entityManager
+            ->getRepository(Series::class)
+            ->findAll();
+
+        //get in an array all users where email contains AutoTesteur
+        $users = $entityManager
+            ->getRepository(User::class)
+            ->findAll();
+
+        $userBot = [];
+        foreach ($users as $user) {
+            if (strpos($user->getEmail(), 'AutoTesteur') !== false) {
+                $userBot[] = $user;
+            }
+        }
+        
+        //create 100 ratings
+        for($i = 0; $i < 10000; $i++){
+            $user = $userBot[rand(0, count($userBot)-1)];
+            $serie = $series[rand(0, count($series)-1)];
+            $rating = new Rating();
+            $rating->setAccepted(true);
+            $rating->setValue(rand(0, 10));
+            $rating->setDate(new \DateTime());
+            $rating->setComment("Commentaire de test");
+            $user->addRate($rating);
+            $serie->addRate($rating);
+            $entityManager->persist($rating);
+        }
+        $entityManager->flush();
+
+        return $this->render('rating/rating_gen.html.twig', [
+        ]);
+    }
 }
