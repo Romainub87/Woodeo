@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 /**
  * Series
@@ -126,7 +128,7 @@ class Series
     /**
      * @var \ExternalRating
      *
-     * @ORM\OneToOne(targetEntity="ExternalRating", mappedBy="series")
+     * @ORM\OneToMany(targetEntity="ExternalRating", mappedBy="series")
      */
     private $rate;
 
@@ -148,6 +150,7 @@ class Series
         $this->genre = new \Doctrine\Common\Collections\ArrayCollection();
         $this->seasons = new ArrayCollection();
         $this->rates = new ArrayCollection();
+        $this->rate = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -413,12 +416,13 @@ class Series
         return $this;
     }
 
-    public function getRate(): ?ExternalRating
+    public function getRate(): ?Collection
     {
         return $this->rate;
     }
 
-    public function setRate(?ExternalRating $rate): self
+    # TODO: fix this
+    public function setRate(?Collection $rate): self
     {
         // unset the owning side of the relation if necessary
         if ($rate === null && $this->rate !== null) {
@@ -448,6 +452,31 @@ class Series
         return $this->rates;
     }
 
+    public function getNumberRates(): int
+    {
+        $externals = 0;
+        foreach ($this->getRate() as $rate) {
+            $externals += $rate->getVotes();
+        }
+        return $this->rates->count()+$externals;
+    }
+
+    public function getMoyRates(): int
+    {
+        $notes = 0;
+        $count = 0;
+        foreach ($this->getRate() as $rate) {
+            $notes += floatval($rate->getValue())*$rate->getVotes();
+            $count += $rate->getVotes();
+        }
+        foreach ($this->rates as $rate) {
+            $notes += $rate->getValue();
+            $count++;
+        }
+
+        return round($notes/$count);
+    }
+
     public function addRate(Rating $rate): self
     {
         if (!$this->rates->contains($rate)) {
@@ -468,6 +497,39 @@ class Series
         }
 
         return $this;
+    }
+
+    public function getNumEpisodes(EntityManagerInterface $em): int
+    {
+        $qb = $em->createQueryBuilder();
+        $qb->select('COUNT(e.id)')
+            ->from(Season::class, 'se')
+            ->join('se.episodes', 'e')
+            ->where('se.series = :series')
+            ->setParameter('series', $this);
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getNumberSeasonView(User $user, EntityManagerInterface $em): int
+    {
+        /* TODO: $result = $em->createQueryBuilder()
+            ->select('COUNT(se)')
+            ->from(User::class, 'u')
+            ->innerJoin('u.episode', 'ep')
+            ->innerJoin('ep.season', 'se')
+            ->where('u = :user')
+            ->setParameter('user', $user)
+            ->andWhere('se.series = :series')
+            ->setParameter('series', $this)
+            ->groupBy('se.id');
+        return $result->getQuery()->getSingleScalarResult(); */
+        $nb = 0;
+        foreach($this->seasons as $season){
+            if($season->getAvancement($user) >= $season->getNumberEpisode()){
+                $nb ++;
+            }
+        }
+        return $nb;
     }
 
 }

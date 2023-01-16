@@ -62,10 +62,8 @@ class Episode
     /**
      * @var \Season
      *
-     * @ORM\ManyToOne(targetEntity="Season")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="season_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="Season", inversedBy="episodes")
+     * @ORM\JoinColumn(name="season_id", referencedColumnName="id")
      */
     private $season;
 

@@ -59,6 +59,8 @@ class RatingController extends AbstractController
 
         // If form is submitted and valid, persist the rating
         if (($form->isSubmitted() && $form->isValid())) {
+            $rating->setAccepted(false);
+            $rating->setValue(intval(round($rating->getValue()*2)));
             $rating->setUser($this->getUser());
             $rating->setSeries($series);
             $entityManager->persist($rating);
@@ -77,9 +79,18 @@ class RatingController extends AbstractController
     #[Route('/{id}', name: 'app_rating_show', methods: ['GET'])]
     public function show(Rating $rating): Response
     {
+        $dateActuelle = new \DateTime();
+        $interval = $rating->getDate()->diff($dateActuelle);
+        if ($interval->format("%a") > 0) {
+            $interval = $interval->format("Il y a %a jours");
+        }
+        else {
+            $interval = $interval->format("Il y a %H h %I m et %S s");
+        }
         // Render the form
         return $this->render('rating/show.html.twig', [
             'rating' => $rating,
+            'interval' => $interval,
         ]);
     }
 
@@ -120,9 +131,12 @@ class RatingController extends AbstractController
     #[Route('/rates/{id}', name: 'app_rating_rates', methods: ['GET'])]
     public function rates(Series $serie): Response
     {
+        $dateActuelle = new \DateTime();
         // Render the form
         return $this->render('rating/rates.html.twig', [
             'seriesRates' => $serie->getRates(),
+            'series' => $serie,
+            'dateActuelle' => $dateActuelle,
         ]);
     }
 

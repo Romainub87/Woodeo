@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -84,6 +85,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $country;
 
     /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="following")
+     */
+    private $followers;
+    // followers = ceux qui me follow
+ 
+ 
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="followers")
+     * @ORM\JoinTable(name="following",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="following", referencedColumnName="id")}
+     *      )
+     */
+    private $following;
+    // following = ceux que je follow
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Episode", inversedBy="user")
@@ -116,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var \ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Rating", mappedBy="series")
+     * @ORM\OneToMany(targetEntity="Rating", mappedBy="user")
      */
     private $rates;
 
@@ -128,6 +146,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->episode = new \Doctrine\Common\Collections\ArrayCollection();
         $this->series = new \Doctrine\Common\Collections\ArrayCollection();
         $this->rates = new ArrayCollection();
+        $this->followers = new ArrayCollection();
+        $this->following = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +183,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): ?string
     {
         return $this->password;
+    }
+
+    public function getClearPassword(): ?string
+    {
+        return password_verify($this->password,'auto');
     }
 
     public function setPassword(string $password): self
@@ -269,29 +294,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEpisodeCount(Series $series): int
+    public function getAvancement(Series $series, EntityManager $em): int
     {
-
-        $episodeCount = 0;
-
-        foreach ($series->getSeasons() as $saison) {
-            $episodeCount += $saison->getEpisodes()->count() ;
-        }
-        return $episodeCount;
-    }
-
-    public function getAvancement(Series $series): int
-    {
-
-        $count = 0;
-
-        foreach ($this->getEpisode() as $ep) {
-            if ($ep->getSeason()->getSeries()->getId() == $series->getId()) {
-                $count += 1;
-            }
-        }
-
-        return $count;
+        $count = $em->createQueryBuilder()
+            ->select('COUNT(e.id)')
+            ->from(Episode::class, 'e')
+            ->innerjoin('e.user', 'u')
+            ->innerjoin('e.season', 'se')
+            ->innerjoin('se.series', 's')
+            ->where('u = :user')
+            ->andWhere('s.id = :series')
+            ->setParameter('user', $this)
+            ->setParameter('series', $series->getId());
+        return $count->getQuery()->getSingleScalarResult();
     }
 
     public function getUserIdentifier(): string { return $this->getEmail(); }
@@ -333,5 +348,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFollowers(): Collection
+    {
+        return $this->followers;
+    }
+
+    public function addFollower(User $follower): self
+    {
+        if (!$this->followers->contains($follower)) {
+            $this->followers->add($follower);
+            $follower->addFollowing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollower(User $follower): self
+    {
+        if ($this->followers->removeElement($follower)) {
+            $follower->removeFollowing($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFollowing(): Collection
+    {
+        return $this->following;
+    }
+
+    public function addFollowing(User $following): self
+    {
+        if (!$this->following->contains($following)) {
+            $this->following->add($following);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowing(User $following): self
+    {
+        $this->following->removeElement($following);
+
+        return $this;
+    }
+
+   
+   
 
 }

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block body %}
+
+<div class="text-white text-xl">
+    <a class="bg-blue-800 hover:bg-blue-700 text-lg text-white p-2 ml-2 px-5 rounded-2xl" href="{{ path('app_user_show', {'id': app.user.id}) }}">Retour au profil</a>
+    {% if followers|length == 1 %}
+    <h1 class="m-5 text-2xl font-semibold">Vous avez {{ followers|length}} follower </h1>
+    {% elseif followers|length == 0 %}
+    <h1 class="m-5 text-2xl font-semibold">Vous n'avez pas de followers </h1>
+    {% else %}
+    <h1 class="m-5 text-2xl font-semibold">Vous avez {{ followers|length}} followers </h1>
+    {% endif %}
+    <div class="flex flex-col m-5 ml-10">
+        {% for follow in followers %}
+            <li class="flex"><h1 class="font-semibold mr-2">- {{ follow.name}}</h1> ({{follow.email}}) </li>
+        {% endfor %}
+    </div>
+
+
+    
+    
+
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Season
@@ -88,9 +89,28 @@ class Season
         return $this->episodes;
     }
 
-    public function numberEpisode(): int
+    public function getNumberEpisode(): int
     {
         return $this->episodes->count();
+    }
+
+    public function getNumberEpisodesVus(User $user): int
+    {
+
+        $nbEpVus = $this->episodes->count();
+
+        foreach ($this->episodes as $ep) {
+            if (!$user->getEpisode()->contains($ep)){
+                $nbEpVus -= 1;
+            }
+        }
+
+        return $nbEpVus;
+    }
+
+    public function getAvancement(User $user): int
+    {
+        return ($this->getNumberEpisodesVus($user)*100)/$this->getNumberEpisode();
     }
 
     public function addEpisode(Episode $episode): self

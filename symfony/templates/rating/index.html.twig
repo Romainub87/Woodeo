@@ -1,4 +1,4 @@
-{#% extends 'base.html.twig' %#}
+{% extends 'base.html.twig' %}
 
 {% block title %}Rating index{% endblock %}
 
@@ -7,7 +7,7 @@
 
     <table class="table">
         <thead>
-            <tr>
+            <tr class=" flex flex-col justify-around">
                 <th>Id</th>
                 <th>Value</th>
                 <th>Comment</th>
@@ -35,5 +35,5 @@
         </tbody>
     </table>
 
-    {# <a href="{{ path('app_rating_new') }}">Create new</a> #}
+     <a href="{{ path('app_rating_new') }}">Create new</a> 
 {% endblock %}

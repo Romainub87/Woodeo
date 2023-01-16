@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -40,10 +41,16 @@ class SeriesController extends AbstractController
         //filter by genre
         if ($search->getGenre()) {
             $series
-                ->leftJoin('s.genre', 'g')
-                ->addSelect('g')
+                ->innerJoin('s.genre', 'g')
+                ->groupBy('s.id')
                 ->andWhere('g.id LIKE :genre')
                 ->setParameter('genre', $search->getGenre()->getId());
+        }
+
+        if ($search->getNoteMin() || $search->getNoteMax() || $search->getTrier() == 3 || $search->getTrier() == 4) {
+            $series
+                ->innerJoin('s.rate', 'ra')
+                ->groupBy('s.id');
         }
 
         switch($search->getTrier()){
@@ -57,25 +64,46 @@ class SeriesController extends AbstractController
                 break;
             case 3: // filter by rate decreasing
                 $series
-                    ->leftJoin('s.rate', 'er')
-                    ->groupBy('s.id')
-                    ->orderBy('AVG(er.value)', 'DESC');
+                    ->orderBy('AVG(ra.value)', 'DESC');
                 break;
             case 4: // filter by rate increasing
                 $series
-                    ->leftJoin('s.rate', 'er')
-                    ->groupBy('s.id')
-                    ->orderBy('AVG(er.value)', 'ASC');
+                    ->orderBy('AVG(ra.value)', 'ASC');
                 break;
             default:
                 break;
+        }
+
+        if ($search->getDateMin()) {
+            $series
+                ->andWhere('s.yearStart >= :dateMin')
+                ->setParameter('dateMin', $search->getDateMin());
+        }
+
+        if ($search->getDateMax()) {
+            $series
+                ->andWhere('s.yearEnd <= :dateMax')
+                ->setParameter('dateMax', $search->getDateMax());
+        }
+
+        if ($search->getNoteMin()) {
+            $series
+                ->andHaving('AVG(ra.value) >= :noteMin')
+                ->setParameter('noteMin', (($search->getNoteMin()*2)-0.5));
+        }
+
+        if ($search->getNoteMax()) {
+            $series
+                ->andHaving('AVG(ra.value) <= :noteMax')
+                ->setParameter('noteMax', $search->getNoteMax()*2);
         }
 
         // pagination
         $listeSeries = $paginator->paginate(
             $series,
             $request->query->getInt('page', 1),
-            8
+            8,
+            ['wrap-queries' => true, 'distinct' => false]
         );
 
         $listeSeries->setTemplate('knp_paginator/sliding.html.twig');
@@ -85,6 +113,37 @@ class SeriesController extends AbstractController
             'series' => $listeSeries,
             'SeriesSearchForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/new/{imdbId}', name: 'app_series_new', methods: ['GET', 'POST'])]
+    public function new(string $imdbId, EntityManagerInterface $entityManager, HttpClientInterface $client): Response
+    {
+        $response = $client->request('GET', 'http://www.omdbapi.com/?i='.$imdbId.'&apikey=a2996c2f&type=series')->toArray();
+        $trailer = $client->request('GET', 'https://imdb-api.com/en/API/YoutubeTrailer/k_g0p41mv2/'.$imdbId)->toArray();
+        $serie = new Series();
+        $serie->setTitle($response['Title']);
+        $serie->setPlot($response['Plot']);
+        $serie->setImdb($response['imdbID']);
+        $serie->setPoster(file_get_contents($response['Poster']));
+        $director = $response['Director'];
+        if ($director == 'N/A') {
+            $serie->setDirector(null);
+        } else {
+            $serie->setDirector($director);
+        }
+        $serie->setYoutubeTrailer($trailer['videoUrl']);
+        $serie->setAwards($response['Awards']);
+        $serie->setYearStart(intval(explode('–', $response['Year'])[0]));
+        $yearEnd = explode('–', $response['Year'])[1];
+        if ($yearEnd == 0) {
+            $serie->setYearEnd(null);
+        } else {
+            $serie->setYearEnd(intval($yearEnd));
+        }
+        $entityManager->persist($serie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_dashboard');
     }
 
     #[Route('/random', name: 'app_series_random')]
