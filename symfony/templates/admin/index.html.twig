@@ -73,9 +73,9 @@
                     </div>
                 </div>
             </div>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick="parent.location='#'">
+            <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ path('app_series_new', {'imdbId' :response.imdbID}) }}">
                 Ajouter
-            </button>
+            </a>
         {% else %}
             <h1>La série n'a pas été trouvé</h>
         {% endif %}

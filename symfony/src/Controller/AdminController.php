@@ -18,21 +18,20 @@ class AdminController extends AbstractController
         $form = $this->createFormBuilder()
             ->add('title', TextType::class)
             ->getForm();
-
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) { 
-            $response = $client->request('GET', 'http://www.omdbapi.com/?t='.$form->get('title')->getData().'&apikey=a2996c2f&type=series');
+            $response = $client->request('GET', 'http://www.omdbapi.com/?t='.$form->get('title')->getData().'&apikey=a2996c2f&type=series')->toArray();
             return $this->render('admin/index.html.twig', [
-                'response' => $response->toArray(),
-                'form' => $form->createView(),  
+                'response' => $response,
+                'form' => $form->createView(),
             ]);
         }
         
 
         return $this->render('admin/index.html.twig', [
             'form' => $form->createView(),  
-            'response' => '',
+            'response' => null,
         ]);
     }
 }
