@@ -5,7 +5,7 @@
 <div class="w-4/5 mx-auto text-white">
     <h1 class="text-3xl font-bold mb-5">Liste des critiques de {{ series.title}}</h1>
 
-        <div class="flex w-full">
+        <div class="flex flex-row-reverse w-max flex-wrap">
         {% for r in seriesRates %}
             <div class="bg-blue-800 w-max m-2 rounded-lg">
                 <h1 class="text-sm p-2 pb-1">Ajouté le {{ r.date ? r.date|date('d-m-Y') : '' }}</h1>
