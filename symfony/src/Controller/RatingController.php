@@ -30,6 +30,11 @@ class RatingController extends AbstractController
     #[Route('/dashboard', name: 'app_rating_accepting', methods: ['GET'])]
     public function accepting(EntityManagerInterface $entityManager): Response
     {
+        // only admin can accept ratings
+        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+            return $this->redirectToRoute('app_rating_index');
+        }
+
         $ratings = $entityManager
             ->getRepository(Rating::class)
             ->createQueryBuilder('r')
@@ -46,6 +51,9 @@ class RatingController extends AbstractController
         ]);
     }
 
+    /**
+     * Accept the rate to be show by the admin
+     */
     #[Route('/{id}/accept', name: 'app_rating_accept', methods: ['GET'])]
     public function accept(Rating $r,EntityManagerInterface $entityManager): Response
     {
@@ -55,6 +63,9 @@ class RatingController extends AbstractController
         return $this->redirectToRoute('app_rating_accepting', [], Response::HTTP_SEE_OTHER);
     }
 
+    /**
+     * Delete the rate, by the admin
+     */
     #[Route('/{id}/refuse', name: 'app_rating_refuse', methods: ['GET'])]
     public function refuse(Rating $r,EntityManagerInterface $entityManager): Response
     {
