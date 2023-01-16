@@ -13,6 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Entity\Genre;
+use App\Entity\Actor;
+use App\Entity\ExternalRating;
+use App\Entity\ExternalRatingSource;
+use App\Entity\Source;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -135,11 +140,43 @@ class SeriesController extends AbstractController
         $serie->setAwards($response['Awards']);
         $serie->setYearStart(intval(explode('–', $response['Year'])[0]));
         $yearEnd = explode('–', $response['Year'])[1];
-        if ($yearEnd == 0) {
+        if (strlen($yearEnd) < 4) {
             $serie->setYearEnd(null);
         } else {
             $serie->setYearEnd(intval($yearEnd));
         }
+
+        $genres = explode(', ', $response['Genre']);
+        foreach ($genres as $genre) {
+            $genre = $entityManager->getRepository(Genre::class)->findOneBy(['name' => $genre]);
+            $serie->addGenre($genre);
+        }
+
+        $actors = explode(', ', $response['Actors']);
+        foreach ($actors as $actor) {
+            $actor_name = $actor;
+            $actor = $entityManager->getRepository(Actor::class)->findOneBy(['name' => $actor]);
+            if ($actor == null) {
+                $actor = new Actor();
+                $actor->setName($actor_name);
+                $entityManager->persist($actor);
+            }
+            $serie->addActor($actor);
+        }
+
+        $rate = new ExternalRating();
+        $rate->setValue($response['imdbRating']);
+        $source = $entityManager->getRepository(ExternalRatingSource::class)->findOneBy(['name' => 'IMDB']);
+        if ($source == null) {
+            $source = new ExternalRatingSource();
+            $source->setName('IMDB');
+            $entityManager->persist($source);
+        }
+        $rate->setSource($source);
+        $rate->setVotes(intval(str_replace(',','',$response['imdbVotes'])));
+        $entityManager->persist($rate);
+        $serie->addExternalRate($rate);
+
         $entityManager->persist($serie);
         $entityManager->flush();
 
