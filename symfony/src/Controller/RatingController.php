@@ -27,6 +27,43 @@ class RatingController extends AbstractController
         ]);
     }
 
+    #[Route('/dashboard', name: 'app_rating_accepting', methods: ['GET'])]
+    public function accepting(EntityManagerInterface $entityManager): Response
+    {
+        $ratings = $entityManager
+            ->getRepository(Rating::class)
+            ->createQueryBuilder('r')
+            ->where('r.accepted = 0')
+            ->orderBy('r.id','DESC')
+            ->getQuery()
+            ->getResult();
+
+        $dateActuelle = new \DateTime();
+        //render the form
+        return $this->render('rating/accepting.html.twig', [
+            'ratings' => $ratings,
+            'dateActuelle' => $dateActuelle,
+        ]);
+    }
+
+    #[Route('/{id}/accept', name: 'app_rating_accept', methods: ['GET'])]
+    public function accept(Rating $r,EntityManagerInterface $entityManager): Response
+    {
+        $r->setAccepted(1);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_rating_accepting', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/refuse', name: 'app_rating_refuse', methods: ['GET'])]
+    public function refuse(Rating $r,EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($r);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_rating_accepting', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/new/{id}', name: 'app_rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
@@ -59,7 +96,8 @@ class RatingController extends AbstractController
 
         // If form is submitted and valid, persist the rating
         if (($form->isSubmitted() && $form->isValid())) {
-            $rating->setAccepted(false);
+            // If there is no comment, accepted is true
+            $rating->setAccepted($rating->getComment()==null);
             $rating->setValue(intval(round($rating->getValue()*2)));
             $rating->setUser($this->getUser());
             $rating->setSeries($series);
