@@ -13,6 +13,14 @@
         <h1 class="text-3xl text-center mb-2">Liste des utilisateurs</h1>
         {% endif %}
         
+
+        {% if app.user.isAdmin() %}
+            <a href="{{ path('app_user_gen', {'id':500})}} "><button class="text-3xl text-center mb-2">Créer 500 utilisateurs</button></a>
+        {% endif %}
+        {% if app.user.isAdmin() %}
+            <a href="{{ path('app_user_autodel')}} "><button class="text-3xl text-center mb-2">Supprimer tous les faux comptes</button></a>
+        {% endif %}
+
         
         <div class="pagination-h ">
             {{ knp_pagination_render(users)}}
