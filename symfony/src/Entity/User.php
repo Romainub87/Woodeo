@@ -166,6 +166,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
+    public function getClearPassword(): ?string
+    {
+        return password_verify($this->password,'auto');
+    }
+
     public function setPassword(string $password): self
     {
         if(strlen($password) >= 5){
