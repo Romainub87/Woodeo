@@ -1,10 +1,41 @@
+{% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+{{ encore_entry_link_tags('app') }}
+{% endblock %}
 
 {% block body %}
-    
-    
 
-    {{ include('user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+<div class="text-white text-xl">
+    <a class="bg-blue-800 hover:bg-blue-700 text-lg text-white p-2 mx-5  px-5 rounded-2xl" href="{{ path('app_user_show', {'id': app.user.id}) }}">Retour au profil</a>
+
+{{ form_start(form) }}
+
+    <div class="flex flex-col items-center">
+        <h1 class="text-3xl pb-7 font-semibold">Mise à jour du profil</h1>
+        {{ form_row(form.name, {
+            'attr' :{'class': 'text-black p-1 mb-2 mt-1 text-left flex flex-col rounded-xl px-5 text-xl'},
+            'label' : 'Nouveau pseudo'
+
+        }) }}
+        {{ form_row(form.oldPassword, {
+            'attr' :{'class': 'text-black p-1 mt-1 mb-2 text-left flex flex-col rounded-xl px-5 text-xl'},
+            'label' : 'Ancien mot de passe',
+        }) }}
+        {{ form_row(form.password, {
+            'attr' :{'class': 'text-black p-1 mt-1 mb-2 text-left flex flex-col rounded-xl px-5 text-xl'},
+            'label' : 'Nouveau mot de passe',
+        }) }}
+        {{ form_row(form.country, {
+            'attr' :{'class': 'text-black p-1 mt-1 text-left flex flex-col rounded-2xl px-5 text-xl'}
+
+        }) }}
+        <button class="mt-5 p-2 px-5 rounded-2xl hover:bg-blue-700 bg-blue-800">{{ button_label|default('Mettre à jour') }}</button> 
+        {{ include('user/_delete_form.html.twig') }}
+    </div>
+{{ form_end(form) }}
+</div>
+
     
     
 
