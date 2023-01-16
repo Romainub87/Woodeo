@@ -16,8 +16,8 @@ class RatingType extends AbstractType
             'label' => 'Note',
             'attr' => [
                 'min' => 0,
-                'max' => 10,
-                'step' => 1,
+                'max' => 5,
+                'step' => 0.5,
             ],
         ])
             ->add('comment',null, [
