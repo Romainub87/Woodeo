@@ -28,13 +28,13 @@ class UserController extends AbstractController
 
         // get all users
         $users = $entityManager
-            ->getRepository(User::class) 
+            ->getRepository(User::class)
             ->findAll();
 
         //filter by email
         if ($search->getEmail()) {
             foreach ($users as $key => $user) {
-                if (!str_contains($user->getEmail(), $search->getEmail()) ) {
+                if (!str_contains($user->getEmail(), $search->getEmail())) {
                     unset($users[$key]);
                 }
             }
@@ -43,7 +43,7 @@ class UserController extends AbstractController
         //filter by role
         $users_list = $paginator->paginate(
             $users,
-            $request->query->getInt('page',1),
+            $request->query->getInt('page', 1),
             5
         );
 
@@ -120,7 +120,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user,Request $req, EntityManagerInterface $entityManager, PaginatorInterface $pag): Response
+    public function show(User $user, Request $req, EntityManagerInterface $entityManager, PaginatorInterface $pag): Response
     {
         // get all series of the user and paginate them
         $liste_series = $pag->paginate(
@@ -137,21 +137,21 @@ class UserController extends AbstractController
         $usercritique = $user->getRates();
 
         $liste_series->setTemplate('knp_paginator/sliding.html.twig');
-        
+
         // render the form
         return $this->render('user/show.html.twig', [
             'user' => $user,
             'seriesList' => $liste_series,
-            'rates'=>$usercritique,
+            'rates' => $usercritique,
             'em' => $entityManager,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         // only admin can edit user
-        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+        if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
 
@@ -159,10 +159,16 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         // if form is submitted and valid, persist the user
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
+
+            $passHash =  $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            );
+            $user->setPassword($passHash);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
         }
 
         // render the form
@@ -172,6 +178,80 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/followers', name: 'app_user_see_followers', methods: ['GET', 'POST'])]
+    public function see_follower(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $listFollowers = $user->getFollowers();
+
+        return $this->renderForm('user/followers.html.twig', [
+            'followers' => $listFollowers,
+        ]);
+    }
+
+    #[Route('/{id}/follows', name: 'app_user_see_follows', methods: ['GET', 'POST'])]
+    public function see_follow(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $listFollows = $user->getFollowing();
+
+        return $this->renderForm('user/follows.html.twig', [
+            'follows' => $listFollows,
+        ]);
+    }
+
+    #[Route('/{id}/add_follower', name: 'app_user_add_follower', methods: ['GET', 'POST'])]
+    public function add_follower(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $this->getUser()->addFollowing($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_show', ['id'=> $user->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/remove_follower', name: 'app_user_remove_follower', methods: ['GET', 'POST'])]
+    public function remove_follower(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $this->getUser()->removeFollowing($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_show', ['id'=> $user->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/add_follow', name: 'app_user_add_follow', methods: ['GET', 'POST'])]
+    public function add_follow(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $this->getUser()->addFollower($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_show', ['id'=> $user->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+
+
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -179,9 +259,9 @@ class UserController extends AbstractController
         if (!$this->getUser() || !$this->getUser()->isAdmin()) {
             return $this->redirectToRoute('app_series_index');
         }
-        
+
         // if token is valid, delete the user
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }
