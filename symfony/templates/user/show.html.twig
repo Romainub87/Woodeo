@@ -7,17 +7,15 @@
 {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
-
-
 {% block body %}
 <div class="flex-col flex w-4/5 mx-auto">
     {% if app.user.id != user.id %}
     {# gestion des followers #}
     
         {% if app.user.getFollowing.contains(user) %}
-            <a href="{{ path('app_user_remove_follower', {'id':user.id})}} "><button type="submit" class="px-5 p-2 bg-white">Unfollow</button></a>
+            <a href="{{ path('app_user_remove_follower', {'id':user.id})}} "><button type="submit" class="rounded-2xl px-5 p-2 bg-white">Unfollow</button></a>
         {% else %}
-            <a href="{{ path('app_user_add_follower', {'id':user.id})}} "><button type="submit" class="px-5 p-2 bg-white">Suivre</button></a>
+            <a href="{{ path('app_user_add_follower', {'id':user.id})}} "><button type="submit" class="rounded-2xl px-5 p-2 bg-white">Suivre</button></a>
         {% endif %}
     
         {% if user.getFollowers|length == 1 %}
