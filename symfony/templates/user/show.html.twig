@@ -129,6 +129,7 @@
     <div class="flex flex-row mb-10 w-full flex-wrap items-start justify-around mt-3">
        
         {% for rate in rates %}
+        {% if rate.accepted %}
         <div class="flex-col bg-white m-2 p-2 font-semibold rounded-2xl">
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl mr-5">{{ rate.series }}</h1>
@@ -149,7 +150,7 @@
             </div>
             <h1 class="mt-2 font-semibold">{{ rate.comment }}</h1>
         </div>
-        
+        {% endif %}
         {% endfor %}
 </div>
    
