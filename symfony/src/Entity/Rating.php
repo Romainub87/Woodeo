@@ -30,7 +30,7 @@ class Rating
      */
     #[Assert\Range(
         min: 0,
-        max: 10,
+        max: 5,
         notInRangeMessage: 'Veuillez entrer une valeur entre {{ min }} et {{ max }}',
     )]
     private $value;
@@ -75,7 +75,7 @@ class Rating
         return $this->id;
     }
 
-    public function getValue(): ?int
+    public function getValue(): ?float
     {
         return $this->value;
     }
