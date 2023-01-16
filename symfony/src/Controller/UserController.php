@@ -98,25 +98,21 @@ class UserController extends AbstractController
                 $user->setAdmin(false);
                 $user->setRegisterDate(new \DateTime());
                 $entityManager->persist($user);
-                $entityManager->flush();
             }
             $entityManager->flush();
-
+            
         return $this->redirectToRoute('app_admin_dashboard');
     }
 
     #[Route('autodel', name: 'app_user_autodel', methods: ['GET'])]
     public function autodel(EntityManagerInterface $entityManager){
         //admin can delete auto generated users
-        $users = $entityManager
-            ->getRepository(User::class) 
-            ->findAll();
-        foreach($users as $user){
-            if(str_contains($user->getEmail(), 'AutoTesteur')){
-                $entityManager->remove($user);
-            }
-        }
-        $entityManager->flush();
+        $entityManager->createQueryBuilder()
+            ->delete('App\Entity\User', 'u')
+            ->where('u.email LIKE :email')
+            ->setParameter('email', '%AutoTesteur%')
+            ->getQuery()
+            ->execute();
         return $this->redirectToRoute('app_admin_dashboard');
     }
 
