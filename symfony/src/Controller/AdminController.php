@@ -21,21 +21,20 @@ class AdminController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         
+        $response = null;
+        $already_added = null;
+
         if ($form->isSubmitted() && $form->isValid()) { 
             $response = $client->request('GET', 'http://www.omdbapi.com/?t='.$form->get('title')->getData().'&apikey=a2996c2f&type=series')->toArray();
-            $already_added = $doctrine->getRepository(Series::class)->findOneBy(['imdb' => $response['imdbID']]);
-            return $this->render('admin/index.html.twig', [
-                'response' => $response,
-                'already_added' => $already_added,
-                'form' => $form->createView(),
-            ]);
+            if ($response['Response'] == 'True') {
+                $already_added = $doctrine->getRepository(Series::class)->findOneBy(['imdb' => $response['imdbID']]);
+            }
         }
-        
 
         return $this->render('admin/index.html.twig', [
             'form' => $form->createView(),  
-            'already_added' => null,
-            'response' => null,
+            'already_added' => $already_added,
+            'response' => $response,
         ]);
     }
 }
