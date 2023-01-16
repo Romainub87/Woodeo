@@ -80,7 +80,12 @@ class RatingController extends AbstractController
     {
         $dateActuelle = new \DateTime();
         $interval = $rating->getDate()->diff($dateActuelle);
-        $interval = $interval->format("%H:%I:%S (Full days: %a)");
+        if ($interval->format("%a") > 0) {
+            $interval = $interval->format("Il y a %a jours");
+        }
+        else {
+            $interval = $interval->format("Il y a %H h %I m et %S s");
+        }
         // Render the form
         return $this->render('rating/show.html.twig', [
             'rating' => $rating,
@@ -125,10 +130,12 @@ class RatingController extends AbstractController
     #[Route('/rates/{id}', name: 'app_rating_rates', methods: ['GET'])]
     public function rates(Series $serie): Response
     {
+        $dateActuelle = new \DateTime();
         // Render the form
         return $this->render('rating/rates.html.twig', [
             'seriesRates' => $serie->getRates(),
             'series' => $serie,
+            'dateActuelle' => $dateActuelle,
         ]);
     }
 }
