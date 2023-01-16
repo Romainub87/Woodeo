@@ -30,7 +30,7 @@ class Rating
      */
     #[Assert\Range(
         min: 0,
-        max: 10,
+        max: 5,
         notInRangeMessage: 'Veuillez entrer une valeur entre {{ min }} et {{ max }}',
     )]
     private $value;
@@ -65,6 +65,11 @@ class Rating
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $accepted;
+
     public function __construct() 
     {
         $this->date = new \DateTime();
@@ -75,12 +80,12 @@ class Rating
         return $this->id;
     }
 
-    public function getValue(): ?int
+    public function getValue(): ?float
     {
         return $this->value;
     }
 
-    public function setValue(int $value): self
+    public function setValue(float $value): self
     {
         $this->value = $value;
 
@@ -134,6 +139,19 @@ class Rating
 
         return $this;
     }
+
+    public function isAccepted(): ?bool
+    {
+        return $this->accepted;
+    }
+
+    public function setAccepted(bool $accepted): self
+    {
+        $this->accepted = $accepted;
+
+        return $this;
+    }
+
 
 
 }
