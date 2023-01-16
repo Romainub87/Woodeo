@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -112,6 +113,37 @@ class SeriesController extends AbstractController
             'series' => $listeSeries,
             'SeriesSearchForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/new/{imdbId}', name: 'app_series_new', methods: ['GET', 'POST'])]
+    public function new(string $imdbId, EntityManagerInterface $entityManager, HttpClientInterface $client): Response
+    {
+        $response = $client->request('GET', 'http://www.omdbapi.com/?i='.$imdbId.'&apikey=a2996c2f&type=series')->toArray();
+        $trailer = $client->request('GET', 'https://imdb-api.com/en/API/YoutubeTrailer/k_g0p41mv2/'.$imdbId)->toArray();
+        $serie = new Series();
+        $serie->setTitle($response['Title']);
+        $serie->setPlot($response['Plot']);
+        $serie->setImdb($response['imdbID']);
+        $serie->setPoster(file_get_contents($response['Poster']));
+        $director = $response['Director'];
+        if ($director == 'N/A') {
+            $serie->setDirector(null);
+        } else {
+            $serie->setDirector($director);
+        }
+        $serie->setYoutubeTrailer($trailer['videoUrl']);
+        $serie->setAwards($response['Awards']);
+        $serie->setYearStart(intval(explode('–', $response['Year'])[0]));
+        $yearEnd = explode('–', $response['Year'])[1];
+        if ($yearEnd == 0) {
+            $serie->setYearEnd(null);
+        } else {
+            $serie->setYearEnd(intval($yearEnd));
+        }
+        $entityManager->persist($serie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_dashboard');
     }
 
     #[Route('/random', name: 'app_series_random')]
