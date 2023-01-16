@@ -141,6 +141,36 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/followers', name: 'app_user_see_followers', methods: ['GET', 'POST'])]
+    public function see_follower(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $listFollowers = $user->getFollowers();
+
+        return $this->renderForm('user/followers.html.twig', [
+            'followers' => $listFollowers,
+        ]);
+    }
+
+    #[Route('/{id}/follows', name: 'app_user_see_follows', methods: ['GET', 'POST'])]
+    public function see_follow(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() ) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $listFollows = $user->getFollowing();
+
+        return $this->renderForm('user/follows.html.twig', [
+            'follows' => $listFollows,
+        ]);
+    }
+
     #[Route('/{id}/add_follower', name: 'app_user_add_follower', methods: ['GET', 'POST'])]
     public function add_follower(User $user, EntityManagerInterface $entityManager): Response
     {
@@ -149,7 +179,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_series_index');
         }
 
-        $this->getUser()->addFollow($user);
+        $this->getUser()->addFollowing($user);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_user_show', ['id'=> $user->getId()], Response::HTTP_SEE_OTHER);
