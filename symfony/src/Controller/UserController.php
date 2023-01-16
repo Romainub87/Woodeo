@@ -8,10 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\UserSearch;
 use App\Form\UserSearchType;
+use Faker;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -78,6 +80,29 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form,
         ]);
+    }
+    
+    #[Route('/gen/{id}', name: 'app_user_index', methods: ['GET'])]
+    public function gen(int $id, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher){
+        //create a faker instance;
+        $faker = Faker\Factory::create();
+        $seed = rand(0, 1000000000000000000);
+        $faker->seed($seed);
+        for($i=0;$i<$id;$i++){
+            $user = new User();
+            $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
+            //encode the password
+            $user->setPassword($faker->password);
+            $user->setName($faker->firstname);
+            $user->setAdmin(false);
+            $user->setRegisterDate(new \DateTime());
+            $entityManager->persist($user);
+            $entityManager->flush();
+        }
+        $entityManager->flush();
+        return $this->render('user/test.html.twig', [
+        ]);
+        //return $this->redirectToRoute('app_series_index');
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
