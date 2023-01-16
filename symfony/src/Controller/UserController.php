@@ -5,15 +5,16 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\UserSearch;
 use App\Form\UserSearchType;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Faker;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -80,6 +81,42 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form,
         ]);
+    }   
+
+    #[Route('/gen/{id}', name: 'app_user_gen', methods: ['GET'])]
+    public function gen(int $id, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher){
+        //admin can generate users
+            $faker = Faker\Factory::create();
+            $seed = rand(0, 1000000000000000000);
+            $faker->seed($seed);
+            for($i=0;$i<$id;$i++){
+                $user = new User();
+                $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
+                $user->setPassword($faker->password);
+                $user->setName($faker->firstname);
+                $user->setAdmin(false);
+                $user->setRegisterDate(new \DateTime());
+                $entityManager->persist($user);
+                $entityManager->flush();
+            }
+            $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_dashboard');
+    }
+
+    #[Route('autodel', name: 'app_user_autodel', methods: ['GET'])]
+    public function autodel(EntityManagerInterface $entityManager){
+        //admin can delete auto generated users
+        $users = $entityManager
+            ->getRepository(User::class) 
+            ->findAll();
+        foreach($users as $user){
+            if(str_contains($user->getEmail(), 'AutoTesteur')){
+                $entityManager->remove($user);
+            }
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('app_admin_dashboard');
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]

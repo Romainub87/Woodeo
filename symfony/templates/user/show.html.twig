@@ -100,12 +100,12 @@
                     {% set count = serie.getNumEpisodes(em) %}
                     {% if avance < count %}
                     <div class="mt-2">
-                        <h1 class="text-center text-lg text-white">Episodes vus</h1>
-                        <h1 class="text-center text-md text-white">{{ avance }}/{{count}}</h1>
+                        <h1 class="text-center text-lg text-white">Episodes vus : {{ avance }}/{{count}}</h1>
+                        <h1 class="text-center text-lg text-white">Saisons vus  : {{ serie.getNumberSeasonView(user, em) }}/{{serie.seasons|length}}</h1>
                     </div>
                     {% elseif avance == count %}
                     <div class="mt-2">
-                        <h1 class="text-center text-lg text-white">Terminée</h1>
+                        <h1 class="text-center text-lg text-white"><i class="fa-sharp fa-solid fa-circle-check"></i> Terminée</h1>
                     </div>
                     {% endif %}
                 </div>

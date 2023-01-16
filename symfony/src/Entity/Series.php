@@ -510,4 +510,26 @@ class Series
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    public function getNumberSeasonView(User $user, EntityManagerInterface $em): int
+    {
+        /* TODO: $result = $em->createQueryBuilder()
+            ->select('COUNT(se)')
+            ->from(User::class, 'u')
+            ->innerJoin('u.episode', 'ep')
+            ->innerJoin('ep.season', 'se')
+            ->where('u = :user')
+            ->setParameter('user', $user)
+            ->andWhere('se.series = :series')
+            ->setParameter('series', $this)
+            ->groupBy('se.id');
+        return $result->getQuery()->getSingleScalarResult(); */
+        $nb = 0;
+        foreach($this->seasons as $season){
+            if($season->getAvancement($user) >= $season->getNumberEpisode()){
+                $nb ++;
+            }
+        }
+        return $nb;
+    }
+
 }

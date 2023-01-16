@@ -15,9 +15,10 @@
 
     
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+        {{ form_row(form.value, {'type': 'number'}) }}
+        {{ form_row(form.comment) }}
         <div class="w-full justify-center">
-        <button class="text-2xl w-max mt-5 text-white bg-blue-700 px-5 pb-2 p-1 rounded-3xl">{{ button_label|default('Envoyer') }}</button>
+        <button class="text-2xl w-max mt-5 text-white bg-blue-700 px-5 pb-2 p-1 rounded-3xl hover:bg-blue-600">{{ button_label|default('Envoyer') }}</button>
         </div>
     {{ form_end(form) }}
     
