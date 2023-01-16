@@ -152,6 +152,4 @@ class Rating
         return $this;
     }
 
-
-
 }
