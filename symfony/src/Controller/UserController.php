@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\UserSearch;
 use App\Form\UserSearchType;
+use App\Form\PasswordResetType;
 use Faker;
 
 #[Route('/user')]
@@ -173,6 +174,38 @@ class UserController extends AbstractController
 
         // render the form
         return $this->renderForm('user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/reset', name: 'app_user_reset_mdp', methods: ['GET', 'POST'])]
+    public function reset(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can edit user
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $form = $this->createForm(PasswordResetType::class, $user);
+        $form->handleRequest($request);
+
+        // if form is submitted and valid, persist the user
+        if ($form->isSubmitted()) {
+
+            $passHash =  $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            );
+            $user->setPassword($passHash);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        // render the form
+        return $this->renderForm('user/reset.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);

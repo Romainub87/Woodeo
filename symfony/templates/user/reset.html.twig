@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block body %}
+
+<div class="text-white text-xl">
+    <a class="bg-blue-800 hover:bg-blue-700 text-lg text-white p-2  px-5 rounded-2xl" href="{{ path('app_user_show', {'id': app.user.id}) }}">Retour au profil</a>
+
+{{ form_start(form) }}
+
+    <div class="flex flex-col items-center">
+        <h1 class="text-3xl pb-7 font-semibold">Reset du mot de passe de {{user.name}}</h1>
+        
+        {{ form_row(form.password, {
+            'attr' :{'class': 'text-black p-1 mt-1 mb-2 text-left flex flex-col rounded-xl px-5 text-xl'},
+            'label' : '',
+        }) }}
+        <button class="mt-5 p-2 px-5 rounded-2xl hover:bg-blue-700 bg-blue-800">{{ button_label|default('Changer le mot de passe') }}</button> 
+    </div>
+{{ form_end(form) }}
+</div>
+
+    
+    
+
+{% endblock %}
