@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-{% if app.user.isSuspended() %}
+{% if app.user and app.user.isSuspended() %}
 <h1 class="mx-24 text-3xl text-red-500"> <i class="fa-solid fa-face-dizzy"></i><i class="fa-solid fa-face-dizzy"></i><i class="fa-solid fa-face-dizzy"></i>
 <br>Ton compte est suspendu, tu n'as plus accès à aucune fonctionnalité...
 <br>Déconnectes-toi pour de nouveau voir des séries! </h1>
