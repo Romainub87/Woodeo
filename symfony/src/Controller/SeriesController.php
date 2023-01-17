@@ -37,10 +37,10 @@ class SeriesController extends AbstractController
             ->getRepository(Series::class)
             ->createQueryBuilder('s')
             ->orderBy('s.title', 'ASC')
-            ->innerJoin('s.rate', 'ra')
-            ->innerJoin('s.rates', 'r')
+            ->leftJoin('s.rate', 'ra')
+            ->leftJoin('s.rates', 'r')
             ->groupBy('s.id')
-            ->addSelect('(ra.value*ra.votes + SUM(r.value))/(COUNT(r.id)+ra.votes) as avg')
+            ->addSelect('(ra.value*ra.votes + SUM(COALESCE(r.value,0)))/(COUNT(r.id)+COALESCE(ra.votes,0)) as avg')
             ->addSelect('ra.votes + COUNT(r.id) as count');
 
         //filter by title
