@@ -92,6 +92,7 @@ class UserController extends AbstractController
             $faker->seed($seed);
             for($i=0;$i<$id;$i++){
                 $user = new User();
+                $user->setSuspended(0);
                 $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
                 $user->setPassword($faker->password);
                 $user->setName($faker->firstname);
@@ -308,6 +309,21 @@ class UserController extends AbstractController
 
         // set the user as admin
         $user->setAdmin(!$user->isAdmin());
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/suspend', name: 'app_user_suspend', methods: ['GET'])]
+    public function suspend(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        // set the user as admin
+        $user->setSuspended(!$user->isSuspended());
         $entityManager->flush();
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
