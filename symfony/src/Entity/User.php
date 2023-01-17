@@ -331,7 +331,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->rates->contains($rate)) {
             $this->rates->add($rate);
-            $rate->setSeries($this);
+            $rate->setUser($this);
         }
 
         return $this;

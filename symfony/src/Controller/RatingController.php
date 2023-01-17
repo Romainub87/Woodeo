@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Series;
+use App\Entity\User;
 
 #[Route('/rating')]
 class RatingController extends AbstractController
@@ -209,7 +210,7 @@ class RatingController extends AbstractController
         }
         
         //create 100 ratings
-        for($i = 0; $i < 10000; $i++){
+        for($i = 0; $i < 100; $i++){
             $user = $userBot[rand(0, count($userBot)-1)];
             $serie = $series[rand(0, count($series)-1)];
             $rating = new Rating();
@@ -223,7 +224,6 @@ class RatingController extends AbstractController
         }
         $entityManager->flush();
 
-        return $this->render('rating/rating_gen.html.twig', [
-        ]);
+        return $this->redirectToRoute('app_user_index', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
     }
 }
