@@ -11,4 +11,6 @@
         <br>
     {% endfor %}
         <a href="{{ path('app_season_new', {'series': series.id}) }}">Ajouter une saison</a>
+        <br>
+        <a href="{{ path('app_series_show', {'id': series.id}) }}">Retour à la série</a>
 {% endblock %}
