@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\UserSearch;
 use App\Form\UserSearchType;
 use App\Form\PasswordResetType;
+use Doctrine\ORM\Mapping\Id;
 use Faker;
 
 #[Route('/user')]
@@ -337,6 +339,14 @@ class UserController extends AbstractController
         // set the user as admin
         $user->setSuspended(!$user->isSuspended());
         $entityManager->flush();
+
+            $entityManager->createQueryBuilder()
+            ->delete('App\Entity\Rating','r')
+            ->andWhere('r.user = :user_id')
+            ->setParameter('user_id', $user->getId())
+            ->getQuery()
+            ->execute();
+        
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
