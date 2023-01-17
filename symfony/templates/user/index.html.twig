@@ -38,15 +38,17 @@
         <div class="mt-5">
             {{ knp_pagination_render(users)}}
         </div>
-        {{ form_start(UserSearchForm) }}
-            <div class="text-lg items-center flex w-full px-10 py-2 justify-between">
+
+    </div>
+
+    {{ form_start(UserSearchForm) }}
+            <div class="text-lg items-center flex flex-wrap w-full px-10 py-2">
                 {{ form_row(UserSearchForm.email, {
                 'label': 'E-mail',
                 }) }}
             <button class="text-black bg-blue-500 rounded-2xl px-5 p-2 hover:bg-blue-custom" type="submit">Chercher</button>
         </div>
-        {{ form_end(UserSearchForm) }}
-    </div>
+    {{ form_end(UserSearchForm) }}
     
     <table class="table w-full">
         <thead class="bg-white text-2xl text-black h-16">
@@ -115,7 +117,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <div class="bottom-0 mx-auto w-11/12">
+    <div class="bottom-0 mx-auto w-11/12 py-5">
         {{ knp_pagination_render(users)}}
     </div>
 </div>
