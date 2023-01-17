@@ -243,7 +243,7 @@ class RatingController extends AbstractController
 
 
         //create 100 ratings
-        for ($i = 0; $i < 5000; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $user = $userBot[rand(0, count($userBot) - 1)];
             $serie = $series[rand(0, count($series) - 1)];
             $comment = $faker->realText(100);
