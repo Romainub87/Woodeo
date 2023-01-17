@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    {{ form_end(form) }}
+    {{ include('series/_delete_form.html.twig') }}
+    {% for season in series.seasons %}
+        <a href="{{ path('app_season_edit', {'id': season.id}) }}">Edit saison {{ season.number }}</a>
+        <br>
+    {% endfor %}
+        <a href="{{ path('app_season_new', {'series': series.id}) }}">Ajouter une saison</a>
+{% endblock %}

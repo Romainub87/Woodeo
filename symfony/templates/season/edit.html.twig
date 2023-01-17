@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la saison {{ season.number }} de {{ season.series.title }} {% endblock %}
+
+{% block body %}
+    <h1>Modifier la saison {{ season.number }} de {{ season.series.title }}</h1>
+
+    {{ include('season/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_series_edit', {'id': season.series.id}) }}">Retour a la série</a>
+
+    {{ include('season/_delete_form.html.twig') }}
+    {% for episod in season.episodes %}
+        <a href="{{ path('app_episode_edit', {'id': episod.id}) }}">{{ episod.number }} - {{ episod.title }}</a>
+        <br>
+    {% endfor %}
+    <a href="{{ path('app_episode_new', {'season': season.id}) }}">Ajouter un nouvel episode</a>
+{% endblock %}
