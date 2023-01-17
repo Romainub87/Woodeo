@@ -133,7 +133,9 @@ class RatingController extends AbstractController
     public function rates(Request $request, Series $serie, EntityManagerInterface $em): Response
     {
         $form = $this->createFormBuilder()
-            ->add('value', NumberType::class)
+            ->add('value', NumberType::class, [
+                'label' => 'Note',
+            ])
             ->getForm();
         $form->handleRequest($request);
 
@@ -143,7 +145,7 @@ class RatingController extends AbstractController
                     ->where('r.series = :series')
                     ->setParameter('series', $serie)
                     ->andWhere('r.value = :value')
-                    ->setParameter('value', round($form->get('value')->getData()))
+                    ->setParameter('value', round($form->get('value')->getData()*2))
                     ->getQuery()
                     ->getResult()
                     ;
