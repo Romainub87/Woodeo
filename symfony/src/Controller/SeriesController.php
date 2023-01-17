@@ -24,7 +24,7 @@ class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
-    {     
+    {   
         // search
         $search = new SeriesSearch();
         $form = $this->createForm(SeriesSearchType::class, $search);
