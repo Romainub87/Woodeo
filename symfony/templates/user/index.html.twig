@@ -50,16 +50,16 @@
     
     <table class="table w-full">
         <thead class="bg-white text-2xl text-black h-16">
-            <tr>
-                <th>Nom</th>
+            <tr >
+                <th class="name_colonne">Nom</th>
                 <th>E-mail</th>
-                <th>Date d'enregistrement</th>
+                <th class="register_date_colonne">Date d'enregistrement</th>
                 <th>Voir profil</th>
                 {% if app.user.isAdmin() %}
                     <th>Incarner</th>
-                    <th>Administrateur</th>
-                    <th>Suspendre</th>
-                    <th>Reset</th>
+                    <th class="admin_colonne">Administrateur</th>
+                    <th class="ban_colonne">Suspendre</th>
+                    <th class="reset_colonne">Reset</th>
                 {% endif %}
             </tr>
         </thead>
@@ -67,12 +67,12 @@
         {% for user in users %}
             <tr >
                 {% if user.isSuspended() %}
-                    <td class=" bg-red-500/50 h-7 text-xl border">[Suspendu]<br>{{ user.name }}</td>
+                    <td class="name_infos bg-red-500/50 h-7 text-xl border">[Suspendu]<br>{{ user.name }}</td>
                 {% else %}
-                    <td class="h-7 text-xl border">{{ user.name }}</td>
+                    <td class="name_infos justify-center h-full text-xl border">{{ user.name }}</td>
                 {% endif %}
                 <td class=" border">{{ user.email }}</td>
-                <td class=" border">{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>
+                <td class="register_date m-5 mx-0 items-center border">{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>
                 <td class="  md:flex-row flex-col flex justify-around no-wrap items-center border">
                     <a class="border-2 border-blue-600 bg-blue-980 hover:bg-blue-600 flex items-center m-5 p-2 rounded-2xl no-wrap" href="{{ path('app_user_show', {'id': user.id }) }}">
                             
@@ -87,7 +87,7 @@
                         {% endif %}
                     </td>
 
-                    <td class=" border">
+                    <td class=" border admin_action">
                         {% if user.isAdmin() %}
                         <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
                         {% else %}
@@ -95,7 +95,7 @@
                         {% endif %}
                     </td>
 
-                    <td class=" border">
+                    <td class=" border ban_action">
                         {% if user.isSuspended() %}
                         <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
                         {% else %}
@@ -103,7 +103,7 @@
                         {% endif %}
                     </td>
 
-                    <td class="border">
+                    <td class="border reset_action">
                         <a href="{{ path('app_user_reset_mdp', {'id':user.id})}} "><button class="bg-red-500 p-2 rounded-xl">Reset MDP</button></a>
                     </td>
                 {% endif %}
