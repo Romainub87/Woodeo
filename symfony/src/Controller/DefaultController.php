@@ -14,6 +14,10 @@ class DefaultController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(Request $request): Response
     {
+        if($this->getUser() and $this->getUser()->isSuspended()){
+            return $this->redirectToRoute('app_logout');
+        }
+        
         $search = new SeriesSearch();
         $form = $this->createForm(SeriesSearchType::class, $search);
         $form->handleRequest($request);

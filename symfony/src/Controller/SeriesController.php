@@ -17,14 +17,14 @@ use App\Entity\Genre;
 use App\Entity\Actor;
 use App\Entity\ExternalRating;
 use App\Entity\ExternalRatingSource;
-use App\Entity\Source;
+use App\Entity\Season;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
 {
     #[Route('/', name: 'app_series_index', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
-    {     
+    {   
         // search
         $search = new SeriesSearch();
         $form = $this->createForm(SeriesSearchType::class, $search);
@@ -138,8 +138,13 @@ class SeriesController extends AbstractController
         }
         $serie->setYoutubeTrailer($trailer['videoUrl']);
         $serie->setAwards($response['Awards']);
-        $serie->setYearStart(intval(explode('–', $response['Year'])[0]));
-        $yearEnd = explode('–', $response['Year'])[1];
+        if (str_contains($response['Year'], '–')) {
+            $serie->setYearStart(intval(explode('–', $response['Year'])[0]));
+            $yearEnd = explode('–', $response['Year'])[1];
+        } else {
+            $serie->setYearStart(intval($response['Year']));
+            $yearEnd = null;
+        }
         if (strlen($yearEnd) < 4) {
             $serie->setYearEnd(null);
         } else {
@@ -176,6 +181,25 @@ class SeriesController extends AbstractController
         $rate->setVotes(intval(str_replace(',','',$response['imdbVotes'])));
         $entityManager->persist($rate);
         $serie->addExternalRate($rate);
+
+        $seasonsNb = intval($response['totalSeasons']);
+        for ($i = 1; $i <= $seasonsNb; $i++) {
+            $season = new Season();
+            $season->setNumber($i);
+            $season->setSeries($serie);
+            $entityManager->persist($season);
+            $seasonInfo = $client->request('GET', 'http://www.omdbapi.com/?i='.$imdbId.'&apikey=a2996c2f&Season='.$i)->toArray();
+            for ($x = 0; $x < count($seasonInfo['Episodes']); $x++) {
+                $episode = new Episode();
+                $episode->setNumber($seasonInfo['Episodes'][$x]['Episode']);
+                $episode->setTitle($seasonInfo['Episodes'][$x]['Title']);
+                $episode->setSeason($season);
+                $episode->setDate(new \DateTime($seasonInfo['Episodes'][$x]['Released']));
+                $episode->setImdb($seasonInfo['Episodes'][$x]['imdbID']);
+                $episode->setImdbRating(floatval($seasonInfo['Episodes'][$x]['imdbRating']));
+                $entityManager->persist($episode);
+            }
+        }
 
         $entityManager->persist($serie);
         $entityManager->flush();

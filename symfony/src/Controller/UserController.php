@@ -23,6 +23,10 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
+        if($this->getUser() and $this->getUser()->isSuspended()){
+            return $this->redirectToRoute('app_logout');
+        }
+
         $search = new UserSearch();
         $form = $this->createForm(UserSearchType::class, $search);
         $form->handleRequest($request);
@@ -91,7 +95,6 @@ class UserController extends AbstractController
             $seed = rand(0, 1000000000000000000);
             $faker->seed($seed);
             for($i=0;$i<$id;$i++){
-                //encode password
                 $user = new User();
                 $user->setSuspended(0);
                 $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
