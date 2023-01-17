@@ -471,7 +471,7 @@ class Series
         return $this->rates->count()+$externals;
     }
 
-    public function getMoyRates(): int
+    public function getMoyRates(): float
     {
         $notes = 0;
         $count = 0;
@@ -484,7 +484,7 @@ class Series
             $count++;
         }
 
-        return round($notes/$count);
+        return round($notes/$count, 1);
     }
 
     public function addRate(Rating $rate): self
