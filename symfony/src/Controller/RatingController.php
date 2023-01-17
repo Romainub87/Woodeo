@@ -179,15 +179,39 @@ class RatingController extends AbstractController
         return $this->redirectToRoute('app_rating_new', ['id' => $id], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/rates/{id}', name: 'app_rating_rates', methods: ['GET'])]
-    public function rates(Series $serie): Response
+    #[Route('/rates/{id}', name: 'app_rating_rates', methods: ['GET', 'POST'])]
+    public function rates(Request $request, Series $serie, EntityManagerInterface $em): Response
     {
+        $form = $this->createFormBuilder()
+            ->add('value', NumberType::class, [
+                'label' => 'Note',
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) { 
+            $rates = $em->getRepository(Rating::class)
+                    ->createQueryBuilder('r')
+                    ->where('r.series = :series')
+                    ->setParameter('series', $serie)
+                    ->andWhere('r.value = :value')
+                    ->setParameter('value', round($form->get('value')->getData()*2))
+                    ->getQuery()
+                    ->getResult()
+                    ;
+        }
+        else {
+            $rates = $serie->getRates();
+        }
+
+
         $dateActuelle = new \DateTime();
         // Render the form
         return $this->render('rating/rates.html.twig', [
-            'seriesRates' => $serie->getRates(),
+            'seriesRates' => $rates,
             'series' => $serie,
             'dateActuelle' => $dateActuelle,
+            'valueForm' => $form->createView(),
         ]);
     }
 

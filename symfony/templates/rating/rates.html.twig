@@ -4,8 +4,12 @@
 {% block body %}
 <div class="w-4/5 mx-auto text-white">
     <h1 class="text-3xl font-bold mb-5">Liste des critiques de {{ series.title}}</h1>
-
-        <div class="flex flex-row-reverse w-max flex-wrap">
+    <div class="text-black">
+        {{ form_start(valueForm) }}
+            {{ form_widget(valueForm) }}
+        {{ form_end(valueForm) }}
+    </div>
+    <div class="flex flex-row-reverse w-max flex-wrap">
         {% for r in seriesRates %}
             {% if r.isAccepted() %}
                 <div class="bg-blue-800 w-max m-2 rounded-lg">
@@ -40,8 +44,7 @@
                 <h1 class="text-2xl">Aucune critique trouvée</h1>
             </div>
         {% endfor %}
-        </div>
+    </div>
 </div>
 
-    {# <a href="{{ path('app_rating_new') }}">Create new</a> #}
 {% endblock %}
