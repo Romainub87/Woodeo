@@ -18,6 +18,7 @@ use App\Form\UserSearchType;
 use App\Form\PasswordResetType;
 use Doctrine\ORM\Mapping\Id;
 use Faker;
+use App\Entity\Series;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -185,8 +186,18 @@ class UserController extends AbstractController
     public function show(User $user, Request $req, EntityManagerInterface $entityManager, PaginatorInterface $pag): Response
     {
         // get all series of the user and paginate them
+
+        $series = $entityManager->getRepository(Series::class)->createQueryBuilder('s')
+            ->select('s', 'COUNT(e) as nbEpisodes', 'COUNT(DISTINCT se) as nbSeasons')
+            ->innerJoin('s.user', 'u')
+            ->leftJoin('s.seasons', 'se')
+            ->leftJoin('se.episodes', 'e')
+            ->groupBy('s.id')
+            ->where('u.id = :id')
+            ->setParameter('id', $user->getId());
+
         $liste_series = $pag->paginate(
-            $user->getSeries(),
+            $series,
             $req->query->getInt('page', 1),
             5
         );
@@ -196,7 +207,17 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_series_index');
         }
 
-        $usercritique = $user->getRates();
+        $usercritique = $entityManager
+            ->getRepository(Rating::class)
+            ->createQueryBuilder('r')
+            ->select('s.title', 'r.value', 'r.comment')
+            ->innerJoin('r.series', 's')
+            ->where('r.accepted = 1')
+            ->andWhere('r.user = :id')
+            ->setParameter('id', $user->getId())
+            ->orderBy('r.id', 'DESC')
+            ->getQuery()
+            ->getResult();
 
         $liste_series->setTemplate('knp_paginator/sliding.html.twig');
 

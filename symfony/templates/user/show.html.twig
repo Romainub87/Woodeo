@@ -94,18 +94,18 @@
        
                 {% for serie in seriesList %}
                 <div class="flex flex-col w-64 mx-5">
-                    <h3 class=" font-bold text-white text-center my-5">{{ serie.title }} </h3>
+                    <h3 class=" font-bold text-white text-center my-5">{{ serie[0].title }} </h3>
                     <div class="serie-encadre flex flex-col-reverse rounded-2xl mx-5">
-                        <a href="{{ path('app_series_show', {'id': serie.id})}}">
-                            <img class=" rounded-h rounded-2xl w-full h-80" src="{{ serie.displayPoster }}">
+                        <a href="{{ path('app_series_show', {'id': serie[0].id})}}">
+                            <img class=" rounded-h rounded-2xl w-full h-80" src="{{ serie[0].displayPoster }}">
                         </a>
                     </div>
-                    {% set avance = user.getAvancement(serie, em) %}
-                    {% set count = serie.getNumEpisodes(em) %}
+                    {% set avance = user.getAvancement(serie[0], em) %}
+                    {% set count = serie['nbEpisodes'] %}
                     {% if avance < count %}
                     <div class="mt-2">
                         <h1 class="text-center text-lg text-white">Episodes vus : {{ avance }}/{{count}}</h1>
-                        <h1 class="text-center text-lg text-white">Saisons vus  : {{ serie.getNumberSeasonView(user, em) }}/{{serie.seasons|length}}</h1>
+                        <h1 class="text-center text-lg text-white">Saisons vus  : {{ serie[0].getNumberSeasonView(user, em) }}/{{serie['nbSeasons']}}</h1>
                     </div>
                     {% elseif avance == count %}
                     <div class="mt-2">
@@ -130,17 +130,16 @@
     <div class="flex flex-row mb-10 w-full flex-wrap items-start justify-around mt-3">
        
         {% for rate in rates %}
-        {% if rate.accepted %}
         <div class="flex-col bg-white m-2 p-2 font-semibold rounded-2xl">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl mr-5">{{ rate.series }}</h1>
+                <h1 class="text-2xl mr-5">{{ rate['title'] }}</h1>
                 <div class="flex items-center">
-                <h1>{{ rate.value|number_format/2 }}/5</h1>
+                <h1>{{ rate['value']|number_format/2 }}/5</h1>
                     {% for i in range(0.5, 5) %}
-                        {% if rate.value|number_format/2 >= i %}
-                            {% if rate.value|number_format/2 > i %}
+                        {% if rate['value']|number_format/2 >= i %}
+                            {% if rate['value']|number_format/2 > i %}
                                 <img class="h-4 w-4 mx-1" src="{{ asset('img/star_fill.png') }}">
-                            {% elseif rate.value|number_format/2 == i %}
+                            {% elseif rate['value']|number_format/2 == i %}
                                 <img class="h-4 w-4 mx-1" src="{{ asset('img/star_demi.png') }}">
                             {% endif %}
                         {% else %}
@@ -149,9 +148,8 @@
                     {% endfor %} 
                 </div>
             </div>
-            <h1 class="mt-2 font-semibold">{{ rate.comment }}</h1>
+            <h1 class="mt-2 font-semibold">{{ rate['comment'] }}</h1>
         </div>
-        {% endif %}
         {% endfor %}
 </div>
 {% else %}

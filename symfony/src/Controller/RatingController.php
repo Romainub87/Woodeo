@@ -41,6 +41,9 @@ class RatingController extends AbstractController
         $ratings = $entityManager
             ->getRepository(Rating::class)
             ->createQueryBuilder('r')
+            ->leftJoin('r.user', 'u')
+            ->leftJoin('r.series', 's')
+            ->select('r', 'u.name', 's.title')
             ->where('r.accepted = 0')
             ->orderBy('r.id', 'DESC')
             ->getQuery()

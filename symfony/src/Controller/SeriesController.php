@@ -36,7 +36,12 @@ class SeriesController extends AbstractController
         $series = $entityManager
             ->getRepository(Series::class)
             ->createQueryBuilder('s')
-            ->orderBy('s.title', 'ASC');
+            ->orderBy('s.title', 'ASC')
+            ->innerJoin('s.rate', 'ra')
+            ->innerJoin('s.rates', 'r')
+            ->groupBy('s.id')
+            ->addSelect('(ra.value*ra.votes + SUM(r.value))/(COUNT(r.id)+ra.votes) as avg')
+            ->addSelect('ra.votes + COUNT(r.id) as count');
 
         //filter by title
         if ($search->getTitre()) {
@@ -54,12 +59,6 @@ class SeriesController extends AbstractController
                 ->setParameter('genre', $search->getGenre()->getId());
         }
 
-        if ($search->getNoteMin() || $search->getNoteMax() || $search->getTrier() == 3 || $search->getTrier() == 4) {
-            $series
-                ->innerJoin('s.rate', 'ra')
-                ->groupBy('s.id');
-        }
-
         switch($search->getTrier()){
             case 1: // filter by year of start decreasing
                 $series
@@ -71,11 +70,11 @@ class SeriesController extends AbstractController
                 break;
             case 3: // filter by rate decreasing
                 $series
-                    ->orderBy('AVG(ra.value)', 'DESC');
+                    ->orderBy('avg', 'DESC');
                 break;
             case 4: // filter by rate increasing
                 $series
-                    ->orderBy('AVG(ra.value)', 'ASC');
+                    ->orderBy('avg', 'ASC');
                 break;
             default:
                 break;
