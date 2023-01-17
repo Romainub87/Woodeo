@@ -12,6 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Entity\Genre;
+use App\Entity\Actor;
+use App\Entity\ExternalRating;
+use App\Entity\ExternalRatingSource;
+use App\Entity\Source;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -112,6 +118,69 @@ class SeriesController extends AbstractController
             'series' => $listeSeries,
             'SeriesSearchForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/new/{imdbId}', name: 'app_series_new', methods: ['GET', 'POST'])]
+    public function new(string $imdbId, EntityManagerInterface $entityManager, HttpClientInterface $client): Response
+    {
+        $response = $client->request('GET', 'http://www.omdbapi.com/?i='.$imdbId.'&apikey=a2996c2f&type=series')->toArray();
+        $trailer = $client->request('GET', 'https://imdb-api.com/en/API/YoutubeTrailer/k_g0p41mv2/'.$imdbId)->toArray();
+        $serie = new Series();
+        $serie->setTitle($response['Title']);
+        $serie->setPlot($response['Plot']);
+        $serie->setImdb($response['imdbID']);
+        $serie->setPoster(file_get_contents($response['Poster']));
+        $director = $response['Director'];
+        if ($director == 'N/A') {
+            $serie->setDirector(null);
+        } else {
+            $serie->setDirector($director);
+        }
+        $serie->setYoutubeTrailer($trailer['videoUrl']);
+        $serie->setAwards($response['Awards']);
+        $serie->setYearStart(intval(explode('–', $response['Year'])[0]));
+        $yearEnd = explode('–', $response['Year'])[1];
+        if (strlen($yearEnd) < 4) {
+            $serie->setYearEnd(null);
+        } else {
+            $serie->setYearEnd(intval($yearEnd));
+        }
+
+        $genres = explode(', ', $response['Genre']);
+        foreach ($genres as $genre) {
+            $genre = $entityManager->getRepository(Genre::class)->findOneBy(['name' => $genre]);
+            $serie->addGenre($genre);
+        }
+
+        $actors = explode(', ', $response['Actors']);
+        foreach ($actors as $actor) {
+            $actor_name = $actor;
+            $actor = $entityManager->getRepository(Actor::class)->findOneBy(['name' => $actor]);
+            if ($actor == null) {
+                $actor = new Actor();
+                $actor->setName($actor_name);
+                $entityManager->persist($actor);
+            }
+            $serie->addActor($actor);
+        }
+
+        $rate = new ExternalRating();
+        $rate->setValue($response['imdbRating']);
+        $source = $entityManager->getRepository(ExternalRatingSource::class)->findOneBy(['name' => 'IMDB']);
+        if ($source == null) {
+            $source = new ExternalRatingSource();
+            $source->setName('IMDB');
+            $entityManager->persist($source);
+        }
+        $rate->setSource($source);
+        $rate->setVotes(intval(str_replace(',','',$response['imdbVotes'])));
+        $entityManager->persist($rate);
+        $serie->addExternalRate($rate);
+
+        $entityManager->persist($serie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_dashboard');
     }
 
     #[Route('/random', name: 'app_series_random')]

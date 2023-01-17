@@ -13,13 +13,19 @@
         <h1 class="text-3xl text-center mb-2">Liste des utilisateurs</h1>
         {% endif %}
         
-
+        <div class="flex justify-between">
         {% if app.user.isAdmin() %}
-            <a href="{{ path('app_user_gen', {'id':500})}} "><button class="text-3xl text-center mb-2">Créer 500 utilisateurs</button></a>
+        
+            <a href="{{ path('app_user_gen', {'id':500})}} "><button class="text-xl text-center bg-green-600 p-2 px-5 rounded-xl  text-grey  mb-2">Créer 500 utilisateurs</button></a>
         {% endif %}
         {% if app.user.isAdmin() %}
-            <a href="{{ path('app_user_autodel')}} "><button class="text-3xl text-center mb-2">Supprimer tous les faux comptes</button></a>
+            <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="text-3xl text-center mb-2">Générer des critiques</button></a>
         {% endif %}
+        {% if app.user.isAdmin() %}
+            <a href="{{ path('app_user_autodel')}} "><button class="text-xl text-center bg-red-700 p-2 px-5 rounded-xl text-grey mb-2">Supprimer tous les faux comptes</button></a>
+        
+        {% endif %}
+        </div>
 
         
         <div class="mt-5">
@@ -45,6 +51,8 @@
                 {% if app.user.isAdmin() %}
                     <th>Incarner</th>
                     <th>Administrateur</th>
+                    <th>Suspendre</th>
+                    <th>Reset</th>
                 {% endif %}
             </tr>
         </thead>
@@ -74,6 +82,18 @@
                         {% else %}
                         <a href="{{ path('app_user_promote', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
                         {% endif %}
+                    </td>
+
+                    <td class=" border">
+                        {% if user.isSuspended() %}
+                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
+                        {% else %}
+                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
+                        {% endif %}
+                    </td>
+
+                    <td class="border">
+                        <a href="{{ path('app_user_reset_mdp', {'id':user.id})}} "><button class="bg-red-500 p-2 rounded-xl">Reset MDP</button></a>
                     </td>
                 {% endif %}
             </tr>

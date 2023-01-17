@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\UserSearch;
 use App\Form\UserSearchType;
+use App\Form\PasswordResetType;
 use Faker;
 
 #[Route('/user')]
@@ -91,31 +92,28 @@ class UserController extends AbstractController
             $faker->seed($seed);
             for($i=0;$i<$id;$i++){
                 $user = new User();
+                $user->setSuspended(0);
                 $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
                 $user->setPassword($faker->password);
                 $user->setName($faker->firstname);
                 $user->setAdmin(false);
                 $user->setRegisterDate(new \DateTime());
                 $entityManager->persist($user);
-                $entityManager->flush();
             }
             $entityManager->flush();
-
+            
         return $this->redirectToRoute('app_admin_dashboard');
     }
 
     #[Route('autodel', name: 'app_user_autodel', methods: ['GET'])]
     public function autodel(EntityManagerInterface $entityManager){
         //admin can delete auto generated users
-        $users = $entityManager
-            ->getRepository(User::class) 
-            ->findAll();
-        foreach($users as $user){
-            if(str_contains($user->getEmail(), 'AutoTesteur')){
-                $entityManager->remove($user);
-            }
-        }
-        $entityManager->flush();
+        $entityManager->createQueryBuilder()
+            ->delete('App\Entity\User', 'u')
+            ->where('u.email LIKE :email')
+            ->setParameter('email', '%AutoTesteur%')
+            ->getQuery()
+            ->execute();
         return $this->redirectToRoute('app_admin_dashboard');
     }
 
@@ -173,6 +171,38 @@ class UserController extends AbstractController
 
         // render the form
         return $this->renderForm('user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}/reset', name: 'app_user_reset_mdp', methods: ['GET', 'POST'])]
+    public function reset(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can edit user
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        $form = $this->createForm(PasswordResetType::class, $user);
+        $form->handleRequest($request);
+
+        // if form is submitted and valid, persist the user
+        if ($form->isSubmitted()) {
+
+            $passHash =  $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            );
+            $user->setPassword($passHash);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        // render the form
+        return $this->renderForm('user/reset.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
@@ -279,6 +309,21 @@ class UserController extends AbstractController
 
         // set the user as admin
         $user->setAdmin(!$user->isAdmin());
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/suspend', name: 'app_user_suspend', methods: ['GET'])]
+    public function suspend(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        // set the user as admin
+        $user->setSuspended(!$user->isSuspended());
         $entityManager->flush();
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);

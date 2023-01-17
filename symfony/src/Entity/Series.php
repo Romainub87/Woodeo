@@ -439,6 +439,16 @@ class Series
         return $this;
     }
 
+    public function addExternalRate(ExternalRating $rate): self
+    {
+        if (!$this->rate->contains($rate)) {
+            $this->rate->add($rate);
+            $rate->setSeries($this);
+        }
+
+        return $this;
+    }
+
     public function __toString()
     {
         return $this->title;

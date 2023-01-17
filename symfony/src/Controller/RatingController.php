@@ -28,6 +28,54 @@ class RatingController extends AbstractController
         ]);
     }
 
+    #[Route('/dashboard', name: 'app_rating_accepting', methods: ['GET'])]
+    public function accepting(EntityManagerInterface $entityManager): Response
+    {
+        // only admin can accept ratings
+        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+            return $this->redirectToRoute('app_rating_index');
+        }
+
+        $ratings = $entityManager
+            ->getRepository(Rating::class)
+            ->createQueryBuilder('r')
+            ->where('r.accepted = 0')
+            ->orderBy('r.id','DESC')
+            ->getQuery()
+            ->getResult();
+
+        $dateActuelle = new \DateTime();
+        //render the form
+        return $this->render('rating/accepting.html.twig', [
+            'ratings' => $ratings,
+            'dateActuelle' => $dateActuelle,
+        ]);
+    }
+
+    /**
+     * Accept the rate to be show by the admin
+     */
+    #[Route('/{id}/accept', name: 'app_rating_accept', methods: ['GET'])]
+    public function accept(Rating $r,EntityManagerInterface $entityManager): Response
+    {
+        $r->setAccepted(1);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_rating_accepting', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * Delete the rate, by the admin
+     */
+    #[Route('/{id}/refuse', name: 'app_rating_refuse', methods: ['GET'])]
+    public function refuse(Rating $r,EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($r);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_rating_accepting', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/new/{id}', name: 'app_rating_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Series $series, EntityManagerInterface $entityManager): Response
     {
@@ -60,7 +108,8 @@ class RatingController extends AbstractController
 
         // If form is submitted and valid, persist the rating
         if (($form->isSubmitted() && $form->isValid())) {
-            $rating->setAccepted(false);
+            // If there is no comment, accepted is true
+            $rating->setAccepted($rating->getComment()==null);
             $rating->setValue(intval(round($rating->getValue()*2)));
             $rating->setUser($this->getUser());
             $rating->setSeries($series);
@@ -163,5 +212,42 @@ class RatingController extends AbstractController
             'dateActuelle' => $dateActuelle,
             'valueForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('rating_gen/{id}', name: 'app_rating_gen', methods: ['GET', 'POST'])]
+    public function rating_gen(EntityManagerInterface $entityManager)
+    {
+        $series = $entityManager
+            ->getRepository(Series::class)
+            ->findAll();
+
+        //get in an array all users where email contains AutoTesteur
+        $users = $entityManager
+            ->getRepository(User::class)
+            ->findAll();
+
+        $userBot = [];
+        foreach ($users as $user) {
+            if (strpos($user->getEmail(), 'AutoTesteur') !== false) {
+                $userBot[] = $user;
+            }
+        }
+        
+        //create 100 ratings
+        for($i = 0; $i < 100; $i++){
+            $user = $userBot[rand(0, count($userBot)-1)];
+            $serie = $series[rand(0, count($series)-1)];
+            $rating = new Rating();
+            $rating->setAccepted(true);
+            $rating->setValue(rand(0, 10));
+            $rating->setDate(new \DateTime());
+            $rating->setComment("Commentaire de test");
+            $user->addRate($rating);
+            $serie->addRate($rating);
+            $entityManager->persist($rating);
+        }
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
     }
 }
