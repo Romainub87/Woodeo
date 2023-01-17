@@ -29,6 +29,7 @@ class RegistrationController extends AbstractController
                 )
             );
             // complete the registration
+            $user->setSuspended(0);
             $user->setAdmin(false);
             $user->setName($form->get('name')->getData());
             $user->setRegisterDate(new \DateTime());
