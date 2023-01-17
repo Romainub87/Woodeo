@@ -299,6 +299,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function removeAllSeries(): self
+    {
+        $this->series->clear();
+
+        return $this;
+    }
+
     public function getAvancement(Series $series, EntityManager $em): int
     {
         $count = $em->createQueryBuilder()

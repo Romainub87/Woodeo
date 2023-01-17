@@ -16,10 +16,16 @@
         <div class="flex justify-between">
         {% if app.user.isAdmin() %}
         
-            <a href="{{ path('app_user_gen', {'id':5000})}} "><button class="text-xl text-center bg-green-600 p-2 px-5 rounded-xl  text-grey  mb-2">Créer 5000 utilisateurs</button></a>
+            <a href="{{ path('app_user_gen', {'id':1000})}} "><button class="text-xl text-center bg-green-600 p-2 px-5 rounded-xl  text-grey  mb-2">Créer 1000 utilisateurs</button></a>
         {% endif %}
         {% if app.user.isAdmin() %}
-            <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="text-3xl text-center mb-2">Générer 5000 critiques</button></a>
+            <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="text-3xl text-center mb-2">Générer 1000 critiques</button></a>
+        {% endif %}
+        {% if app.user.isAdmin() %}
+            <a href="{{ path('app_user_genSuivi', {'id':1})}} "><button class="text-3xl text-center mb-2">Générer 1000 faux suvis de série</button></a>
+        {% endif %}
+        {% if app.user.isAdmin() %}
+            <a href="{{ path('app_user_autoDelSuivi', {'id':1})}} "><button class="text-3xl text-center mb-2">Supprimer les faux suivis</button></a>
         {% endif %}
         {% if app.user.isAdmin() %}
             <a href="{{ path('app_rating_del')}} "><button class="text-3xl text-center mb-2">Supprimer les critiques</button></a>
