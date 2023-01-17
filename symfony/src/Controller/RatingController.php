@@ -236,8 +236,14 @@ class RatingController extends AbstractController
 
         $faker = Faker\Factory::create('fr_FR');
 
+        if (count($userBot) == 0) {
+            return $this->redirectToRoute('app_rating_noUser');
+        }
+
+
+
         //create 100 ratings
-        for ($i = 0; $i < 10000; $i++) {
+        for ($i = 0; $i < 5000; $i++) {
             $user = $userBot[rand(0, count($userBot) - 1)];
             $serie = $series[rand(0, count($series) - 1)];
             $comment = $faker->realText(100);
@@ -267,6 +273,13 @@ class RatingController extends AbstractController
             ->getQuery()
             ->execute();
 
-            return $this->redirectToRoute('app_user_index');
-            }
+        return $this->redirectToRoute('app_user_index');
+    }
+
+    #[Route('noUser', name: 'app_rating_noUser', methods: ['GET', 'POST'])]
+    public function noUser(EntityManagerInterface $entityManager)
+    {
+        echo "Aucun faux comptes trouvés. Veuillez en créer avant de générer des critiques.";
+        return $this->render('rating/ratesNoUser.html.twig');
+    }
 }

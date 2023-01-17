@@ -91,7 +91,6 @@ class UserController extends AbstractController
             $seed = rand(0, 1000000000000000000);
             $faker->seed($seed);
             for($i=0;$i<$id;$i++){
-                //encode password
                 $user = new User();
                 $user->setSuspended(0);
                 $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
