@@ -22,7 +22,7 @@
               <summary></summary>
               <nav class="menu">
                 {% if app.user %}
-                  <h1 class="text-center text-2xl pb-5 mt-5 mb-7 border-b-2"> <i class="fa-solid fa-circle-user"></i> {{app.user.email}}</h1>
+                  <h1 class="text-center text-2xl pb-5 mt-5 mb-7 border-b-2"><i class="fa-solid fa-circle-user"></i> {{app.user.email}}</h1>
                 
                   <a class="inline-block mb-5  font-semibold" href="{{ path('app_index') }}">Accueil</a>
                 
@@ -41,12 +41,14 @@
             </details>
 
             <ul class="menu-pc text-2xl hidden md:flex">
-            <li class="nav-item -mb-px px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_index') }}">Accueil</a>
-            </li>
-            <li class="nav-item px-5 mr-1">
-              <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Séries</a>
-            </li>
+            {% if app.user.isSuspended() == 0 %}
+              <li class="nav-item -mb-px px-5 mr-1">
+                <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_index') }}">Accueil</a>
+              </li>
+              <li class="nav-item px-5 mr-1">
+                <a class="inline-block py-4 hover:text-blue-custom font-semibold" href="{{ path('app_series_index') }}">Séries</a>
+              </li>
+            {% endif %}
             {% if app.user %}
             <li class="nav-item px-5 ">
                   <div class="dropdown inline-block hover:bg-blue-500 hover:text-white text-blue-500 hover:rounded">
@@ -55,18 +57,20 @@
                       <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
                     </button>
                     <ul class="dropdown-menu absolute hidden text-white pt-1 right-0">
-                      <li class=""><a class="rounded-t bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_user_index') }}">
-                      {% if app.user.isAdmin() %}
-                        <div class="no-wrap"><i class="fa-sharp fa-solid fa-screwdriver-wrench"></i> Tableau de bord</div>
-                        <li class=""><a class="bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_admin_dashboard') }}"><i class="fa-solid fa-file-import"></i> Import séries</a></li>
-                      {% else %}
-                        <i class="fa-solid fa-users"></i> Utilisateurs
-                      {% endif %}</a></li>
-                      {% if app.user.isAdmin() %}
-                      <li class=""><a class="bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_rating_accepting') }}"><i class="fa-solid fa-comments"></i> Critiques</a>
-                      </li>
-                      {% endif %}
-                      <li class=""><a class="bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_user_show', {'id':app.user.id}) }}"><i class="fa-solid fa-bookmark pl-1 pr-2"></i> Mes Séries</a></li>
+                      {% if app.user.isSuspended() == 0 %}
+                        <li class=""><a class="rounded-t bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_user_index') }}">
+                        {% if app.user.isAdmin() %}
+                          <div class="no-wrap"><i class="fa-sharp fa-solid fa-screwdriver-wrench"></i> Tableau de bord</div>
+                          <li class=""><a class="bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_admin_dashboard') }}"><i class="fa-solid fa-file-import"></i> Import séries</a></li>
+                        {% else %}
+                          <i class="fa-solid fa-users"></i> Utilisateurs
+                        {% endif %}</a></li>
+                        {% if app.user.isAdmin() %}
+                        <li class=""><a class="bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_rating_accepting') }}"><i class="fa-solid fa-comments"></i> Critiques</a>
+                        </li>
+                        {% endif %}
+                        <li class=""><a class="bg-blue-700 hover:bg-blue-500 py-2 px-4 block whitespace-no-wrap" href="{{ path('app_user_show', {'id':app.user.id}) }}"><i class="fa-solid fa-bookmark pl-1 pr-2"></i> Mes Séries</a></li>
+                    {% endif %}
                       <li class=""><a class="rounded-b hover:bg-blue-custom py-2 px-4 block whitespace-no-wrap bg-red-700 hover:bg-red-400" href="{{ path('app_logout') }}"><i class="fa-solid fa-person-through-window"></i> Déconnexion</a></li>
                     </ul>
                   </div>

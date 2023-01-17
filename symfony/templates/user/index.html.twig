@@ -59,7 +59,11 @@
         <tbody class="text-center">
         {% for user in users %}
             <tr >
-                <td class="h-7 text-xl border">{{ user.name }}</td>
+                {% if user.isSuspended() %}
+                    <td class=" bg-red-500/50 h-7 text-xl border">[Suspendu]<br>{{ user.name }}</td>
+                {% else %}
+                    <td class="h-7 text-xl border">{{ user.name }}</td>
+                {% endif %}
                 <td class=" border">{{ user.email }}</td>
                 <td class=" border">{{ user.registerDate ? user.registerDate|date('d/m/Y H:i:s') : '' }}</td>
                 <td class="  md:flex-row flex-col flex justify-around no-wrap items-center border">
