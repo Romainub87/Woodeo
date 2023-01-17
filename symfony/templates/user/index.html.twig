@@ -13,25 +13,25 @@
         <h1 class="text-3xl text-center mb-2">Liste des utilisateurs</h1>
         {% endif %}
         
-        <div class="flex justify-between">
+        <div class="flex flex-wrap justify-between py-5">
         {% if app.user.isAdmin() %}
         
-            <a href="{{ path('app_user_gen', {'id':1000})}} "><button class="text-xl text-center bg-green-600 p-2 px-5 rounded-xl  text-grey  mb-2">Créer 1000 utilisateurs</button></a>
+            <a href="{{ path('app_user_gen', {'id':1000})}} "><button class="text-xl text-center border border-green-600 hover:bg-green-600 p-2 px-5 rounded-xl  text-grey  mb-2 ">Créer 1000 utilisateurs</button></a>
         {% endif %}
         {% if app.user.isAdmin() %}
-            <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="text-3xl text-center mb-2">Générer 1000 critiques</button></a>
+            <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="text-xl text-center border border-violet-500 hover:bg-violet-500 p-2 px-5 rounded-xl  text-grey  mb-2 ">Générer 1000 critiques</button></a>
         {% endif %}
         {% if app.user.isAdmin() %}
-            <a href="{{ path('app_user_genSuivi', {'id':1})}} "><button class="text-3xl text-center mb-2">Générer 1000 faux suvis de série</button></a>
+            <a href="{{ path('app_user_genSuivi', {'id':1})}} "><button class="text-xl text-center border border-blue-500 hover:bg-blue-500 p-2 px-5 rounded-xl  text-grey  mb-2 ">Générer 1000 faux suvis de série</button></a>
         {% endif %}
         {% if app.user.isAdmin() %}
-            <a href="{{ path('app_user_autoDelSuivi', {'id':1})}} "><button class="text-3xl text-center mb-2">Supprimer les faux suivis</button></a>
+            <a href="{{ path('app_user_autoDelSuivi', {'id':1})}} "><button class="text-xl text-center border border-yellow-500 hover:bg-yellow-500 p-2 px-5 rounded-xl  text-grey  mb-2 ">Supprimer les faux suivis</button></a>
         {% endif %}
         {% if app.user.isAdmin() %}
-            <a href="{{ path('app_rating_del')}} "><button class="text-3xl text-center mb-2">Supprimer les critiques</button></a>
+            <a href="{{ path('app_rating_del')}} "><button class="text-xl text-center border border-orange-500 hover:bg-orange-500 p-2 px-5 rounded-xl  text-grey  mb-2 ">Supprimer les critiques</button></a>
         {% endif %}
         {% if app.user.isAdmin() %}
-            <a href="{{ path('app_user_autodel')}} "><button class="text-xl text-center bg-red-700 p-2 px-5 rounded-xl text-grey mb-2">Supprimer tous les faux comptes</button></a>
+            <a href="{{ path('app_user_autodel')}} "><button class="text-xl text-center border border-red-700 hover:bg-red-700 p-2 px-5 rounded-xl text-grey mb-2 ">Supprimer tous les faux comptes</button></a>
         
         {% endif %}
         </div>
@@ -40,15 +40,17 @@
         <div class="mt-5">
             {{ knp_pagination_render(users)}}
         </div>
-        {{ form_start(UserSearchForm) }}
-            <div class="text-lg items-center flex w-full px-10 py-2 justify-between">
+
+    </div>
+
+    {{ form_start(UserSearchForm) }}
+            <div class="text-lg items-center flex flex-wrap w-full px-10 py-2">
                 {{ form_row(UserSearchForm.email, {
                 'label': 'E-mail',
                 }) }}
-            <button class="text-black bg-blue-500 rounded-2xl p-2 hover:bg-blue-custom" type="submit">Chercher</button>
+            <button class="text-black bg-blue-500 rounded-2xl p-2 hover:bg-blue-custom mx-5" type="submit">Chercher</button>
         </div>
-        {{ form_end(UserSearchForm) }}
-    </div>
+    {{ form_end(UserSearchForm) }}
     
     <table class="table w-full">
         <thead class="bg-white text-2xl text-black h-16">
@@ -117,7 +119,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <div class="bottom-0 mx-auto w-11/12">
+    <div class="bottom-0 mx-auto w-11/12 py-5">
         {{ knp_pagination_render(users)}}
     </div>
 </div>

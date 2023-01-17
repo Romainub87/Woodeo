@@ -9,10 +9,10 @@
             {{ form_widget(valueForm) }}
         {{ form_end(valueForm) }}
     </div>
-    <div class="flex flex-row-reverse w-max flex-wrap">
+    <div class="flex flex-wrap  ">
         {% for r in seriesRates %}
             {% if r.isAccepted() and r.user.isSuspended() == 0 %}
-                <div class="bg-blue-800 w-max m-2 rounded-lg">
+                <div class="bg-blue-800 max-w-sm m-2 rounded-lg">
                     <h1 class="text-sm p-2 pb-1">Ajouté le {{ r.date ? r.date|date('d-m-Y') : '' }}</h1>
                     {% if r.getDate.diff(dateActuelle).format("%a") > 0 %}
                         <h1 class="text-sm p-2 pb-1">Il y a {{ r.getDate.diff(dateActuelle).format("%a") }} jours</h1>
