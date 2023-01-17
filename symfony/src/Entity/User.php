@@ -139,6 +139,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $rates;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $suspended;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -331,7 +336,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->rates->contains($rate)) {
             $this->rates->add($rate);
-            $rate->setSeries($this);
+            $rate->setUser($this);
         }
 
         return $this;
@@ -396,6 +401,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeFollowing(User $following): self
     {
         $this->following->removeElement($following);
+
+        return $this;
+    }
+
+    public function isSuspended(): ?bool
+    {
+        return $this->suspended;
+    }
+
+    public function setSuspended(bool $suspended): self
+    {
+        $this->suspended = $suspended;
 
         return $this;
     }

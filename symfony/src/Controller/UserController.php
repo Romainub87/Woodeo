@@ -92,32 +92,37 @@ class UserController extends AbstractController
             $faker->seed($seed);
             for($i=0;$i<$id;$i++){
                 $user = new User();
+                $user->setSuspended(0);
                 $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
                 $user->setPassword($faker->password);
                 $user->setName($faker->firstname);
                 $user->setAdmin(false);
                 $user->setRegisterDate(new \DateTime());
                 $entityManager->persist($user);
-                $entityManager->flush();
             }
             $entityManager->flush();
-
-        return $this->redirectToRoute('app_admin_dashboard');
+            
+        return $this->redirectToRoute('app_user_index');
     }
 
     #[Route('autodel', name: 'app_user_autodel', methods: ['GET'])]
     public function autodel(EntityManagerInterface $entityManager){
+        //admin can delete rating of auto generated users
+        $entityManager->createQueryBuilder()
+            ->delete('App\Entity\Rating', 'r')
+            ->where('r.user IN (SELECT u.id FROM App\Entity\User u WHERE u.email LIKE :email)')
+            ->setParameter('email', '%AutoTesteur%')
+            ->getQuery()
+            ->execute();
+
         //admin can delete auto generated users
-        $users = $entityManager
-            ->getRepository(User::class) 
-            ->findAll();
-        foreach($users as $user){
-            if(str_contains($user->getEmail(), 'AutoTesteur')){
-                $entityManager->remove($user);
-            }
-        }
-        $entityManager->flush();
-        return $this->redirectToRoute('app_admin_dashboard');
+        $entityManager->createQueryBuilder()
+            ->delete('App\Entity\User', 'u')
+            ->where('u.email LIKE :email')
+            ->setParameter('email', '%AutoTesteur%')
+            ->getQuery()
+            ->execute();
+        return $this->redirectToRoute('app_user_index');
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
@@ -312,6 +317,21 @@ class UserController extends AbstractController
 
         // set the user as admin
         $user->setAdmin(!$user->isAdmin());
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/suspend', name: 'app_user_suspend', methods: ['GET'])]
+    public function suspend(User $user, EntityManagerInterface $entityManager): Response
+    {
+        // only admin can promote user
+        if (!$this->getUser() || !$this->getUser()->isAdmin()) {
+            return $this->redirectToRoute('app_series_index');
+        }
+
+        // set the user as admin
+        $user->setSuspended(!$user->isSuspended());
         $entityManager->flush();
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
