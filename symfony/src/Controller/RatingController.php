@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Series;
 use App\Entity\User;
+use Faker;
 
 #[Route('/rating')]
 class RatingController extends AbstractController
@@ -210,14 +211,14 @@ class RatingController extends AbstractController
         }
         
         //create 100 ratings
-        for($i = 0; $i < 10000; $i++){
+        for($i = 0; $i < 1; $i++){
             $user = $userBot[rand(0, count($userBot)-1)];
             $serie = $series[rand(0, count($series)-1)];
             $rating = new Rating();
             $rating->setAccepted(true);
             $rating->setValue(rand(0, 10));
             $rating->setDate(new \DateTime());
-            $rating->setComment("Commentaire de test");
+            $rating->setComment('Commentaire de test');
             $user->addRate($rating);
             $serie->addRate($rating);
             $entityManager->persist($rating);

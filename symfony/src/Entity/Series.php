@@ -491,7 +491,7 @@ class Series
     {
         if (!$this->rates->contains($rate)) {
             $this->rates->add($rate);
-            $rate->setSeries($this);
+            $rate->setSeries($this); //todo: fix this
         }
 
         return $this;
