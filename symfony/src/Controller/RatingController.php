@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Series;
 use App\Entity\User;
 use Faker;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 #[Route('/rating')]
 class RatingController extends AbstractController
