@@ -91,6 +91,7 @@ class UserController extends AbstractController
             $seed = rand(0, 1000000000000000000);
             $faker->seed($seed);
             for($i=0;$i<$id;$i++){
+                //encode password
                 $user = new User();
                 $user->setSuspended(0);
                 $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
@@ -102,11 +103,19 @@ class UserController extends AbstractController
             }
             $entityManager->flush();
             
-        return $this->redirectToRoute('app_admin_dashboard');
+        return $this->redirectToRoute('app_user_index');
     }
 
     #[Route('autodel', name: 'app_user_autodel', methods: ['GET'])]
     public function autodel(EntityManagerInterface $entityManager){
+        //admin can delete rating of auto generated users
+        $entityManager->createQueryBuilder()
+            ->delete('App\Entity\Rating', 'r')
+            ->where('r.user IN (SELECT u.id FROM App\Entity\User u WHERE u.email LIKE :email)')
+            ->setParameter('email', '%AutoTesteur%')
+            ->getQuery()
+            ->execute();
+
         //admin can delete auto generated users
         $entityManager->createQueryBuilder()
             ->delete('App\Entity\User', 'u')
@@ -114,7 +123,7 @@ class UserController extends AbstractController
             ->setParameter('email', '%AutoTesteur%')
             ->getQuery()
             ->execute();
-        return $this->redirectToRoute('app_admin_dashboard');
+        return $this->redirectToRoute('app_user_index');
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
