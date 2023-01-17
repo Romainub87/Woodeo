@@ -6,13 +6,18 @@
     <h1 class="text-3xl font-bold mb-5">Liste des critiques de {{ series.title}}</h1>
     <div class="text-black">
         {{ form_start(valueForm) }}
-            {{ form_widget(valueForm) }}
+            <div class="text-md">
+            {{ form_row(valueForm.value, { 
+                'label': 'Note',
+                'attr': {'class': ' mx-2 rounded-lg px-2 p-1'}
+            }) }}
+            </div>
         {{ form_end(valueForm) }}
     </div>
-    <div class="flex flex-row-reverse w-max flex-wrap">
+    <div class="flex flex-row float-left flex-wrap">
         {% for r in seriesRates %}
             {% if r.isAccepted() and r.user.isSuspended() == 0 %}
-                <div class="bg-blue-800 w-max m-2 rounded-lg">
+                <div class="bg-blue-800 m-2 max-w-sm rounded-lg">
                     <h1 class="text-sm p-2 pb-1">Ajouté le {{ r.date ? r.date|date('d-m-Y') : '' }}</h1>
                     {% if r.getDate.diff(dateActuelle).format("%a") > 0 %}
                         <h1 class="text-sm p-2 pb-1">Il y a {{ r.getDate.diff(dateActuelle).format("%a") }} jours</h1>
