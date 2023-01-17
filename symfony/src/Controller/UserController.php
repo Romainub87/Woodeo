@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Rating;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +16,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\UserSearch;
 use App\Form\UserSearchType;
 use App\Form\PasswordResetType;
+use Doctrine\ORM\Mapping\Id;
 use Faker;
 
 #[Route('/user')]
@@ -62,7 +64,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new (Request $request, EntityManagerInterface $entityManager): Response
     {
         // only admin can create new user
         if (!$this->getUser() || !$this->getUser()->isAdmin()) {
@@ -86,26 +88,67 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form,
         ]);
-    }   
+    }
 
     #[Route('/gen/{id}', name: 'app_user_gen', methods: ['GET'])]
-    public function gen(int $id, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher){
+    public function gen(int $id, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+    {
         //admin can generate users
-            $faker = Faker\Factory::create();
-            $seed = rand(0, 1000000000000000000);
-            $faker->seed($seed);
-            for($i=0;$i<$id;$i++){
-                $user = new User();
-                $user->setSuspended(0);
-                $user->setEmail('AutoTesteur'.$seed.$i.'.'.$faker->email);
-                $user->setPassword($faker->password);
-                $user->setName($faker->firstname);
-                $user->setAdmin(false);
-                $user->setRegisterDate(new \DateTime());
+        $faker = Faker\Factory::create();
+        $seed = rand(0, 1000000000000000000);
+        $faker->seed($seed);
+        for ($i = 0; $i < $id; $i++) {
+            $user = new User();
+            $user->setSuspended(0);
+            $user->setEmail('AutoTesteur' . $seed . $i . '.' . $faker->email);
+            $user->setPassword($faker->password);
+            $user->setName($faker->firstname);
+            $user->setAdmin(false);
+            $user->setRegisterDate(new \DateTime());
+            $entityManager->persist($user);
+        }
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index');
+    }
+
+    #[Route('/genSuivi/{id}', name: 'app_user_genSuivi', methods: ['GET'])]
+    public function genSuivi(int $id, EntityManagerInterface $entityManager)
+    {
+        //get all series
+        $series = $entityManager->getRepository('App\Entity\Series')->findAll();
+        $users = $entityManager->getRepository('App\Entity\User')->findAll();
+        $userBot = [];
+        foreach ($users as $user) {
+            if (strpos($user->getEmail(), 'AutoTesteur') !== false) {
+                $userBot[] = $user;
+            }
+        }
+        
+
+        //add some random series to user
+        for($i = 0; $i < 1000; $i++){
+            $user = $userBot[rand(0, count($userBot) - 1)];
+            $series[rand(0, count($series) - 1)]->addUser($user);
+            $series[rand(0, count($series) - 1)]->addUser($user);
+            $entityManager->persist($user);
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('app_user_index');
+    }
+
+    #[Route('/autoDelSuivi', name: 'app_user_autoDelSuivi', methods: ['GET'])]
+    public function autoDelSuivi(EntityManagerInterface $entityManager)
+    {
+        //admin can delete all series from auto generated users
+        $users = $entityManager->getRepository('App\Entity\User')->findAll();
+        foreach ($users as $user) {
+            if (strpos($user->getEmail(), 'AutoTesteur') !== false) {
+                $user->removeAllSeries();
                 $entityManager->persist($user);
             }
-            $entityManager->flush();
-            
+        }
+        $entityManager->flush();
         return $this->redirectToRoute('app_user_index');
     }
 
@@ -118,6 +161,15 @@ class UserController extends AbstractController
             ->setParameter('email', '%AutoTesteur%')
             ->getQuery()
             ->execute();
+
+        $users = $entityManager->getRepository('App\Entity\User')->findAll();
+        foreach ($users as $user) {
+            if (strpos($user->getEmail(), 'AutoTesteur') !== false) {
+                $user->removeAllSeries();
+                $entityManager->persist($user);
+                }
+            }
+        $entityManager->flush();
 
         //admin can delete auto generated users
         $entityManager->createQueryBuilder()
@@ -337,6 +389,14 @@ class UserController extends AbstractController
         // set the user as admin
         $user->setSuspended(!$user->isSuspended());
         $entityManager->flush();
+
+            $entityManager->createQueryBuilder()
+            ->delete('App\Entity\Rating','r')
+            ->andWhere('r.user = :user_id')
+            ->setParameter('user_id', $user->getId())
+            ->getQuery()
+            ->execute();
+        
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
