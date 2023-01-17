@@ -186,6 +186,7 @@ class RatingController extends AbstractController
         $form = $this->createFormBuilder()
             ->add('value', NumberType::class, [
                 'label' => 'Note',
+                'required'=> 'false',
             ])
             ->getForm();
         $form->handleRequest($request);
@@ -202,7 +203,14 @@ class RatingController extends AbstractController
                     ;
         }
         else {
-            $rates = $serie->getRates();
+            $rates = $em->getRepository(Rating::class)
+                    ->createQueryBuilder('r')
+                    ->where('r.series = :series')
+                    ->setParameter('series', $serie)
+                    ->orderBy('r.date', 'desc')
+                    ->getQuery()
+                    ->getResult()
+                    ;
         }
 
 

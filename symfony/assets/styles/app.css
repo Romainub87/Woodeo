@@ -38,7 +38,57 @@ body {
   height: 100%;
 }
 
-/* #endregion */
+/* responsive tableau administration */
+@media screen and (max-width: 450px) {
+
+  .name_colonne {
+    display: none;
+  }
+
+  .name_infos {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+
+  .admin_action {
+    display: none;
+  }
+
+  .admin_colonne {
+    display: none;
+  }
+
+  .ban_action {
+    display: none;
+  }
+
+  .ban_colonne {
+    display: none;
+  }
+
+}
+
+@media screen and (max-width: 1068px) {
+
+
+  .register_date {
+    display: none;
+  }
+
+  .register_date_colonne {
+    display: none;
+  }
+
+  .reset_action {
+    display: none;
+  }
+
+  .reset_colonne {
+    display: none;
+  }
+}
 
 .carrousel {
   width: max-content;
@@ -318,6 +368,6 @@ details[open]::before {
   align-items: center;
   border-radius: 10px;
   height: 90px;
-  width:95%;
+  width: 95%;
   line-height: normal;
 }
