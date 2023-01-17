@@ -388,15 +388,16 @@ class UserController extends AbstractController
 
         // set the user as admin
         $user->setSuspended(!$user->isSuspended());
+        $user->removeAllFollowers();
+        $user->removeAllFollowings();
         $entityManager->flush();
 
-            $entityManager->createQueryBuilder()
+        $entityManager->createQueryBuilder()
             ->delete('App\Entity\Rating','r')
             ->andWhere('r.user = :user_id')
             ->setParameter('user_id', $user->getId())
             ->getQuery()
             ->execute();
-        
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }

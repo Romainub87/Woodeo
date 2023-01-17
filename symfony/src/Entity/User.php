@@ -412,6 +412,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function removeAllFollowers(): self
+    {
+        foreach($this->getFollowers() as $f){
+            $this->removeFollower($f);
+        }
+        return $this;
+    }
+
+    public function removeAllFollowings(): self
+    {
+        foreach($this->getFollowing() as $f){
+            $this->removeFollowing($f);
+        }
+        return $this;
+    }
+
     public function isSuspended(): ?bool
     {
         return $this->suspended;
