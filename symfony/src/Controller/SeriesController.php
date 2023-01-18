@@ -18,6 +18,8 @@ use App\Entity\Actor;
 use App\Entity\ExternalRating;
 use App\Entity\ExternalRatingSource;
 use App\Entity\Season;
+use App\Form\SeriesType;
+use App\Entity\Rating;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -34,7 +36,12 @@ class SeriesController extends AbstractController
         $series = $entityManager
             ->getRepository(Series::class)
             ->createQueryBuilder('s')
-            ->orderBy('s.title', 'ASC');
+            ->orderBy('s.title', 'ASC')
+            ->leftJoin('s.rate', 'ra')
+            ->leftJoin('s.rates', 'r')
+            ->groupBy('s.id')
+            ->addSelect('(ra.value*ra.votes + SUM(COALESCE(r.value,0)))/(COUNT(r.id)+COALESCE(ra.votes,0)) as avg')
+            ->addSelect('ra.votes + COUNT(r.id) as count');
 
         //filter by title
         if ($search->getTitre()) {
@@ -52,12 +59,6 @@ class SeriesController extends AbstractController
                 ->setParameter('genre', $search->getGenre()->getId());
         }
 
-        if ($search->getNoteMin() || $search->getNoteMax() || $search->getTrier() == 3 || $search->getTrier() == 4) {
-            $series
-                ->innerJoin('s.rate', 'ra')
-                ->groupBy('s.id');
-        }
-
         switch($search->getTrier()){
             case 1: // filter by year of start decreasing
                 $series
@@ -69,11 +70,11 @@ class SeriesController extends AbstractController
                 break;
             case 3: // filter by rate decreasing
                 $series
-                    ->orderBy('AVG(ra.value)', 'DESC');
+                    ->orderBy('avg', 'DESC');
                 break;
             case 4: // filter by rate increasing
                 $series
-                    ->orderBy('AVG(ra.value)', 'ASC');
+                    ->orderBy('avg', 'ASC');
                 break;
             default:
                 break;
@@ -117,6 +118,22 @@ class SeriesController extends AbstractController
         return $this->render('series/index.html.twig', [
             'series' => $listeSeries,
             'SeriesSearchForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_series_edit')]
+    public function editSeries(Request $request, Series $series, EntityManagerInterface $entityManager)
+    {   
+        $form = $this->createForm(SeriesType::class, $series);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($series);
+            $entityManager->flush();
+        }
+        return $this->render('series/edit.html.twig', [
+            'series' => $series,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -189,15 +206,17 @@ class SeriesController extends AbstractController
             $season->setSeries($serie);
             $entityManager->persist($season);
             $seasonInfo = $client->request('GET', 'http://www.omdbapi.com/?i='.$imdbId.'&apikey=a2996c2f&Season='.$i)->toArray();
-            for ($x = 0; $x < count($seasonInfo['Episodes']); $x++) {
-                $episode = new Episode();
-                $episode->setNumber($seasonInfo['Episodes'][$x]['Episode']);
-                $episode->setTitle($seasonInfo['Episodes'][$x]['Title']);
-                $episode->setSeason($season);
-                $episode->setDate(new \DateTime($seasonInfo['Episodes'][$x]['Released']));
-                $episode->setImdb($seasonInfo['Episodes'][$x]['imdbID']);
-                $episode->setImdbRating(floatval($seasonInfo['Episodes'][$x]['imdbRating']));
-                $entityManager->persist($episode);
+            if ($seasonInfo['Response'] == 'True') {
+                for ($x = 0; $x < count($seasonInfo['Episodes']); $x++) {
+                    $episode = new Episode();
+                    $episode->setNumber($seasonInfo['Episodes'][$x]['Episode']);
+                    $episode->setTitle($seasonInfo['Episodes'][$x]['Title']);
+                    $episode->setSeason($season);
+                    $episode->setDate(new \DateTime($seasonInfo['Episodes'][$x]['Released']));
+                    $episode->setImdb($seasonInfo['Episodes'][$x]['imdbID']);
+                    $episode->setImdbRating(floatval($seasonInfo['Episodes'][$x]['imdbRating']));
+                    $entityManager->persist($episode);
+                }
             }
         }
 
@@ -380,6 +399,40 @@ class SeriesController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_series_show', ['id' => $series->getId()], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/{id}', name: 'app_series_delete', methods: ['POST'])]
+    public function delete(Request $request, Series $series, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$series->getId(), $request->request->get('_token'))) {
+            $entityManager->getRepository(ExternalRating::class)->createQueryBuilder('e')
+                ->delete()
+                ->where('e.series = :series')
+                ->setParameter('series', $series)
+                ->getQuery()
+                ->execute();
+            $entityManager->getRepository(Rating::class)->createQueryBuilder('r')
+                ->delete()
+                ->where('r.series = :series')
+                ->setParameter('series', $series)
+                ->getQuery()
+                ->execute();
+                $entityManager->getRepository(Episode::class)->createQueryBuilder('e')
+                    ->delete()
+                    ->where('e.season in (:season)')
+                    ->setParameter('season', $entityManager->getRepository(Season::class)->findBy(['series' => $series]))
+                    ->getQuery()
+                    ->execute();
+            $entityManager->getRepository(Season::class)->createQueryBuilder('s')
+                ->delete()
+                ->where('s.series = :series')
+                ->setParameter('series', $series)
+                ->getQuery()
+                ->execute();
+            $entityManager->remove($series);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_series_index', [], Response::HTTP_SEE_OTHER);
     }
     
 }

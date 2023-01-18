@@ -264,7 +264,7 @@ details[open] .menu {
 }
 
 details[open] summary::before {
-  content: "X";
+  content: "×";
   font-size: 50px;
 }
 

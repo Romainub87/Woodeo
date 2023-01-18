@@ -41,7 +41,11 @@ class RatingController extends AbstractController
         $ratings = $entityManager
             ->getRepository(Rating::class)
             ->createQueryBuilder('r')
+            ->leftJoin('r.user', 'u')
+            ->leftJoin('r.series', 's')
+            ->select('r', 'u.name', 's.title')
             ->where('r.accepted = 0')
+            ->andWhere('r.comment is not null')
             ->orderBy('r.id', 'DESC')
             ->getQuery()
             ->getResult();
@@ -251,7 +255,7 @@ class RatingController extends AbstractController
 
 
 
-        //create 100 ratings
+        //create 1000 ratings
         for ($i = 0; $i < 1000; $i++) {
             $user = $userBot[rand(0, count($userBot) - 1)];
             $serie = $series[rand(0, count($series) - 1)];
