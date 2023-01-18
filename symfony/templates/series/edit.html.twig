@@ -1,16 +1,51 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="flex mx-auto w-4/5 justify-center justify-around">
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        {{ form_row(form.title, {
+            'attr':{ 'class': 'flex p-0.5 px-2 mb-2 w-full rounded font-semibold'},
+            'label': 'Titre',
+        }) }}
+        {{ form_row(form.plot, {
+            'attr':{ 'class': 'flex p-0.5 px-2 pb-5 mb-2 w-96 h-48 rounded font-semibold'},
+            'label': 'Description',
+        }) }}
+        {{ form_row(form.director, {
+            'attr':{ 'class': 'flex p-0.5 px-2 mb-2 w-full rounded font-semibold'},
+            'label': 'Réalisateur',
+        }) }}
+        {{ form_row(form.youtubeTrailer, {
+            'attr':{ 'class': 'flex p-0.5 px-2 mb-2 w-full rounded font-semibold'},
+            'label': 'Trailer',
+        }) }}
+        {{ form_row(form.awards, {
+            'attr':{ 'class': 'flex p-0.5 px-2 mb-2 w-full rounded font-semibold'},
+            'label': 'Récompenses',
+        }) }}
+        {{ form_row(form.yearStart, {
+            'attr':{ 'class': 'flex p-0.5 px-2 mb-2 w-full rounded font-semibold'},
+            'label': 'Année de début',
+        }) }}
+        {{ form_row(form.yearEnd, {
+            'attr':{ 'class': 'flex p-0.5 px-2 mb-2 w-full rounded font-semibold'},
+            'label': 'Année de fin',
+        }) }}
+        <div class="flex justify-between">
+        <button type="submit" class="bg-blue-500 rounded font-semibold px-4 p-1">Modifier la série</button>
+        {{ include('series/_delete_form.html.twig') }}
+        </div>
     {{ form_end(form) }}
-    {{ include('series/_delete_form.html.twig') }}
-    {% for season in series.seasons %}
-        <a href="{{ path('app_season_edit', {'id': season.id}) }}">Edit saison {{ season.number }}</a>
-        <br>
-    {% endfor %}
-        <a href="{{ path('app_season_new', {'series': series.id}) }}">Ajouter une saison</a>
-        <br>
-        <a href="{{ path('app_series_show', {'id': series.id}) }}">Retour à la série</a>
+
+    <div class="flex flex-col items-center h-full mt-5">
+        <h1 class="text-white text-2xl font-bold mb-10">Listes des saisons</h1>
+        {% for season in series.seasons %}
+            <a class="text-white text-lg font-semibold text-lg" href="{{ path('app_season_edit', {'id': season.id}) }}">Modifier saison {{ season.number }}</a>
+            <br>
+        {% endfor %}
+            <a class="text-white font-semibold bg-green-700 px-4 p-1.5 rounded" href="{{ path('app_season_new', {'series': series.id}) }}">Ajouter une saison</a>
+            <br>
+            <a class="text-white font-semibold bg-blue-500 rounded px-4 p-1 text-black" href="{{ path('app_series_show', {'id': series.id}) }}">Retour à la série</a>
+    </div>
+</div>
 {% endblock %}

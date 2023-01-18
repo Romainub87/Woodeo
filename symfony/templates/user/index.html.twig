@@ -9,7 +9,7 @@
     <div class="flex flex-col w-full">
         {% if app.user %}
             {% if app.user.isAdmin() %}
-            <h1 class="text-3xl text-center mb-2">Tableau de bord administrateur</h1>
+            <h1 class="text-5xl text-center font-semibold mb-2">Tableau de bord administrateur</h1>
             {% else %}
             <h1 class="text-3xl text-center mb-2">Liste des utilisateurs</h1>
             {% endif %}
@@ -17,22 +17,22 @@
                 <div class="flex flex-col justify-between">
                     <div class="flex justify-between">
                     {% if app.user.isAdmin() %}
-                    <a href="{{ path('app_user_gen', {'id':1000})}} "><button class="text-lg text-center bg-green-600 p-2 px-5 rounded-xl  text-grey  mb-2">Créer 1000 utilisateurs</button></a>
-                    <a href="{{ path('app_user_autodel')}} "><button class="text-lg text-center bg-red-700 p-2 px-5 rounded-xl text-grey mb-2">Supprimer les faux comptes</button></a>
+                    <a href="{{ path('app_user_gen', {'id':5000})}} "><button class="hidden md:flex justify-center w-72 text-lg text-center bg-green-600 hover:bg-green-500 p-2 px-5 rounded-xl  text-grey  mb-2">Créer 5000 utilisateurs</button></a>
+                    <a href="{{ path('app_user_autodel')}} "><button class="hidden md:flex justify-center w-72 text-lg text-center bg-red-700 hover:bg-red-600 p-2 px-5 rounded-xl text-grey mb-2">Supprimer les faux comptes</button></a>
                     {% endif %}
 
                     </div>
                     <div class="flex flex-row-reverse justify-between">
                     {% if app.user.isAdmin() %}
-                    <a href="{{ path('app_rating_del')}} "><button class="w-72 text-lg bg-red-700 hover:bg-red-600 text-center p-2 px-5 rounded-xl  text-grey mb-2"> Supprimer les critiques </button></a>
-                    <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="w-72 bg-green-600 hover:bg-green-500 text-lg text-center p-2 px-5 rounded-xl  text-grey mb-2">Générer 1000 critiques</button></a>
+                    <a href="{{ path('app_rating_del')}} "><button class="hidden md:flex justify-center w-72 text-lg bg-red-700 hover:bg-red-600 text-center p-2 px-5 rounded-xl  text-grey mb-2"> Supprimer les critiques </button></a>
+                    <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="hidden md:flex justify-center w-72 bg-green-600 hover:bg-green-500 text-lg text-center p-2 px-5 rounded-xl  text-grey mb-2">Générer 1000 critiques</button></a>
                     {% endif %}
                     </div>
 
                     <div class="flex flex-row-reverse justify-between">
                     {% if app.user.isAdmin() %}
-                    <a href="{{ path('app_user_autoDelSuivi')}} "><button class="w-72 text-lg text-center bg-red-700 hover:bg-red-600 p-2 px-5 rounded-xl text-grey mb-2"> Supprimer les faux suivis </button></a>
-                    <a href="{{ path('app_user_genSuivi', {'id':2})}} "><button class="w-72 bg-green-600 hover:bg-green-500 text-lg text-center p-2 px-5 rounded-xl  text-grey mb-2">Générer 1000 faux suivis</button></a>
+                    <a href="{{ path('app_user_autoDelSuivi')}} "><button class="hidden md:flex justify-center w-72 text-lg text-center bg-red-700 hover:bg-red-600 p-2 px-5 rounded-xl text-grey mb-2"> Supprimer les faux suivis </button></a>
+                    <a href="{{ path('app_user_genSuivi', {'id':2})}} "><button class="hidden md:flex justify-center w-72 bg-green-600 hover:bg-green-500 text-lg text-center p-2 px-5 rounded-xl  text-grey mb-2">Générer 1000 faux suivis</button></a>
                     {% endif %}
         {% endif %}
         </div>

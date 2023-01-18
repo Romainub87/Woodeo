@@ -45,6 +45,7 @@ class RatingController extends AbstractController
             ->leftJoin('r.series', 's')
             ->select('r', 'u.name', 's.title')
             ->where('r.accepted = 0')
+            ->andWhere('r.comment is not null')
             ->orderBy('r.id', 'DESC')
             ->getQuery()
             ->getResult();
