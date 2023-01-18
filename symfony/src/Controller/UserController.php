@@ -214,7 +214,7 @@ class UserController extends AbstractController
         $usercritique = $entityManager
             ->getRepository(Rating::class)
             ->createQueryBuilder('r')
-            ->select('s.title', 'r.value', 'r.comment')
+            ->select('s.title', 'r.value', 'r.comment', 'r.accepted')
             ->innerJoin('r.series', 's')
             ->where('r.accepted = 1')
             ->andWhere('r.user = :id')
