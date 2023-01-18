@@ -24,15 +24,15 @@
                     </div>
                     <div class="flex flex-row-reverse justify-between">
                     {% if app.user.isAdmin() %}
-                    <a href="{{ path('app_rating_del')}} "><button class="text-lg bg-red-700 text-center p-2 px-5 rounded-xl  text-grey mb-2"> Supprimer les critiques </button></a>
-                    <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="bg-green-600 text-lg text-center p-2 px-5 rounded-xl  text-grey mb-2">Générer 1000 critiques</button></a>
+                    <a href="{{ path('app_rating_del')}} "><button class="w-72 text-lg bg-red-700 hover:bg-red-600 text-center p-2 px-5 rounded-xl  text-grey mb-2"> Supprimer les critiques </button></a>
+                    <a href="{{ path('app_rating_gen', {'id':1})}} "><button class="w-72 bg-green-600 hover:bg-green-500 text-lg text-center p-2 px-5 rounded-xl  text-grey mb-2">Générer 1000 critiques</button></a>
                     {% endif %}
                     </div>
 
                     <div class="flex flex-row-reverse justify-between">
                     {% if app.user.isAdmin() %}
-                    <a href="{{ path('app_user_autoDelSuivi')}} "><button class="text-lg text-center bg-red-700 p-2 px-5 rounded-xl text-grey mb-2"> Supprimer les faux suivis </button></a>
-                    <a href="{{ path('app_user_genSuivi', {'id':2})}} "><button class="bg-green-600 text-lg text-center p-2 px-5 rounded-xl  text-grey mb-2">Générer 1000 faux suivis</button></a>
+                    <a href="{{ path('app_user_autoDelSuivi')}} "><button class="w-72 text-lg text-center bg-red-700 hover:bg-red-600 p-2 px-5 rounded-xl text-grey mb-2"> Supprimer les faux suivis </button></a>
+                    <a href="{{ path('app_user_genSuivi', {'id':2})}} "><button class="w-72 bg-green-600 hover:bg-green-500 text-lg text-center p-2 px-5 rounded-xl  text-grey mb-2">Générer 1000 faux suivis</button></a>
                     {% endif %}
         {% endif %}
         </div>
@@ -49,7 +49,7 @@
                 {{ form_row(UserSearchForm.email, {
                 'label': 'E-mail',
                 }) }}
-            <button class="text-black bg-blue-500 rounded-2xl px-5 p-2 hover:bg-blue-custom" type="submit">Chercher</button>
+            <button class="mx-5 text-black bg-blue-500 rounded-2xl px-5 p-2 hover:bg-blue-custom" type="submit">Chercher</button>
         </div>
     {{ form_end(UserSearchForm) }}
     
@@ -102,9 +102,9 @@
 
                     <td class=" border ban_action">
                         {% if user.isSuspended() %}
-                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
+                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/bouton_allume_r.png')}} " style="margin: auto;"></a>
                         {% else %}
-                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
+                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/bouton_eteint_r.png')}} " style="margin: auto;"></a>
                         {% endif %}
                     </td>
 
