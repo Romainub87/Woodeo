@@ -49,7 +49,7 @@
                 {{ form_row(UserSearchForm.email, {
                 'label': 'E-mail',
                 }) }}
-            <button class="text-black bg-blue-500 rounded-2xl px-5 p-2 hover:bg-blue-custom" type="submit">Chercher</button>
+            <button class="mx-5 text-black bg-blue-500 rounded-2xl px-5 p-2 hover:bg-blue-custom" type="submit">Chercher</button>
         </div>
     {{ form_end(UserSearchForm) }}
     
@@ -102,9 +102,9 @@
 
                     <td class=" border ban_action">
                         {% if user.isSuspended() %}
-                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_plein.png')}} " style="margin: auto;"></a>
+                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/bouton_allume_r.png')}} " style="margin: auto;"></a>
                         {% else %}
-                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/admin_eteint.png')}} " style="margin: auto;"></a>
+                        <a href="{{ path('app_user_suspend', {'id': user.id}) }}"><img class="h-12 w-20" src="{{ asset('img/bouton_eteint_r.png')}} " style="margin: auto;"></a>
                         {% endif %}
                     </td>
 
