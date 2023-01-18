@@ -9,7 +9,7 @@
 
 {% block body %}
 <div class="flex-col flex w-4/5 mx-auto">
-{% if user.isSuspended() == 0 or app.user.isAdmin() == 1 %}
+{% if user.isSuspended == 0 %}
     {% if app.user.id != user.id %}
     {# gestion des followers #}
     
@@ -148,11 +148,11 @@
                         {% endif %}
                     {% endfor %} 
                 </div>
-            </div>
-            <h1 class="mt-2 font-semibold">{{ rate['comment'] }}</h1>
-        </div>
+                </div>
+                    <h1 class="mt-2 font-semibold">{{ rate['comment'] }}</h1>
+                </div>
+        {%endif %}
         {% endfor %}
-</div>
 {% else %}
 <h1 class="text-red-500"> Ce compte est Suspendu</h1> 
 {% endif %}

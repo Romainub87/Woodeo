@@ -106,6 +106,27 @@ body {
   display: block;
 }
 
+/* Style edit episodes */
+#episode_date_month {
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+#episode_date_day {
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#episode_date_year {
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 
 /* #region style description série */
 
