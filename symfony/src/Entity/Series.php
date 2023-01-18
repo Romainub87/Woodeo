@@ -523,19 +523,18 @@ class Series
     public function getNumberSeasonView(User $user, EntityManagerInterface $em): int
     {
         $result = $em->createQueryBuilder()
-            ->select('COUNT(DISTINCT se.id)')
+            ->select('MAX(se.number)')
             ->from(User::class, 'u')
             ->innerJoin('u.episode', 'ep')
             ->innerJoin('ep.season', 'se')
             ->where('u = :user')
             ->setParameter('user', $user)
             ->andWhere('se.series = :series')
-            ->setParameter('series', $this)
-            ->groupBy('se.id');
-        if (empty($result->getQuery()->getScalarResult())) {
+            ->setParameter('series', $this);
+        if (empty($result->getQuery()->getSingleScalarResult())) {
             return 0;
         }
-        return $result->getQuery()->getScalarResult()[0][1];
+        return $result->getQuery()->getSingleScalarResult();
     }
 
 }
