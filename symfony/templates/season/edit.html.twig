@@ -3,7 +3,7 @@
 {% block title %}Modifier la saison {{ season.number }} de {{ season.series.title }} {% endblock %}
 
 {% block body %}
-<div class="flex flex-wrap justify-around w-4/5 items-center mx-auto text-white">
+<div class="flex flex-wrap justify-around w-4/5 items-center mx-auto text-white mb-20">
    
     <div class="flex flex-col text-center">
         <a class="bg-blue-500 w-max p-1 px-4 rounded mb-5 text-black" href="{{ path('app_series_edit', {'id': season.series.id}) }}">Retour a la série</a>
