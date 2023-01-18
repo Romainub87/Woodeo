@@ -19,6 +19,7 @@ use App\Form\PasswordResetType;
 use Doctrine\ORM\Mapping\Id;
 use Faker;
 use App\Entity\Series;
+use Symfony\Component\Form\FormError;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -237,24 +238,27 @@ class UserController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_series_index');
         }
-
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         // if form is submitted and valid, persist the user
         if ($form->isSubmitted()) {
-
-            $passHash =  $userPasswordHasher->hashPassword(
-                $user,
-                $form->get('password')->getData()
-            );
-            $user->setPassword($passHash);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
+                if ($userPasswordHasher->isPasswordValid($user, $form->get('oldPassword')->getData()))
+                {
+                    $passHash =  $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('password')->getData()
+                    );
+                    $user->setPassword($passHash);
+                    $entityManager->refresh($user);
+                    return $this->redirectToRoute('app_user_show', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
+                } else {
+                    $form->get('oldPassword')->addError(new FormError('Ancien mot de passe incorrect'));
+                }
         }
 
         // render the form
+        $entityManager->refresh($user);
         return $this->renderForm('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
