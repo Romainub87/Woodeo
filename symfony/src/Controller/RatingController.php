@@ -42,6 +42,7 @@ class RatingController extends AbstractController
             ->getRepository(Rating::class)
             ->createQueryBuilder('r')
             ->where('r.accepted = 0')
+            ->andWhere('r.comment is not null')
             ->orderBy('r.id', 'DESC')
             ->getQuery()
             ->getResult();
