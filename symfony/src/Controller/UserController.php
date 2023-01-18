@@ -127,6 +127,9 @@ class UserController extends AbstractController
             }
         }
         
+        if (count($userBot) == 0) {
+            return $this->redirectToRoute('app_rating_noUser');
+        }
 
         //add some random series to user
         for($i = 0; $i < 1000; $i++){
