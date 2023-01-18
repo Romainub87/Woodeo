@@ -14,8 +14,6 @@ class EpisodeType extends AbstractType
         $builder
             ->add('title')
             ->add('date')
-            ->add('imdb')
-            ->add('imdbrating')
             ->add('number')
         ;
     }

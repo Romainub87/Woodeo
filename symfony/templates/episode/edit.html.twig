@@ -3,11 +3,33 @@
 {% block title %}Edit Episode{% endblock %}
 
 {% block body %}
-    <h1>Edit Episode</h1>
 
-    {{ include('episode/_form.html.twig', {'button_label': 'Update'}) }}
+<div class="flex text-white flex-col w-3/5 mx-auto items-center">
+    <a class="bg-blue-500 w-max p-1 px-4 rounded mb-5 text-black" href="{{ path('app_season_edit', {'id': episode.season.id}) }}">Retour à la saison</a>
+    <h1 class="text-2xl font-semibold text-center">Modification épisode {{episode.number}} de {{episode.title}}</h1>
+    
+        {{ form_start(form) }}
+        <div class="flex flex-col mt-5">
+            {{ form_row(form.title, {
+                'attr': { 'class': 'mb-2 p-0.5 px-2 flex text-black rounded '},
+                'label': "Titre de l'épisode",
+            }) }}
+            {{ form_row(form.date, {
+                'attr': { 'class': 'mb-2 p-0.5 flex w-full text-black rounded '},
+                'label': 'Date de sortie',
+            }) }}
+            {{ form_row(form.number, {
+                'attr': { 'class': 'p-0.5 flex px-2 text-black rounded'},
+                'label': 'Nunméro de saison',
+            }) }}
+            <div class="flex flex-col items-center">
+                <button class="bg-green-500 mt-7 mb-2 w-max px-4 p-1 rounded mx-auto mt-5">{{ button_label|default('Mettre à jour la série') }}</button>
+                {{ include('episode/_delete_form.html.twig') }}
+            </div>
+        {{ form_end(form) }}
+        
 
-    <a href="{{ path('app_season_edit', {'id': episode.season.id}) }}">back to list</a>
-
-    {{ include('episode/_delete_form.html.twig') }}
+   
+    <div>
+</div>
 {% endblock %}
