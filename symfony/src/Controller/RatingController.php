@@ -292,7 +292,7 @@ class RatingController extends AbstractController
     #[Route('noUser', name: 'app_rating_noUser', methods: ['GET', 'POST'])]
     public function noUser(EntityManagerInterface $entityManager)
     {
-        echo "Aucun faux comptes trouvés. Veuillez en créer avant de générer des critiques.";
+       
         return $this->render('rating/ratesNoUser.html.twig');
     }
 }

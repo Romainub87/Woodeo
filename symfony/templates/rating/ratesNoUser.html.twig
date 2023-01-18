@@ -1,2 +1,12 @@
-<br>
-<a href="{{ path('app_user_index') }}"><button>Retournez à la liste des utilisateurs</button></a>
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="text-2xl w-4/5 mx-auto text-white">
+   
+
+    <a class="w-max" href="{{ path('app_user_index') }}"><button class="font-semibold mb-10 text-lg px-5 p-2 bg-blue-500 rounded-xl">Retournez à la liste des utilisateurs</button></a>
+
+    <h1 class="text-red-700 text-xl font-semibold">Aucun faux comptes trouvés. Veuillez en créer avant de générer des critiques ou des faux suivis</h1>
+</div>
+
+{% endblock %}
