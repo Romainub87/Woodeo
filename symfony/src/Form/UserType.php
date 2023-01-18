@@ -20,7 +20,7 @@ class UserType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
 //                'always_empty' => false,
                 'constraints' => [
                     new NotBlank([
@@ -38,7 +38,7 @@ class UserType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => true,
-                'required' => false,
+                'required' => true,
 //                'always_empty' => false,
                 'constraints' => [
                     new NotBlank([

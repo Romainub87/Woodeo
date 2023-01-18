@@ -471,7 +471,7 @@ class Series
         return $this->rates->count()+$externals;
     }
 
-    public function getMoyRates(): int
+    public function getMoyRates(): float
     {
         $notes = 0;
         $count = 0;
@@ -484,7 +484,7 @@ class Series
             $count++;
         }
 
-        return round($notes/$count);
+        return round($notes/$count, 1);
     }
 
     public function addRate(Rating $rate): self
@@ -522,8 +522,8 @@ class Series
 
     public function getNumberSeasonView(User $user, EntityManagerInterface $em): int
     {
-        /* TODO: $result = $em->createQueryBuilder()
-            ->select('COUNT(se)')
+        $result = $em->createQueryBuilder()
+            ->select('COUNT(DISTINCT se.id)')
             ->from(User::class, 'u')
             ->innerJoin('u.episode', 'ep')
             ->innerJoin('ep.season', 'se')
@@ -532,14 +532,10 @@ class Series
             ->andWhere('se.series = :series')
             ->setParameter('series', $this)
             ->groupBy('se.id');
-        return $result->getQuery()->getSingleScalarResult(); */
-        $nb = 0;
-        foreach($this->seasons as $season){
-            if($season->getAvancement($user) >= $season->getNumberEpisode()){
-                $nb ++;
-            }
+        if (empty($result->getQuery()->getScalarResult())) {
+            return 0;
         }
-        return $nb;
+        return $result->getQuery()->getScalarResult()[0][1];
     }
 
 }
