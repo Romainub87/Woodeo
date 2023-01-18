@@ -17,17 +17,14 @@
     </div>
     {{ form_end(form) }}
     {% if response %}
-        {% if response.Response == "True" %}
-        {% if already_added %}
-        <h1 class="mt-2 text-center text-lg font-semibold text-red-600">La série est déjà dans la base de données</h1>
+        {% if response.Response == "False" %}
+            <h1 class="mt-2 text-center text-lg font-semibold text-red-600">La série n'a pas été trouvé</h>
         {% else %}
-        <a class="bg-blue-500 hover:bg-blue-700 text-white w-max mx-auto flex font-bold py-2 px-4 rounded" href="{{ path('app_series_new', {'imdbId' :response.imdbID}) }}">
-           Ajouter
-        </a>
-    {% endif %}
-{% else %}
-    <h1 class="mt-2 text-center text-lg font-semibold text-red-600">La série n'a pas été trouvé</h>
-{% endif %}
+            {% if already_added %}
+                <h1 class="mt-2 text-center text-lg font-semibold text-red-600">La série est déjà dans la base de données</h1>
+            {% else %}
+                <a class="bg-blue-500 hover:bg-blue-700 text-white w-max mx-auto flex font-bold py-2 px-4 rounded" href="{{ path('app_series_new', {'imdbId' :response.imdbID}) }}">Ajouter</a>
+            {% endif %}
             <div class="description m-auto lg:w-4/5 flex flex-col text-white font-semibold">
             <h1 class="titre-serie mb-5 text-6xl font-semibold lg:text-left text-center pt-5">{{ response.Title }}</h1>
                 <div class="flex h-full items-center m-auto lg:items-start lg:flex-row flex-col">
@@ -88,7 +85,7 @@
                     </div>
                 </div>
             </div>
-           
+        {% endif %}
     {% endif %}
     {# <iframe src="/user" 
      width="100%" 
