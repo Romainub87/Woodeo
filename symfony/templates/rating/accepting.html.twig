@@ -12,11 +12,11 @@
         {% endif %}
         <div class="flex flex-wrap w-full">
             {% for r in ratings %}
-                {% if r.comment != null %}
+                {% if r[0].comment != null %}
                     <div class="bg-blue-800 w-max max-w-md m-2 rounded-lg">
-                        <h1 class="text-sm p-2 pb-1">Ajouté le {{ r.date ? r.date|date('d-m-Y') : '' }}</h1>
-                        {% if r.getDate.diff(dateActuelle).format("%a") > 0 %}
-                            <h1 class="text-sm p-2 pb-1">Il y a {{ r.getDate.diff(dateActuelle).format("%a") }} jours</h1>
+                        <h1 class="text-sm p-2 pb-1">Ajouté le {{ r[0].date ? r[0].date|date('d-m-Y') : '' }}</h1>
+                        {% if r[0].getDate.diff(dateActuelle).format("%a") > 0 %}
+                            <h1 class="text-sm p-2 pb-1">Il y a {{ r[0].getDate.diff(dateActuelle).format("%a") }} jours</h1>
                         {% else %}
                             <h1 class="text-sm p-2 pb-1">Il y a {{ r[0].getDate.diff(dateActuelle).format("%H h %I m et %S s") }}</h1>
                         {% endif %}
