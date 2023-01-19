@@ -20,6 +20,7 @@ use App\Entity\ExternalRatingSource;
 use App\Entity\Season;
 use App\Form\SeriesType;
 use App\Entity\Rating;
+use Symfony\Component\Form\FormError;
 
 #[Route('/series')]
 class SeriesController extends AbstractController
@@ -128,9 +129,13 @@ class SeriesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $entityManager->persist($series);
-            $entityManager->flush();
-        }
+            if (intval($form->get('yearStart')->getData()) > intval($form->get('yearEnd')->getData())) {
+                $form->get('yearEnd')->addError(new FormError('Date de fin incorrecte'));
+            } else {
+                $entityManager->persist($series);
+                $entityManager->flush();
+            }
+        } 
         return $this->render('series/edit.html.twig', [
             'series' => $series,
             'form' => $form->createView(),
