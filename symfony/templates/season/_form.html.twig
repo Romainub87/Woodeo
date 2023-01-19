@@ -1,4 +1,9 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="flex justify-center items-center  mt-10 flex-col">
+    {{ form_row(form.number, {
+        'attr': { 'class': 'flex'},
+        'label': 'Numéro de saison',
+    }) }}
+    <button class="w-max bg-green-500 px-5 text-xl  p-1 rounded mb-2 mt-5">{{ button_label|default('Ajouter une saison') }}</button>
+</div>
 {{ form_end(form) }}

@@ -3,9 +3,12 @@
 {% block title %}New Season{% endblock %}
 
 {% block body %}
-    <h1>Create new Season</h1>
+<div class="text-white w-4/5 mx-auto">
+    <a href="{{ path('app_series_edit', {'id': series.id }) }}"><button class="bg-blue-500 px-5 p-1 rounded">Retour à la série</button></a>
+    <h1 class="text-center text-3xl font-semibold">Créer une nouvelle saison</h1>
 
     {{ include('season/_form.html.twig') }}
 
-    <a href="{{ path('app_series_edit', {'id': series.id }) }}">back to list</a>
+    
+</div>
 {% endblock %}

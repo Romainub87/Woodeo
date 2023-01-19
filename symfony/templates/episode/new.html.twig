@@ -3,9 +3,11 @@
 {% block title %}New Episode{% endblock %}
 
 {% block body %}
-    <h1>Ajouter un nouvelle épisode à la saison {{ season.number }} de {{ season.series.title }}</h1>
-
+<div class="text-white w-4/5 mx-auto">
+    <h1 class="text-center text-2xl font-semibold">Ajouter un nouvelle épisode à la saison {{ season.number }} de {{ season.series.title }}</h1>
+    <a href="{{ path('app_season_edit', {'id': season.id }) }}"><button class="bg-blue-500 px-5 p-1 rounded">Retour à la saison</button></a>
     {{ include('episode/_form.html.twig') }}
 
-    <a href="{{ path('app_season_edit', {'id': season.id }) }}">back to list</a>
+   
+</div>
 {% endblock %}
