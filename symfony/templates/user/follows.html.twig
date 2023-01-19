@@ -11,7 +11,7 @@
     <h1 class="m-5 text-2xl font-semibold">Vous suivez {{ follows|length}} personnes </h1>
     <div class="flex flex-col m-5 ml-10">
         {% for follow in follows %}
-            <li class="flex"><h1 class="font-semibold mr-2">- {{ follow.name}}</h1> ({{follow.email}}) </li>
+            <li class="flex mb-1"><h1 class="font-semibold mr-2">- {{ follow.name}}</h1> ({{follow.email}}) <a href="{{ path('app_user_show', {'id': follow.id})}}" class="bg-blue-600 rounded-lg p-0.5 hover:bg-blue-400"> voir le profil </a></li>
         {% endfor %}
     </div>
 
