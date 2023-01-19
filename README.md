@@ -8,13 +8,17 @@
 - Romain Cordier
 - Remi Lamat
 
-##Commandes
+## Commandes
+
+[Guide de déploiment](./guide-de-deploiement.md)
 
 Pour avoir tous les composants du projet:
 ```symfony composer install```
 
-Pour lancer le serveur, lancer la commande suivante dans une autre console:
+Pour lancer le serveur:
 ```npm run watch```
+dans une autre console:
+```symfony serve```
 
 Commande permettant de virifier qu'il n'y a pas d'erreurs dans le code:
 ```php bin/phpunit```
