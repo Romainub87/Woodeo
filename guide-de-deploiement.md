@@ -16,3 +16,27 @@ UPDATE user SET admin = 1 WHERE email LIKE 'votre email ici'
 3. Appuyer sur le lien en haut à droite `Tableau de bord`
 4. Recherche le compte récemment crée.
 5. Appuyer sur promouvoir en face du compte.
+
+## Lancer Tailwind
+1. Ouvrir un terminal dans le dossier "symfony" du projet
+2. Tapez "composer require symfony/webpack-encore-bundle"
+3. Tapez ensuite "npm install -D tailwindcss postcss autoprefixer postcss-loader" puis 
+"npx tailwindcss init -p"
+4. Dans le fichier "webpack.config.js" décommentez la ligne avec '.enablePostCssLoader' ou sinon l'écrire.
+5. Dans le fichier "tailwind.config.js" écrire
+module.exports = {
+  content: [
+    "./assets/**/*.js",
+    "./templates/**/*.html.twig",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+6. Dans le fichier ".assets/styles/app.css" ajoutez 
+@tailwind base;
+@tailwind components;
+@tailwind utilities; 
+7. Taper la commande "npm run watch"
+8. Et c'est bon !!
