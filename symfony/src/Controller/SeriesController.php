@@ -127,7 +127,7 @@ class SeriesController extends AbstractController
         $form = $this->createForm(SeriesType::class, $series);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             $entityManager->persist($series);
             $entityManager->flush();
         }
